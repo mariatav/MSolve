@@ -15,6 +15,7 @@ namespace ISAAR.MSolve.SamplesConsole
     {
         private static void SolveBuildingInNoSoilSmall()
         {
+            //github change
             VectorExtensions.AssignTotalAffinityCount();
             Model model = new Model();
             model.SubdomainsDictionary.Add(1, new Subdomain() { ID = 1 });

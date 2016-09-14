@@ -10,6 +10,7 @@ namespace ISAAR.MSolve.PreProcessor.Materials
 {
     public class StochasticElasticMaterial3D : IStochasticFiniteElementMaterial, IFiniteElementMaterial3D
     {
+        //check commit
         private IStochasticMaterialCoefficientsProvider coefficientsProvider;
         private readonly double[] strains = new double[6];
         private readonly double[] stresses = new double[6];

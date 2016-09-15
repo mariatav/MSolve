@@ -15,6 +15,7 @@ namespace ISAAR.MSolve.Problems
 {
     public class ProblemStructural : IImplicitIntegrationProvider, IStaticProvider, INonLinearProvider
     {
+
         private Dictionary<int, IMatrix2D<double>> ms, cs, ks;
         private readonly Model model;
         private IDictionary<int, ISolverSubdomain> subdomains;

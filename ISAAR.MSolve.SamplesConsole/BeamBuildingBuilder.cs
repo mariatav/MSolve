@@ -157,10 +157,13 @@ namespace ISAAR.MSolve.SamplesConsole
             int fibers = 400;
             double b = 0.3;
             double h = 0.1;
+
+            double youngModulus = 2.1e5;
+            double poissonRatio = 0.35;
             ElasticMaterial3D material = new ElasticMaterial3D()
             {
-                YoungModulus = 2.1e5,
-                PoissonRatio = 0.35,
+                YoungModulus = youngModulus,
+                PoissonRatio = poissonRatio,
             };
 
             if (isInHexaSoil)
@@ -182,13 +185,30 @@ namespace ISAAR.MSolve.SamplesConsole
                     {
                         Node[] sub1AdjacentNodes = GetAdjacentNodes(model, sub1Nodes[i]);
                         Node[] sub2AdjacentNodes = GetAdjacentNodes(model, sub2Nodes[i]);
-                        e = new Element() { ID = elementID, ElementType = new Beam3D(material, sub2AdjacentNodes, sub1AdjacentNodes)
+                        /* deprecated code 
+                        e = new Element()
                         {
-                            Density = 7.85,
-                            SectionArea = b * h,
-                            MomentOfInertiaY = b * b * b * h,
-                            MomentOfInertiaZ = b * h * h * h,
-                        }
+                            ID = elementID,
+                            ElementType = new Beam3D(material, sub2AdjacentNodes, sub1AdjacentNodes)
+                            {
+                                Density = 7.85,
+                                SectionArea = b * h,
+                                MomentOfInertiaY = b * b * b * h,
+                                MomentOfInertiaZ = b * h * h * h,
+                            }
+                        };
+                        */
+
+                        e = new Element()
+                        {
+                            ID = elementID,
+                            ElementType = new Beam3D(youngModulus, poissonRatio, sub2AdjacentNodes, sub1AdjacentNodes)
+                            {
+                                Density = 7.85,
+                                SectionArea = b * h,
+                                MomentOfInertiaY = b * b * b * h,
+                                MomentOfInertiaZ = b * h * h * h,
+                            }
                         };
                         e.NodesDictionary.Add(sub2Nodes[i].ID, sub2Nodes[i]);
                         e.NodesDictionary.Add(sub1Nodes[i].ID, sub1Nodes[i]);
@@ -203,6 +223,7 @@ namespace ISAAR.MSolve.SamplesConsole
                     {
                         Node[] sub1AdjacentNodes = GetAdjacentNodes(model, sub1Nodes[i]);
                         Node[] groundAdjacentNodes = GetAdjacentNodes(model, groundNodes[i]);
+                        /* deprecated code
                         e = new Element()
                         {
                             ID = elementID,
@@ -214,6 +235,19 @@ namespace ISAAR.MSolve.SamplesConsole
                                 MomentOfInertiaZ = b * h * h * h,
                             }
                         };
+                        */
+                        e = new Element()
+                        {
+                            ID = elementID,
+                            ElementType = new Beam3D(youngModulus,poissonRatio, sub1AdjacentNodes, groundAdjacentNodes)
+                            {
+                                Density = 7.85,
+                                SectionArea = b * h,
+                                MomentOfInertiaY = b * b * b * h,
+                                MomentOfInertiaZ = b * h * h * h,
+                            }
+                        };
+
                         e.NodesDictionary.Add(sub1Nodes[i].ID, sub1Nodes[i]);
                         e.NodesDictionary.Add(groundNodes[i].ID, groundNodes[i]);
                         foreach (Node node in sub1AdjacentNodes) e.NodesDictionary.Add(node.ID, node);
@@ -235,6 +269,7 @@ namespace ISAAR.MSolve.SamplesConsole
             for (int i = 0; i < nodesPerFloor; i++)
             {
                 Node[] groundAdjacentNodes = GetAdjacentNodes(model, groundNodes[i]);
+                /* deprecated code
                 e = new Element()
                 {
                     ID = elementID,
@@ -246,6 +281,20 @@ namespace ISAAR.MSolve.SamplesConsole
                         MomentOfInertiaZ = b * h * h * h,
                     }
                 };
+                */
+
+                e = new Element()
+                {
+                    ID = elementID,
+                    ElementType = new Beam3D(youngModulus,poissonRatio, isInHexaSoil ? groundAdjacentNodes : null, null)
+                    {
+                        Density = 7.85,
+                        SectionArea = b * h,
+                        MomentOfInertiaY = b * b * b * h,
+                        MomentOfInertiaZ = b * h * h * h,
+                    }
+                };
+
                 e.NodesDictionary.Add(groundNodes[i].ID, groundNodes[i]);
                 e.NodesDictionary.Add(startNodeID + i, model.NodesDictionary[startNodeID + i]);
                 if (isInHexaSoil)
@@ -264,6 +313,7 @@ namespace ISAAR.MSolve.SamplesConsole
                 {
                     for (int k = 0; k < 4; k++)
                     {
+                        /* deprecated code
                         e = new Element()
                         {
                             ID = elementID,
@@ -275,6 +325,20 @@ namespace ISAAR.MSolve.SamplesConsole
                                 MomentOfInertiaZ = b * h * h * h,
                             }
                         };
+                        */
+
+                        e = new Element()
+                        {
+                            ID = elementID,
+                            ElementType = new Beam3D(youngModulus,poissonRatio, null, null)
+                            {
+                                Density = dens,
+                                SectionArea = b * h,
+                                MomentOfInertiaY = b * b * b * h,
+                                MomentOfInertiaZ = b * h * h * h,
+                            }
+                        };
+
                         e.NodesDictionary.Add(startNodeID + i * nodesPerFloor + j * 5 + k, model.NodesDictionary[startNodeID + i * nodesPerFloor + j * 5 + k]);
                         e.NodesDictionary.Add(startNodeID + i * nodesPerFloor + j * 5 + k + 1, model.NodesDictionary[startNodeID + i * nodesPerFloor + j * 5 + k + 1]);
                         model.ElementsDictionary.Add(e.ID, e);
@@ -282,10 +346,23 @@ namespace ISAAR.MSolve.SamplesConsole
                         elementID++;
                     }
                 }
+                /* deprecated code
                 e = new Element()
                 {
                     ID = elementID,
                     ElementType = new Beam3D(material, null, null)
+                    {
+                        Density = dens,
+                        SectionArea = b * h,
+                        MomentOfInertiaY = b * b * b * h,
+                        MomentOfInertiaZ = b * h * h * h,
+                    }
+                };
+                */
+                e = new Element()
+                {
+                    ID = elementID,
+                    ElementType = new Beam3D(youngModulus,poissonRatio, null, null)
                     {
                         Density = dens,
                         SectionArea = b * h,
@@ -298,6 +375,7 @@ namespace ISAAR.MSolve.SamplesConsole
                 model.ElementsDictionary.Add(e.ID, e);
                 model.SubdomainsDictionary[subdomainID].ElementsDictionary.Add(e.ID, e);
                 elementID++;
+                /* deprecated code
                 e = new Element()
                 {
                     ID = elementID,
@@ -309,6 +387,20 @@ namespace ISAAR.MSolve.SamplesConsole
                         MomentOfInertiaZ = b * h * h * h,
                     }
                 };
+                */
+
+                e = new Element()
+                {
+                    ID = elementID,
+                    ElementType = new Beam3D(youngModulus,poissonRatio, null, null)
+                    {
+                        Density = dens,
+                        SectionArea = b * h,
+                        MomentOfInertiaY = b * b * b * h,
+                        MomentOfInertiaZ = b * h * h * h,
+                    }
+                };
+
                 e.NodesDictionary.Add(startNodeID + i * nodesPerFloor + 3 * 5 + 1, model.NodesDictionary[startNodeID + i * nodesPerFloor + 3 * 5 + 1]);
                 e.NodesDictionary.Add(startNodeID + i * nodesPerFloor + 3 * 5 + 2, model.NodesDictionary[startNodeID + i * nodesPerFloor + 3 * 5 + 2]);
                 model.ElementsDictionary.Add(e.ID, e);
@@ -319,6 +411,7 @@ namespace ISAAR.MSolve.SamplesConsole
                 {
                     for (int k = 0; k < 2; k++)
                     {
+                        /* deprecated code
                         e = new Element()
                         {
                             ID = elementID,
@@ -330,6 +423,20 @@ namespace ISAAR.MSolve.SamplesConsole
                                 MomentOfInertiaZ = b * h * h * h,
                             }
                         };
+                        */
+
+                        e = new Element()
+                        {
+                            ID = elementID,
+                            ElementType = new Beam3D(youngModulus,poissonRatio, null, null)
+                            {
+                                Density = dens,
+                                SectionArea = b * h,
+                                MomentOfInertiaY = b * b * b * h,
+                                MomentOfInertiaZ = b * h * h * h,
+                            }
+                        };
+
                         e.NodesDictionary.Add(startNodeID + i * nodesPerFloor + k * 5 + j, model.NodesDictionary[startNodeID + i * nodesPerFloor + k * 5 + j]);
                         e.NodesDictionary.Add(startNodeID + i * nodesPerFloor + (k + 1) * 5 + j, model.NodesDictionary[startNodeID + i * nodesPerFloor + (k + 1) * 5 + j]);
                         model.ElementsDictionary.Add(e.ID, e);
@@ -337,6 +444,7 @@ namespace ISAAR.MSolve.SamplesConsole
                         elementID++;
                     }
                 }
+                /*
                 e = new Element()
                 {
                     ID = elementID,
@@ -348,11 +456,26 @@ namespace ISAAR.MSolve.SamplesConsole
                         MomentOfInertiaZ = b * h * h * h,
                     }
                 };
+                */
+
+                e = new Element()
+                {
+                    ID = elementID,
+                    ElementType = new Beam3D(youngModulus,poissonRatio, null, null)
+                    {
+                        Density = dens,
+                        SectionArea = b * h,
+                        MomentOfInertiaY = b * b * b * h,
+                        MomentOfInertiaZ = b * h * h * h,
+                    }
+                };
+
                 e.NodesDictionary.Add(startNodeID + i * nodesPerFloor + 2 * 5 + 2, model.NodesDictionary[startNodeID + i * nodesPerFloor + 2 * 5 + 2]);
                 e.NodesDictionary.Add(startNodeID + i * nodesPerFloor + 2 * 5 + 5, model.NodesDictionary[startNodeID + i * nodesPerFloor + 2 * 5 + 5]);
                 model.ElementsDictionary.Add(e.ID, e);
                 model.SubdomainsDictionary[subdomainID].ElementsDictionary.Add(e.ID, e);
                 elementID++;
+                /*
                 e = new Element()
                 {
                     ID = elementID,
@@ -364,11 +487,26 @@ namespace ISAAR.MSolve.SamplesConsole
                         MomentOfInertiaZ = b * h * h * h,
                     }
                 };
+                */
+
+                e = new Element()
+                {
+                    ID = elementID,
+                    ElementType = new Beam3D(youngModulus,poissonRatio, null, null)
+                    {
+                        Density = dens,
+                        SectionArea = b * h,
+                        MomentOfInertiaY = b * b * b * h,
+                        MomentOfInertiaZ = b * h * h * h,
+                    }
+                };
+
                 e.NodesDictionary.Add(startNodeID + i * nodesPerFloor + 2 * 5 + 3, model.NodesDictionary[startNodeID + i * nodesPerFloor + 2 * 5 + 3]);
                 e.NodesDictionary.Add(startNodeID + i * nodesPerFloor + 2 * 5 + 6, model.NodesDictionary[startNodeID + i * nodesPerFloor + 2 * 5 + 6]);
                 model.ElementsDictionary.Add(e.ID, e);
                 model.SubdomainsDictionary[subdomainID].ElementsDictionary.Add(e.ID, e);
                 elementID++;
+                /* deprecated code
                 e = new Element()
                 {
                     ID = elementID,
@@ -380,6 +518,20 @@ namespace ISAAR.MSolve.SamplesConsole
                         MomentOfInertiaZ = b * h * h * h,
                     }
                 };
+                */
+
+                e = new Element()
+                {
+                    ID = elementID,
+                    ElementType = new Beam3D(youngModulus,poissonRatio, null, null)
+                    {
+                        Density = dens,
+                        SectionArea = b * h,
+                        MomentOfInertiaY = b * b * b * h,
+                        MomentOfInertiaZ = b * h * h * h,
+                    }
+                };
+
                 e.NodesDictionary.Add(startNodeID + i * nodesPerFloor + 2 * 5 + 4, model.NodesDictionary[startNodeID + i * nodesPerFloor + 2 * 5 + 4]);
                 e.NodesDictionary.Add(startNodeID + i * nodesPerFloor + 2 * 5 + 7, model.NodesDictionary[startNodeID + i * nodesPerFloor + 2 * 5 + 7]);
                 model.ElementsDictionary.Add(e.ID, e);
@@ -389,6 +541,7 @@ namespace ISAAR.MSolve.SamplesConsole
                 if (i == floors - 1) continue;
                 for (int j = 0; j < nodesPerFloor; j++)
                 {
+                    /* deprecated code
                     e = new Element()
                     {
                         ID = elementID,
@@ -400,6 +553,20 @@ namespace ISAAR.MSolve.SamplesConsole
                             MomentOfInertiaZ = b * h * h * h,
                         }
                     };
+                    */
+
+                    e = new Element()
+                    {
+                        ID = elementID,
+                        ElementType = new Beam3D(youngModulus,poissonRatio, null, null)
+                        {
+                            Density = dens,
+                            SectionArea = b * h,
+                            MomentOfInertiaY = b * b * b * h,
+                            MomentOfInertiaZ = b * h * h * h,
+                        }
+                    };
+
                     e.NodesDictionary.Add(startNodeID + i * nodesPerFloor + j, model.NodesDictionary[startNodeID + i * nodesPerFloor + j]);
                     e.NodesDictionary.Add(startNodeID + (i + 1) * nodesPerFloor + j, model.NodesDictionary[startNodeID + (i + 1) * nodesPerFloor + j]);
                     model.ElementsDictionary.Add(e.ID, e);

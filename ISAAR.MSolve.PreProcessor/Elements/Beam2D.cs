@@ -13,13 +13,16 @@ namespace ISAAR.MSolve.PreProcessor.Elements
     {
         private static readonly DOFType[] nodalDOFTypes = new DOFType[3] { DOFType.X, DOFType.Y, DOFType.RotZ };
         private static readonly DOFType[][] dofs = new DOFType[][] { nodalDOFTypes, nodalDOFTypes };
-        private readonly IFiniteElementMaterial material;
+        //private readonly IFiniteElementMaterial material; //TODO remove
+        private readonly double youngModulus;
         private IFiniteElementDOFEnumerator dofEnumerator = new GenericDOFEnumerator();
 
         public double Density { get; set; }
         public double SectionArea { get; set; }
         public double MomentOfInertia { get; set; }
 
+        #region Possibly deprecated constructors
+        /*
         public Beam2D(IFiniteElementMaterial material)
         {
             this.material = material;
@@ -30,9 +33,22 @@ namespace ISAAR.MSolve.PreProcessor.Elements
         {
             this.dofEnumerator = dofEnumerator;
         }
+        */
+        #endregion
 
-        public IFiniteElementDOFEnumerator DOFEnumerator 
-        { 
+        public Beam2D(double youngModulus)
+        {
+            this.youngModulus = youngModulus;
+        }
+
+        public Beam2D(double youngModulus, IFiniteElementDOFEnumerator dofEnumerator)
+            : this(youngModulus)
+        {
+            this.dofEnumerator = dofEnumerator;
+        }
+
+        public IFiniteElementDOFEnumerator DOFEnumerator
+        {
             get { return dofEnumerator; }
             set { dofEnumerator = value; }
         }
@@ -74,7 +90,8 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             double c2 = c * c;
             double s = (element.Nodes[1].Y - element.Nodes[0].Y) / L;
             double s2 = s * s;
-            double EL = (material as ElasticMaterial).YoungModulus / L;
+            //double EL = (material as ElasticMaterial).YoungModulus / L; //TODO remove
+            double EL = this.youngModulus;
             double EAL = EL * SectionArea;
             double EIL = EL * MomentOfInertia;
             double EIL2 = EIL / L;
@@ -131,7 +148,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             double dAL420 = Density * SectionArea * L / 420;
 
             double totalMass = Density * SectionArea * L;
-            double totalMassOfDiagonalTerms = 2*dAL420*(140*c2+156*s2) + 2*dAL420*(140*s2+156*c2);
+            double totalMassOfDiagonalTerms = 2 * dAL420 * (140 * c2 + 156 * s2) + 2 * dAL420 * (140 * s2 + 156 * c2);
             double scale = totalMass / totalMassOfDiagonalTerms;
 
             return new SymmetricMatrix2D<double>(new double[] { dAL420*(140*c2+156*s2)*scale, 0, 0, 0, 0, 0,
@@ -188,13 +205,13 @@ namespace ISAAR.MSolve.PreProcessor.Elements
 
         #endregion
 
-        #region IStructuralFiniteElement Members
-
+        #region IStructuralFiniteElement Members (possibly deprecated)
+        /*
         public IFiniteElementMaterial Material
         {
             get { return material; }
         }
-
+        */
         #endregion
 
         #region IFiniteElement Members
@@ -202,12 +219,15 @@ namespace ISAAR.MSolve.PreProcessor.Elements
 
         public bool MaterialModified
         {
-            get { return material.Modified; }
+            get {
+                //return material.Modified; //TODO remove
+                return false;
+            }
         }
 
         public void ResetMaterialModified()
         {
-            material.ResetModified();
+            //material.ResetModified(); //TODO remove
         }
 
         #endregion

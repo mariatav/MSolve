@@ -120,8 +120,8 @@
     <Compile Include="Providers\ElementStructuralMassProvider.cs" />
     <Compile Include="Element.cs" />
     <Compile Include="Providers\ElementStructuralStiffnessProvider.cs" />
-    <Compile Include="Elements\Beam2D.cs" />
-    <Compile Include="Elements\Beam3D.cs" />
+    <Compile Include="Elements\EulerBeam2D.cs" />
+    <Compile Include="Elements\EulerBeam3D.cs" />
     <Compile Include="Elements\Hexa8WithStochasticMaterial.cs" />
     <Compile Include="Elements\Hexa8u8p.cs" />
     <Compile Include="Elements\Hexa8.cs" />

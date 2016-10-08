@@ -8,7 +8,7 @@ using ISAAR.MSolve.Matrices;
 
 namespace ISAAR.MSolve.PreProcessor.Materials
 {
-    public class StochasticElasticMaterial3D : IStochasticFiniteElementMaterial, IIsotropicFiniteElementMaterial3D
+    public class StochasticElasticMaterial3D : IStochasticContinuumMaterial3D, IIsotropicContinuumMaterial3D
     {
         private IStochasticMaterialCoefficientsProvider coefficientsProvider;
         private readonly double[] strains = new double[6];
@@ -117,7 +117,7 @@ namespace ISAAR.MSolve.PreProcessor.Materials
 
         #endregion
 
-        #region IStochasticFiniteElementMaterial Members
+        #region IStochasticContinuumMaterial3D Members
         public IStochasticMaterialCoefficientsProvider CoefficientsProvider
         {
             get { return coefficientsProvider; }

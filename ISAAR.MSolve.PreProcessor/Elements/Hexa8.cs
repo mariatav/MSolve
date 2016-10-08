@@ -20,7 +20,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
         protected readonly static DOFType[] nodalDOFTypes = new DOFType[] { DOFType.X, DOFType.Y, DOFType.Z };
         protected readonly static DOFType[][] dofTypes = new DOFType[][] { nodalDOFTypes, nodalDOFTypes, nodalDOFTypes,
             nodalDOFTypes, nodalDOFTypes, nodalDOFTypes, nodalDOFTypes, nodalDOFTypes };
-        protected readonly IFiniteElementMaterial3D[] materialsAtGaussPoints;
+        protected readonly IContinuumMaterial3D[] materialsAtGaussPoints;
         protected IFiniteElementDOFEnumerator dofEnumerator = new GenericDOFEnumerator();
 
         #region Fortran imports
@@ -65,14 +65,14 @@ namespace ISAAR.MSolve.PreProcessor.Elements
         {
         }
 
-        public Hexa8(IFiniteElementMaterial3D material)
+        public Hexa8(IContinuumMaterial3D material)
         {
-            materialsAtGaussPoints = new IFiniteElementMaterial3D[iInt3];
+            materialsAtGaussPoints = new IContinuumMaterial3D[iInt3];
             for (int i = 0; i < iInt3; i++)
-                materialsAtGaussPoints[i] = (IFiniteElementMaterial3D)material.Clone();
+                materialsAtGaussPoints[i] = (IContinuumMaterial3D)material.Clone();
         }
 
-        public Hexa8(IFiniteElementMaterial3D material, IFiniteElementDOFEnumerator dofEnumerator)
+        public Hexa8(IContinuumMaterial3D material, IFiniteElementDOFEnumerator dofEnumerator)
             : this(material)
         {
             this.dofEnumerator = dofEnumerator;
@@ -531,17 +531,17 @@ namespace ISAAR.MSolve.PreProcessor.Elements
 
         public void ClearMaterialState()
         {
-            foreach (IFiniteElementMaterial3D m in materialsAtGaussPoints) m.ClearState();
+            foreach (IContinuumMaterial3D m in materialsAtGaussPoints) m.ClearState();
         }
 
         public void SaveMaterialState()
         {
-            foreach (IFiniteElementMaterial3D m in materialsAtGaussPoints) m.SaveState();
+            foreach (IContinuumMaterial3D m in materialsAtGaussPoints) m.SaveState();
         }
 
         public void ClearMaterialStresses()
         {
-            foreach (IFiniteElementMaterial3D m in materialsAtGaussPoints) m.ClearStresses();
+            foreach (IContinuumMaterial3D m in materialsAtGaussPoints) m.ClearStresses();
         }
 
         #endregion
@@ -552,7 +552,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
         {
             get
             {
-                foreach (IFiniteElementMaterial3D material in materialsAtGaussPoints)
+                foreach (IContinuumMaterial3D material in materialsAtGaussPoints)
                     if (material.Modified) return true;
                 return false;
             }
@@ -560,7 +560,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
 
         public void ResetMaterialModified()
         {
-            foreach (IFiniteElementMaterial3D material in materialsAtGaussPoints) material.ResetModified();
+            foreach (IContinuumMaterial3D material in materialsAtGaussPoints) material.ResetModified();
         }
 
         #endregion

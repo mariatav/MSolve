@@ -8,7 +8,7 @@ using ISAAR.MSolve.Matrices;
 
 namespace ISAAR.MSolve.PreProcessor.Materials
 {
-    public class ElasticMaterial3D :  IIsotropicFiniteElementMaterial3D
+    public class ElasticMaterial3D :  IIsotropicContinuumMaterial3D
     {
         private readonly double[] strains = new double[6];
         private readonly double[] stresses = new double[6];
@@ -61,7 +61,7 @@ namespace ISAAR.MSolve.PreProcessor.Materials
 
         #endregion
 
-        #region IFiniteElementMaterial3D Members
+        #region IContinuumMaterial3D Members
 
         public double[] Stresses { get { return stresses; } }
         

@@ -6,7 +6,7 @@ using ISAAR.MSolve.Matrices.Interfaces;
 
 namespace ISAAR.MSolve.PreProcessor.Interfaces
 {
-    public interface IFiniteElementMaterial3D : IFiniteElementMaterial
+    public interface IContinuumMaterial3D : IFiniteElementMaterial
     {
         double[] Stresses { get; }
         IMatrix2D<double> ConstitutiveMatrix { get; }

@@ -6,7 +6,7 @@ using ISAAR.MSolve.Matrices.Interfaces;
 
 namespace ISAAR.MSolve.PreProcessor.Interfaces
 {
-    public interface IStochasticFiniteElementMaterial : IFiniteElementMaterial3D
+    public interface IStochasticIsotropicContinuumMaterial3D : IIsotropicContinuumMaterial3D
     {
         IStochasticMaterialCoefficientsProvider CoefficientsProvider { get; set; }
         IMatrix2D<double> GetConstitutiveMatrix(double[] coordinates);

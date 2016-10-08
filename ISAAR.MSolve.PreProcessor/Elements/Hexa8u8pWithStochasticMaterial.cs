@@ -22,14 +22,14 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             new double[] { -0.8611363115941, -0.3399810435849, 0.3399810435849, 0.8611363115941 } 
         };
 
-        public Hexa8u8pWithStochasticMaterial(IStochasticIsotropicFiniteElementMaterial material)
+        public Hexa8u8pWithStochasticMaterial(IStochasticIsotropicContinuumMaterial3D material)
         {
-            materialsAtGaussPoints = new IIsotropicFiniteElementMaterial3D[iInt3];
+            materialsAtGaussPoints = new IIsotropicContinuumMaterial3D[iInt3];
             for (int i = 0; i < iInt3; i++)
-                materialsAtGaussPoints[i] = (IStochasticIsotropicFiniteElementMaterial)material.Clone();
+                materialsAtGaussPoints[i] = (IStochasticIsotropicContinuumMaterial3D)material.Clone();
         }
 
-        public Hexa8u8pWithStochasticMaterial(IStochasticIsotropicFiniteElementMaterial material, Hexa8Memoizer memoizer)
+        public Hexa8u8pWithStochasticMaterial(IStochasticIsotropicContinuumMaterial3D material, Hexa8Memoizer memoizer)
             : base(material)
         {
             this.memoizer = memoizer;
@@ -50,7 +50,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
                     for (int i3 = 0; i3 < iInt; i3++)
                     {
                         iPos = i1 * iInt2 + i2 * iInt + i3;
-                        var e = ((Matrix2D<double>)((IStochasticFiniteElementMaterial)materialsAtGaussPoints[iPos]).GetConstitutiveMatrix(GetStochasticPoints(element, i1, i2, i3)));
+                        var e = ((Matrix2D<double>)((IStochasticContinuumMaterial3D)materialsAtGaussPoints[iPos]).GetConstitutiveMatrix(GetStochasticPoints(element, i1, i2, i3)));
                         for (int j = 0; j < 6; j++)
                             for (int k = 0; k < 6; k++)
                                 afE[iPos, j, k] = e[j, k];

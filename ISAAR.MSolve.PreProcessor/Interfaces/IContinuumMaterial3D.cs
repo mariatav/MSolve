@@ -8,7 +8,7 @@ namespace ISAAR.MSolve.PreProcessor.Interfaces
 {
     public interface IContinuumMaterial3D : IFiniteElementMaterial
     {
-        double[] Stresses { get; }
+        StressStrainVectorContinuum3D Stresses { get; }
         ElasticityTensorContinuum3D ConstitutiveMatrix { get; }
         void UpdateMaterial(double[] strains);
         void ClearState();

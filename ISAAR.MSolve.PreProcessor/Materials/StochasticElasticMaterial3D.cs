@@ -72,8 +72,8 @@ namespace ISAAR.MSolve.PreProcessor.Materials
 
         #region IFiniteElementMaterial3D Members
 
-        public double[] Stresses { get { return new double[6]; } }
-        
+        public StressStrainVectorContinuum3D Stresses { get { return new StressStrainVectorContinuum3D(new double[6]); } }
+
         public ElasticityTensorContinuum3D ConstitutiveMatrix
         {
             get

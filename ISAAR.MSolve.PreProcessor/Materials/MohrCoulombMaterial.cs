@@ -35,9 +35,9 @@ namespace ISAAR.MSolve.PreProcessor.Materials
             get { return stressesNew; }
         }
 
-        public IMatrix2D<double> ConstitutiveMatrix
+        public ElasticityTensorContinuum3D ConstitutiveMatrix
         {
-            get { return new Matrix2D<double>(constitutiveMatrix); }
+            get { return new ElasticityTensorContinuum3D(constitutiveMatrix); }
         }
 
         public void UpdateMaterial(double[] strainsIncrement)

@@ -200,7 +200,7 @@ namespace ISAAR.MSolve.PreProcessor.Materials
         /// <value>
         ///   The constitutive matrix.
         /// </value>
-        public IMatrix2D<double> ConstitutiveMatrix
+        public ElasticityTensorContinuum3D ConstitutiveMatrix
         {
             get
             {
@@ -209,7 +209,7 @@ namespace ISAAR.MSolve.PreProcessor.Materials
                     this.UpdateMaterial(new double[6]);
                 }
 
-                return new Matrix2D<double>(this.constitutiveMatrix);
+                return new ElasticityTensorContinuum3D(this.constitutiveMatrix);
             }
         }
 

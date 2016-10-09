@@ -65,12 +65,12 @@ namespace ISAAR.MSolve.PreProcessor.Materials
 
         public double[] Stresses { get { return stresses; } }
         
-        public IMatrix2D<double> ConstitutiveMatrix
+        public ElasticityTensorContinuum3D ConstitutiveMatrix
         {
             get
             {
                 if (constitutiveMatrix == null) UpdateMaterial(new double[6]);
-                return new Matrix2D<double>(constitutiveMatrix);
+                return new ElasticityTensorContinuum3D(constitutiveMatrix);
             }
         }
 

@@ -69,12 +69,12 @@ namespace ISAAR.MSolve.PreProcessor.Materials
         {
             get
             {
-                if (constitutiveMatrix == null) UpdateMaterial(new double[6]);
+                if (constitutiveMatrix == null) UpdateMaterial(new StressStrainVectorContinuum3D(new double[6]));
                 return new ElasticityTensorContinuum3D(constitutiveMatrix);
             }
         }
 
-        public void UpdateMaterial(double[] strains)
+        public void UpdateMaterial(StressStrainVectorContinuum3D strains)
         {
             //throw new NotImplementedException();
 

@@ -92,6 +92,7 @@
   <ItemGroup>
     <Compile Include="Cluster.cs" />
     <Compile Include="Elements\Hexa8u8pWithStochasticMaterial.cs" />
+    <Compile Include="Interfaces\IContinuumMaterial2D.cs" />
     <Compile Include="Interfaces\IIsotropicContinuumMaterial3D.cs" />
     <Compile Include="Interfaces\IMassAccelerationHistoryLoad.cs" />
     <Compile Include="Interfaces\IStochasticIsotropicContinuumMaterial3D.cs" />

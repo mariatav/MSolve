@@ -124,9 +124,9 @@ namespace ISAAR.MSolve.PreProcessor.Materials
             set { coefficientsProvider = value; }
         }
 
-        public IMatrix2D<double> GetConstitutiveMatrix(double[] coordinates)
+        public ElasticityTensorContinuum3D GetConstitutiveMatrix(double[] coordinates)
         {
-            return new Matrix2D<double>(GetConstitutiveMatrixInternal(coordinates));
+            return new ElasticityTensorContinuum3D(GetConstitutiveMatrixInternal(coordinates));
         }
 
         #endregion

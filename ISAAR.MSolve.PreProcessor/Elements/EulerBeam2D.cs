@@ -13,28 +13,12 @@ namespace ISAAR.MSolve.PreProcessor.Elements
     {
         private static readonly DOFType[] nodalDOFTypes = new DOFType[3] { DOFType.X, DOFType.Y, DOFType.RotZ };
         private static readonly DOFType[][] dofs = new DOFType[][] { nodalDOFTypes, nodalDOFTypes };
-        //private readonly IFiniteElementMaterial material; //TODO remove
         private readonly double youngModulus;
         private IFiniteElementDOFEnumerator dofEnumerator = new GenericDOFEnumerator();
 
         public double Density { get; set; }
         public double SectionArea { get; set; }
         public double MomentOfInertia { get; set; }
-
-        #region Possibly deprecated constructors
-        /*
-        public Beam2D(IFiniteElementMaterial material)
-        {
-            this.material = material;
-        }
-
-        public Beam2D(IFiniteElementMaterial material, IFiniteElementDOFEnumerator dofEnumerator)
-            : this(material)
-        {
-            this.dofEnumerator = dofEnumerator;
-        }
-        */
-        #endregion
 
         public EulerBeam2D(double youngModulus)
         {
@@ -90,7 +74,6 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             double c2 = c * c;
             double s = (element.Nodes[1].Y - element.Nodes[0].Y) / L;
             double s2 = s * s;
-            //double EL = (material as ElasticMaterial).YoungModulus / L; //TODO remove
             double EL = this.youngModulus;
             double EAL = EL * SectionArea;
             double EIL = EL * MomentOfInertia;
@@ -205,29 +188,21 @@ namespace ISAAR.MSolve.PreProcessor.Elements
 
         #endregion
 
-        #region IStructuralFiniteElement Members (possibly deprecated)
-        /*
-        public IFiniteElementMaterial Material
-        {
-            get { return material; }
-        }
-        */
-        #endregion
-
+        
         #region IFiniteElement Members
 
 
         public bool MaterialModified
         {
-            get {
-                //return material.Modified; //TODO remove
+            get
+            {
                 return false;
             }
         }
 
         public void ResetMaterialModified()
         {
-            //material.ResetModified(); //TODO remove
+            
         }
 
         #endregion

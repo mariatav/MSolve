@@ -14,7 +14,6 @@ namespace ISAAR.MSolve.PreProcessor.Elements
     {
         private static readonly DOFType[] nodalDOFTypes = new DOFType[6] { DOFType.X, DOFType.Y, DOFType.Z, DOFType.RotX, DOFType.RotY, DOFType.RotZ };
         private static readonly DOFType[][] dofs = new DOFType[][] { nodalDOFTypes, nodalDOFTypes };
-        //private readonly IFiniteElementMaterial material; //TODO remove
         private readonly double youngModulus;
         private readonly double poissonRatio;
         private readonly List<EmbeddedNode> embeddedNodes = new List<EmbeddedNode>();
@@ -39,40 +38,6 @@ namespace ISAAR.MSolve.PreProcessor.Elements
         public double MomentOfInertiaZ { get; set; }
         public double MomentOfInertiaPolar { get; set; }
         public IList<EmbeddedNode> EmbeddedNodes { get { return embeddedNodes; } }
-
-        #region Possibly deprecated constructors
-        /*
-        public Beam3D(IFiniteElementMaterial material)
-        {
-            this.material = material;
-        }
-
-        public Beam3D(IFiniteElementMaterial material, Node[] rot1Nodes, Node[] rot2Nodes)
-            : this(material)
-        {
-            if (rot1Nodes != null && rot1Nodes.Length != 4)
-                throw new ArgumentException("Dependent nodes quantity for rotation1 has to be four.");
-            if (rot2Nodes != null && rot2Nodes.Length != 4)
-                throw new ArgumentException("Dependent nodes quantity for rotation2 has to be four.");
-            rotNodes[0] = rot1Nodes;
-            rotNodes[1] = rot2Nodes;
-
-            InitializeDOFsWhenNoRotations();
-        }
-
-        public Beam3D(IFiniteElementMaterial material, IFiniteElementDOFEnumerator dofEnumerator) : this(material)
-        {
-            this.dofEnumerator = dofEnumerator;
-        }
-
-        public Beam3D(IFiniteElementMaterial material, Node[] rot1Nodes, Node[] rot2Nodes, IFiniteElementDOFEnumerator dofEnumerator)
-            : this(material, rot1Nodes, rot2Nodes)
-        {
-            this.dofEnumerator = dofEnumerator;
-        }
-        */
-        #endregion
-
 
         public EulerBeam3D(double youngModulus, double poissonRatio)
         {
@@ -439,7 +404,6 @@ namespace ISAAR.MSolve.PreProcessor.Elements
 
         private IMatrix2D<double> StiffnessMatrixPure(Element element)
         {
-            //var m = (material as IFiniteElementMaterial3D);//TODO remove material
             double x2 = Math.Pow(element.Nodes[1].X - element.Nodes[0].X, 2);
             double y2 = Math.Pow(element.Nodes[1].Y - element.Nodes[0].Y, 2);
             double z2 = Math.Pow(element.Nodes[1].Z - element.Nodes[0].Z, 2);
@@ -447,13 +411,6 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             double L2 = L * L;
             double L3 = L2 * L;
             //double EIx = m.YoungModulus * MomentOfInertiaX;
-
-            /* deprecated calculations after the removal of the material class as input
-            double EIy = m.YoungModulus * MomentOfInertiaY;
-            double EIz = m.YoungModulus * MomentOfInertiaZ;
-            double GJL = m.YoungModulus * L * MomentOfInertiaPolar / (2 * (1 + m.PoissonRatio));
-            double EAL = m.YoungModulus * SectionArea * L;
-            */
 
             double EIy = this.youngModulus * MomentOfInertiaY;
             double EIz = this.youngModulus * MomentOfInertiaZ;
@@ -728,14 +685,12 @@ namespace ISAAR.MSolve.PreProcessor.Elements
         {
             get
             {
-                //return material.Modified;//TODO remove
                 return false;
             }
         }
 
         public void ResetMaterialModified()
         {
-            //material.ResetModified();//TODO remove
         }
 
         public void ClearMaterialStresses()

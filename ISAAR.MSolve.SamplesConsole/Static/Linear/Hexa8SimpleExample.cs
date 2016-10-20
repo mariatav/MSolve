@@ -35,7 +35,7 @@ namespace ISAAR.MSolve.SamplesConsole.Examples.Static.Linear
             return nodes;
         }
 
-        static void Main(string[] args)
+        public void Check()
         {
             VectorExtensions.AssignTotalAffinityCount();
             double youngModulus = 200.0e06;
@@ -123,17 +123,42 @@ namespace ISAAR.MSolve.SamplesConsole.Examples.Static.Linear
             childAnalyzer.LogFactories[1] = new LinearAnalyzerLogFactory(new int[] {
                 model.NodalDOFsDictionary[5][DOFType.X],
                 model.NodalDOFsDictionary[5][DOFType.Y],
-                model.NodalDOFsDictionary[5][DOFType.Z] });
+                model.NodalDOFsDictionary[5][DOFType.Z],
+                model.NodalDOFsDictionary[6][DOFType.X],
+                model.NodalDOFsDictionary[6][DOFType.Y],
+                model.NodalDOFsDictionary[6][DOFType.Z],
+                model.NodalDOFsDictionary[7][DOFType.X],
+                model.NodalDOFsDictionary[7][DOFType.Y],
+                model.NodalDOFsDictionary[7][DOFType.Z],
+                model.NodalDOFsDictionary[8][DOFType.X],
+                model.NodalDOFsDictionary[8][DOFType.Y],
+                model.NodalDOFsDictionary[8][DOFType.Z]});
 
             // Analyze the problem
             parentAnalyzer.BuildMatrices();
             parentAnalyzer.Initialize();
             parentAnalyzer.Solve();
 
+
+            Dictionary<int, double> results = (childAnalyzer.Logs[1][0] as DOFSLog).DOFValues;
+            double[] expected = new double[] { -9.7500000000003E-08, -9.75000000000031E-08, -4.55000000000003E-07, 9.75000000000031E-08, -9.7500000000003E-08, -4.55000000000002E-07, 9.7500000000003E-08, 9.75000000000032E-08, -4.55000000000003E-07, -9.75000000000031E-08, 9.75000000000029E-08, -4.55000000000002E-07 };
+
+            for (int i = 0; i < expected.Length; i++)
+            {
+                if (Math.Abs(expected[i] - results[i]) > 1e-14)
+                {
+                    throw new SystemException("Failed hexa8 test, results don't coincide for dof no: " + i + ", expected displacement: " + expected[i] + ", calculated displacement: " + results[i]);
+                }
+                //Console.Write(results[i] + ",");
+
+            }
+            Console.WriteLine("ran hexa8 test");
+
             // Write results to console
-            Console.WriteLine("Writing results for node 5");
-            Console.WriteLine("Dof and Values for Displacement X, Y, Z");
-            Console.WriteLine(childAnalyzer.Logs[1][0]);
+            //Console.WriteLine("Writing results for node 5");
+            //Console.WriteLine("Dof and Values for Displacement X, Y, Z");
+            //Console.WriteLine(childAnalyzer.Logs[1][0]);
+
 
         }
     }

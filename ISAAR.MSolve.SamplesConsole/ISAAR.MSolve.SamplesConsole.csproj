@@ -51,6 +51,7 @@
     <Compile Include="Static\Linear\Beam3DSimpleExample.cs" />
     <Compile Include="Static\Linear\Hexa8SimpleExample.cs" />
     <Compile Include="Static\Linear\RunExamples.cs" />
+    <Compile Include="Static\Linear\BuildingInNoSoilSmall.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ISAAR.MSolve.Logging\ISAAR.MSolve.Logging.csproj">

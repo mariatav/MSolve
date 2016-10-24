@@ -234,6 +234,7 @@ namespace ISAAR.MSolve.PreProcessor
                     int dof = subdomain.NodalDOFsDictionary[load.Node.ID][load.DOF];
                     if (dof >= 0)
                         subdomain.Forces[dof] = load.Amount / load.Node.SubdomainsDictionary.Count;
+                    //TODOMaria: this is probably where the local element nodal forces are assembled to the global force vector
                 }
         }
 
@@ -258,6 +259,7 @@ namespace ISAAR.MSolve.PreProcessor
 
         public void AssignLoads()
         {
+            //TODOMaria: AssignElementalLoads()
             AssignNodalLoads();
             AssignElementMassLoads();
             AssignMassAccelerationLoads();
@@ -287,12 +289,14 @@ namespace ISAAR.MSolve.PreProcessor
         }
 
         public void ConnectDataStructures()
+            //TODOMaria: Here is where the element loads are assembled
+            //QUESTION: Should we maybe rename ConnectDataStructures to something else?? (Maybe prepare for solution?? solutionpreprocessor??)
         {
             BuildInterconnectionData();
             EnumerateDOFs();
             //EnumerateSubdomainLagranges();
             //EnumerateDOFMultiplicity();
-            AssignLoads();
+            AssignLoads(); //TODOMaria: Here is where the element loads are assembled
         }
         #endregion
 

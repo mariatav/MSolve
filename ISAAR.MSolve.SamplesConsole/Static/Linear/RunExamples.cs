@@ -10,6 +10,7 @@ namespace ISAAR.MSolve.SamplesConsole.Static.Linear
             new Beam2DSimpleExample().check();
             new Beam3DSimpleExample().check();
             new Hexa8SimpleExample().Check();
+            new BuildingInNoSoilSmall().Check();
         }
         
     }

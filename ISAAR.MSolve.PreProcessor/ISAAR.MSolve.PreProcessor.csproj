@@ -91,6 +91,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cluster.cs" />
+    <Compile Include="Constraint.cs" />
     <Compile Include="Elements\Hexa8u8pWithStochasticMaterial.cs" />
     <Compile Include="Interfaces\IMassAccelerationHistoryLoad.cs" />
     <Compile Include="MassAccelerationSinusoidalLoad.cs" />

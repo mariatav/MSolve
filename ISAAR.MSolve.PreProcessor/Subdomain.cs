@@ -105,9 +105,20 @@ namespace ISAAR.MSolve.PreProcessor
                 foreach (DOFType dofType in nodalDOFTypesDictionary[node.ID].Distinct<DOFType>())
                 {
                     int dofID = 0;
-                    foreach (DOFType constraint in node.Constraints)
+                    #region removeMaria
+                    //foreach (DOFType constraint in node.Constraints)
+                    //{
+                    //    if (constraint == dofType)
+                    //    {
+                    //        dofID = -1;
+                    //        break;
+                    //    }
+                    //}
+                    #endregion
+
+                    foreach (Constraint constraint in node.Constraints)
                     {
-                        if (constraint == dofType)
+                        if (constraint.DOF == dofType)
                         {
                             dofID = -1;
                             break;

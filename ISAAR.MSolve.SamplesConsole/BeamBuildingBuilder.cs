@@ -99,38 +99,70 @@ namespace ISAAR.MSolve.SamplesConsole
                     for (int k = 0; k < 5; k++)
                     {
                         model.NodesDictionary.Add(nodeID, new Node() { ID = nodeID, X = startX + k * beamWidth, Y = startY, Z = startZ + j * beamWidth });
-                        model.NodesDictionary[nodeID].Constraints.Add(DOFType.X);
-                        model.NodesDictionary[nodeID].Constraints.Add(DOFType.Y);
-                        model.NodesDictionary[nodeID].Constraints.Add(DOFType.Z);
-                        model.NodesDictionary[nodeID].Constraints.Add(DOFType.RotX);
-                        model.NodesDictionary[nodeID].Constraints.Add(DOFType.RotY);
-                        model.NodesDictionary[nodeID].Constraints.Add(DOFType.RotZ);
+                        #region removeMaria
+                        //model.NodesDictionary[nodeID].Constraints.Add(DOFType.X);
+                        //model.NodesDictionary[nodeID].Constraints.Add(DOFType.Y);
+                        //model.NodesDictionary[nodeID].Constraints.Add(DOFType.Z);
+                        //model.NodesDictionary[nodeID].Constraints.Add(DOFType.RotX);
+                        //model.NodesDictionary[nodeID].Constraints.Add(DOFType.RotY);
+                        //model.NodesDictionary[nodeID].Constraints.Add(DOFType.RotZ);
+                        #endregion
+                        model.NodesDictionary[nodeID].Constraints.Add(new Constraint { DOF = DOFType.X });
+                        model.NodesDictionary[nodeID].Constraints.Add(new Constraint { DOF = DOFType.Y });
+                        model.NodesDictionary[nodeID].Constraints.Add(new Constraint { DOF = DOFType.Z });
+                        model.NodesDictionary[nodeID].Constraints.Add(new Constraint { DOF = DOFType.RotX });
+                        model.NodesDictionary[nodeID].Constraints.Add(new Constraint { DOF = DOFType.RotY });
+                        model.NodesDictionary[nodeID].Constraints.Add(new Constraint { DOF = DOFType.RotZ });
                         nodeID++;
                     }
                 }
                 model.NodesDictionary.Add(nodeID, new Node() { ID = nodeID, X = startX + 2 * beamWidth, Y = startY, Z = startZ + 3 * beamWidth });
-                model.NodesDictionary[nodeID].Constraints.Add(DOFType.X);
-                model.NodesDictionary[nodeID].Constraints.Add(DOFType.Y);
-                model.NodesDictionary[nodeID].Constraints.Add(DOFType.Z);
-                model.NodesDictionary[nodeID].Constraints.Add(DOFType.RotX);
-                model.NodesDictionary[nodeID].Constraints.Add(DOFType.RotY);
-                model.NodesDictionary[nodeID].Constraints.Add(DOFType.RotZ);
+                #region removeMaria
+                //model.NodesDictionary[nodeID].Constraints.Add(DOFType.X);
+                //model.NodesDictionary[nodeID].Constraints.Add(DOFType.Y);
+                //model.NodesDictionary[nodeID].Constraints.Add(DOFType.Z);
+                //model.NodesDictionary[nodeID].Constraints.Add(DOFType.RotX);
+                //model.NodesDictionary[nodeID].Constraints.Add(DOFType.RotY);
+                //model.NodesDictionary[nodeID].Constraints.Add(DOFType.RotZ);
+                #endregion
+                model.NodesDictionary[nodeID].Constraints.Add(new Constraint { DOF = DOFType.X });
+                model.NodesDictionary[nodeID].Constraints.Add(new Constraint { DOF = DOFType.Y });
+                model.NodesDictionary[nodeID].Constraints.Add(new Constraint { DOF = DOFType.Z });
+                model.NodesDictionary[nodeID].Constraints.Add(new Constraint { DOF = DOFType.RotX });
+                model.NodesDictionary[nodeID].Constraints.Add(new Constraint { DOF = DOFType.RotY });
+                model.NodesDictionary[nodeID].Constraints.Add(new Constraint { DOF = DOFType.RotZ });
                 nodeID++;
                 model.NodesDictionary.Add(nodeID, new Node() { ID = nodeID, X = startX + 3 * beamWidth, Y = startY, Z = startZ + 3 * beamWidth });
-                model.NodesDictionary[nodeID].Constraints.Add(DOFType.X);
-                model.NodesDictionary[nodeID].Constraints.Add(DOFType.Y);
-                model.NodesDictionary[nodeID].Constraints.Add(DOFType.Z);
-                model.NodesDictionary[nodeID].Constraints.Add(DOFType.RotX);
-                model.NodesDictionary[nodeID].Constraints.Add(DOFType.RotY);
-                model.NodesDictionary[nodeID].Constraints.Add(DOFType.RotZ);
+                #region removeMaria
+                //model.NodesDictionary[nodeID].Constraints.Add(DOFType.X);
+                //model.NodesDictionary[nodeID].Constraints.Add(DOFType.Y);
+                //model.NodesDictionary[nodeID].Constraints.Add(DOFType.Z);
+                //model.NodesDictionary[nodeID].Constraints.Add(DOFType.RotX);
+                //model.NodesDictionary[nodeID].Constraints.Add(DOFType.RotY);
+                //model.NodesDictionary[nodeID].Constraints.Add(DOFType.RotZ);
+                #endregion
+                model.NodesDictionary[nodeID].Constraints.Add(new Constraint { DOF = DOFType.X });
+                model.NodesDictionary[nodeID].Constraints.Add(new Constraint { DOF = DOFType.Y });
+                model.NodesDictionary[nodeID].Constraints.Add(new Constraint { DOF = DOFType.Z });
+                model.NodesDictionary[nodeID].Constraints.Add(new Constraint { DOF = DOFType.RotX });
+                model.NodesDictionary[nodeID].Constraints.Add(new Constraint { DOF = DOFType.RotY });
+                model.NodesDictionary[nodeID].Constraints.Add(new Constraint { DOF = DOFType.RotZ });
                 nodeID++;
                 model.NodesDictionary.Add(nodeID, new Node() { ID = nodeID, X = startX + 4 * beamWidth, Y = startY, Z = startZ + 3 * beamWidth });
-                model.NodesDictionary[nodeID].Constraints.Add(DOFType.X);
-                model.NodesDictionary[nodeID].Constraints.Add(DOFType.Y);
-                model.NodesDictionary[nodeID].Constraints.Add(DOFType.Z);
-                model.NodesDictionary[nodeID].Constraints.Add(DOFType.RotX);
-                model.NodesDictionary[nodeID].Constraints.Add(DOFType.RotY);
-                model.NodesDictionary[nodeID].Constraints.Add(DOFType.RotZ);
+                #region removeMaria
+                //model.NodesDictionary[nodeID].Constraints.Add(DOFType.X);
+                //model.NodesDictionary[nodeID].Constraints.Add(DOFType.Y);
+                //model.NodesDictionary[nodeID].Constraints.Add(DOFType.Z);
+                //model.NodesDictionary[nodeID].Constraints.Add(DOFType.RotX);
+                //model.NodesDictionary[nodeID].Constraints.Add(DOFType.RotY);
+                //model.NodesDictionary[nodeID].Constraints.Add(DOFType.RotZ);
+                #endregion
+                model.NodesDictionary[nodeID].Constraints.Add(new Constraint { DOF = DOFType.X });
+                model.NodesDictionary[nodeID].Constraints.Add(new Constraint { DOF = DOFType.Y });
+                model.NodesDictionary[nodeID].Constraints.Add(new Constraint { DOF = DOFType.Z });
+                model.NodesDictionary[nodeID].Constraints.Add(new Constraint { DOF = DOFType.RotX });
+                model.NodesDictionary[nodeID].Constraints.Add(new Constraint { DOF = DOFType.RotY });
+                model.NodesDictionary[nodeID].Constraints.Add(new Constraint { DOF = DOFType.RotZ });
                 nodeID++;
             }
 
@@ -182,13 +214,16 @@ namespace ISAAR.MSolve.SamplesConsole
                     {
                         Node[] sub1AdjacentNodes = GetAdjacentNodes(model, sub1Nodes[i]);
                         Node[] sub2AdjacentNodes = GetAdjacentNodes(model, sub2Nodes[i]);
-                        e = new Element() { ID = elementID, ElementType = new Beam3D(material, sub2AdjacentNodes, sub1AdjacentNodes)
+                        e = new Element()
                         {
-                            Density = 7.85,
-                            SectionArea = b * h,
-                            MomentOfInertiaY = b * b * b * h,
-                            MomentOfInertiaZ = b * h * h * h,
-                        }
+                            ID = elementID,
+                            ElementType = new Beam3D(material, sub2AdjacentNodes, sub1AdjacentNodes)
+                            {
+                                Density = 7.85,
+                                SectionArea = b * h,
+                                MomentOfInertiaY = b * b * b * h,
+                                MomentOfInertiaZ = b * h * h * h,
+                            }
                         };
                         e.NodesDictionary.Add(sub2Nodes[i].ID, sub2Nodes[i]);
                         e.NodesDictionary.Add(sub1Nodes[i].ID, sub1Nodes[i]);

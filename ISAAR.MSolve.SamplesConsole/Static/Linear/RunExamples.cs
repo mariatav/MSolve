@@ -1,5 +1,5 @@
 ﻿using System;
-using ISAAR.MSolve.SamplesConsole.Examples.Static.Linear;
+using ISAAR.MSolve.SamplesConsole.Static.Linear.Applied_Forces;
 
 namespace ISAAR.MSolve.SamplesConsole.Static.Linear
 {

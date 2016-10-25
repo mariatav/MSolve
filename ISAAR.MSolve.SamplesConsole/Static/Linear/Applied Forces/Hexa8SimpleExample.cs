@@ -9,7 +9,7 @@ using ISAAR.MSolve.PreProcessor.Materials;
 using ISAAR.MSolve.PreProcessor.Elements;
 using ISAAR.MSolve.Matrices;
 
-namespace ISAAR.MSolve.SamplesConsole.Examples.Static.Linear
+namespace ISAAR.MSolve.SamplesConsole.Static.Linear.Applied_Forces
 {
     class Hexa8SimpleExample
     {

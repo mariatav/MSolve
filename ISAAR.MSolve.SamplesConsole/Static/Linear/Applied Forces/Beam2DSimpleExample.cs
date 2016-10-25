@@ -10,12 +10,12 @@ using ISAAR.MSolve.PreProcessor.Elements;
 using ISAAR.MSolve.Matrices;
 using ISAAR.MSolve.Logging.Interfaces;
 
-namespace ISAAR.MSolve.SamplesConsole.Static.Linear
+namespace ISAAR.MSolve.SamplesConsole.Static.Linear.Applied_Forces
 {
     /// <summary>
     /// Solve a single hexa element
     /// </summary>
-    class Beam3DSimpleExample
+    class Beam2DSimpleExample
     {
         /// <summary>
         /// Create nodes
@@ -63,28 +63,16 @@ namespace ISAAR.MSolve.SamplesConsole.Static.Linear
             // Constrain bottom nodes of the model
             model.NodesDictionary[1].Constraints.Add(new Constraint { DOF=DOFType.X });
             model.NodesDictionary[1].Constraints.Add(new Constraint { DOF=DOFType.Y });
-            model.NodesDictionary[1].Constraints.Add(new Constraint { DOF=DOFType.Z });
-            model.NodesDictionary[1].Constraints.Add(new Constraint { DOF=DOFType.RotX });
-            model.NodesDictionary[1].Constraints.Add(new Constraint { DOF=DOFType.RotY });
             model.NodesDictionary[1].Constraints.Add(new Constraint { DOF=DOFType.RotZ });
 
 
             //Create a new Beam2D element
-            var beam = new Beam3D(material)
+            var beam = new Beam2D(material)
             {
                 SectionArea = 1,
-                MomentOfInertiaY = .1,
-                MomentOfInertiaZ = .1,
-                MomentOfInertiaPolar = .1
+                MomentOfInertia = .1
             };
 
-            //var beam = new EulerBeam3D(youngModulus, poissonRatio)
-            //{
-            //    SectionArea = 1,
-            //    MomentOfInertiaY = .1,
-            //    MomentOfInertiaZ = .1,
-            //    MomentOfInertiaPolar = .1
-            //};
 
             var element = new Element()
             {
@@ -105,7 +93,7 @@ namespace ISAAR.MSolve.SamplesConsole.Static.Linear
             // Add nodal load values at the top nodes of the model
             model.Loads.Add(new Load() { Amount = -nodalLoad, Node = model.NodesDictionary[2], DOF = DOFType.X });
             model.Loads.Add(new Load() { Amount = -nodalLoad, Node = model.NodesDictionary[2], DOF = DOFType.Y });
-            model.Loads.Add(new Load() { Amount = -nodalLoad, Node = model.NodesDictionary[2], DOF = DOFType.Z });
+            //model.Loads.Add(new Load() { Amount = -nodalLoad, Node = model.NodesDictionary[2], DOF = DOFType.Z });
 
             // Needed in order to make all the required data structures
             model.ConnectDataStructures();
@@ -124,9 +112,6 @@ namespace ISAAR.MSolve.SamplesConsole.Static.Linear
             childAnalyzer.LogFactories[1] = new LinearAnalyzerLogFactory(new int[] {
                 model.NodalDOFsDictionary[2][DOFType.X],
                 model.NodalDOFsDictionary[2][DOFType.Y],
-                model.NodalDOFsDictionary[2][DOFType.Z],
-                model.NodalDOFsDictionary[2][DOFType.RotX],
-                model.NodalDOFsDictionary[2][DOFType.RotY],
                 model.NodalDOFsDictionary[2][DOFType.RotZ]});
 
             // Analyze the problem
@@ -135,19 +120,18 @@ namespace ISAAR.MSolve.SamplesConsole.Static.Linear
             parentAnalyzer.Solve();
 
             Dictionary<int, double> results = (childAnalyzer.Logs[1][0] as DOFSLog).DOFValues;
-
-            double[] expected = new double[] { -1.25E-07, -4.16666666666667E-07, -4.16666666666667E-07, 0, 6.25E-07, -6.25E-07 };
+            double[] expected = new double[] { -1.25E-07, -4.16666666666667E-07, -6.25E-07 };
 
             for (int i = 0; i < expected.Length; i++)
             {
                 if (Math.Abs(expected[i] - results[i]) > 1e-14)
                 {
-                    throw new SystemException("Failed beam3D test, results don't coincide for dof no: " + i + ", expected displacement: " + expected[i] + ", calculated displacement: " + results[i]);
+                    throw new SystemException("Failed beam2D test, results don't coincide for dof no: " + i + ", expected displacement: " + expected[i] + ", calculated displacement: " + results[i]);
                 }
                 //Console.WriteLine(results[i]);
 
             }
-            Console.WriteLine("ran beam3d test");
+            Console.WriteLine("ran beam2d2 test");
         }
     }
 }

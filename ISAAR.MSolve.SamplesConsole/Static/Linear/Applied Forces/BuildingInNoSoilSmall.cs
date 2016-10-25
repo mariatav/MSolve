@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ISAAR.MSolve.SamplesConsole.Static.Linear
+namespace ISAAR.MSolve.SamplesConsole.Static.Linear.Applied_Forces
 {
     class BuildingInNoSoilSmall
     {

@@ -65,18 +65,18 @@ namespace ISAAR.MSolve.SamplesConsole.Examples.Static.Linear
             }
 
             // Constraint bottom nodes of the model
-            model.NodesDictionary[1].Constraints.Add(DOFType.X);
-            model.NodesDictionary[1].Constraints.Add(DOFType.Y);
-            model.NodesDictionary[1].Constraints.Add(DOFType.Z);
-            model.NodesDictionary[2].Constraints.Add(DOFType.X);
-            model.NodesDictionary[2].Constraints.Add(DOFType.Y);
-            model.NodesDictionary[2].Constraints.Add(DOFType.Z);
-            model.NodesDictionary[3].Constraints.Add(DOFType.X);
-            model.NodesDictionary[3].Constraints.Add(DOFType.Y);
-            model.NodesDictionary[3].Constraints.Add(DOFType.Z);
-            model.NodesDictionary[4].Constraints.Add(DOFType.X);
-            model.NodesDictionary[4].Constraints.Add(DOFType.Y);
-            model.NodesDictionary[4].Constraints.Add(DOFType.Z);
+            model.NodesDictionary[1].Constraints.Add(new Constraint { DOF=DOFType.X });
+            model.NodesDictionary[1].Constraints.Add(new Constraint { DOF=DOFType.Y });
+            model.NodesDictionary[1].Constraints.Add(new Constraint { DOF=DOFType.Z });
+            model.NodesDictionary[2].Constraints.Add(new Constraint { DOF=DOFType.X });
+            model.NodesDictionary[2].Constraints.Add(new Constraint { DOF=DOFType.Y });
+            model.NodesDictionary[2].Constraints.Add(new Constraint { DOF=DOFType.Z });
+            model.NodesDictionary[3].Constraints.Add(new Constraint { DOF=DOFType.X });
+            model.NodesDictionary[3].Constraints.Add(new Constraint { DOF=DOFType.Y });
+            model.NodesDictionary[3].Constraints.Add(new Constraint { DOF=DOFType.Z });
+            model.NodesDictionary[4].Constraints.Add(new Constraint { DOF=DOFType.X });
+            model.NodesDictionary[4].Constraints.Add(new Constraint { DOF=DOFType.Y });
+            model.NodesDictionary[4].Constraints.Add(new Constraint { DOF=DOFType.Z });
 
 
             // Create a new Hexa8 element

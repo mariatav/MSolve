@@ -16,6 +16,7 @@ namespace ISAAR.MSolve.PreProcessor.Interfaces
     }
 
     public interface IFiniteElement //TODOMaria elemental loads should be calculated like this: the one who calls CalculateStresses et.c. should provide nodal displacements compliant to the constraints
+        //QUESTION: Should we maybe rename it to IFiniteElementType??
     {
         int ID { get; }
         ElementDimensions ElementDimensions { get; }

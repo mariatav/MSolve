@@ -46,7 +46,8 @@ namespace ISAAR.MSolve.Logging
             double[] solution = ((Vector<double>)solutionVector).Data;
             foreach (Element e in elements)
             {
-                var localVector = e.Subdomain.GetLocalVectorFromGlobal(e, solution);
+                //var localVector = e.Subdomain.GetLocalVectorFromGlobal(e, solution);//removeMaria
+                var localVector = e.Subdomain.CalculateElementNodalDisplacements(e, solution);
                 forces[e.ID] = e.ElementType.CalculateForcesForLogging(e, localVector);
 
                 //for (int i = 0; i < stresses[e.ID].Length; i++)

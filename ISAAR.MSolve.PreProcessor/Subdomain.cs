@@ -5,6 +5,7 @@ using System.Text;
 using ISAAR.MSolve.Matrices.Interfaces;
 using ISAAR.MSolve.Matrices;
 using ISAAR.MSolve.PreProcessor.Interfaces;
+using System.Diagnostics;
 
 namespace ISAAR.MSolve.PreProcessor
 {
@@ -15,6 +16,7 @@ namespace ISAAR.MSolve.PreProcessor
         private readonly Dictionary<int, Node> nodesDictionary = new Dictionary<int, Node>();
         private readonly Dictionary<int, Dictionary<DOFType, int>> nodalDOFsDictionary = new Dictionary<int, Dictionary<DOFType, int>>();
         private readonly Dictionary<int, Dictionary<DOFType, int>> globalNodalDOFsDictionary = new Dictionary<int, Dictionary<DOFType, int>>();
+        private readonly Dictionary<int, Dictionary<DOFType, double>> constraintsDictionary = new Dictionary<int, Dictionary<DOFType, double>>();
         private double[] forces;
 
         #region Properties
@@ -105,9 +107,20 @@ namespace ISAAR.MSolve.PreProcessor
                 foreach (DOFType dofType in nodalDOFTypesDictionary[node.ID].Distinct<DOFType>())
                 {
                     int dofID = 0;
-                    foreach (DOFType constraint in node.Constraints)
+                    #region removeMaria
+                    //foreach (DOFType constraint in node.Constraints)
+                    //{
+                    //    if (constraint == dofType)
+                    //    {
+                    //        dofID = -1;
+                    //        break;
+                    //    }
+                    //}
+                    #endregion
+
+                    foreach (Constraint constraint in node.Constraints)
                     {
-                        if (constraint == dofType)
+                        if (constraint.DOF == dofType)
                         {
                             dofID = -1;
                             break;
@@ -128,8 +141,8 @@ namespace ISAAR.MSolve.PreProcessor
                     }
                     dofsDictionary.Add(dofType, dofID);
                 }
-                
-                nodalDOFsDictionary.Add(node.ID, dofsDictionary); 
+
+                nodalDOFsDictionary.Add(node.ID, dofsDictionary);
             }
             forces = new double[TotalDOFs];
         }
@@ -139,8 +152,8 @@ namespace ISAAR.MSolve.PreProcessor
             foreach (int nodeID in nodalDOFsDictionary.Keys)
             {
                 Dictionary<DOFType, int> dofTypes = nodalDOFsDictionary[nodeID];
-                Dictionary<DOFType, int> globalDOFTypes = new Dictionary<DOFType,int>(dofTypes.Count);
-                foreach (DOFType dofType in dofTypes.Keys) 
+                Dictionary<DOFType, int> globalDOFTypes = new Dictionary<DOFType, int>(dofTypes.Count);
+                foreach (DOFType dofType in dofTypes.Keys)
                     globalDOFTypes.Add(dofType, glodalDOFsDictionary[nodeID][dofType]);
                 globalNodalDOFsDictionary.Add(nodeID, globalDOFTypes);
             }
@@ -165,6 +178,19 @@ namespace ISAAR.MSolve.PreProcessor
 
             //foreach (var e in modelEmbeddedNodes.Where(x => nodeIDs.IndexOf(x.Node.ID) >= 0))
             //    embeddedNodes.Add(e);
+        }
+
+        public void BuildConstraintDisplacementDictionary()
+        {
+            foreach (Node node in nodesDictionary.Values)
+            {
+                if (node.Constraints == null) continue;
+                constraintsDictionary[node.ID] = new Dictionary<DOFType, double>();
+                foreach (Constraint constraint in node.Constraints)
+                {
+                    constraintsDictionary[node.ID][constraint.DOF] = constraint.Amount;
+                }
+            }
         }
 
         #endregion
@@ -208,11 +234,43 @@ namespace ISAAR.MSolve.PreProcessor
             return new[] { nodex1y1z1, nodex2y1z1, nodex1y2z1, nodex2y2z1, nodex1y1z2, nodex2y1z2, nodex1y2z2, nodex2y2z2 };
         }
 
-        public double[] GetLocalVectorFromGlobal(Element element, double[] globalVector)
+        public double[] CalculateElementNodalDisplacements(Element element, double[] globalDisplacementVector)//QUESTION: would it be maybe more clear if we passed the constraintsDictionary as argument??
+        {
+            double[] elementNodalDisplacements = GetLocalVectorFromGlobal(element, globalDisplacementVector);
+            elementNodalDisplacements = CalculateElementNodalDisplacements(element, globalDisplacementVector);
+            elementNodalDisplacements = ApplyConstraintDisplacements(element, elementNodalDisplacements);
+            return elementNodalDisplacements;
+        }
+
+        private double[] ApplyConstraintDisplacements(Element element, double[] elementNodalDisplacements)//QUESTION: should we perhaps make it void??
+        {
+            //QUESTION: Would this be wrong?? foreach (Node node in element.NodesDictionary)
+            int pos = 0;
+            for (int i = 0; i < element.ElementType.DOFEnumerator.GetDOFTypes(element).Count; i++)
+            {
+                Node node = element.Nodes[i];
+                foreach (DOFType dofType in element.ElementType.DOFEnumerator.GetDOFTypes(element)[i])
+                {
+                    Dictionary<DOFType, double> constrainedDOFs;
+                    double constraintDisplacement;
+                    if (constraintsDictionary.TryGetValue(node.ID, out constrainedDOFs) && constrainedDOFs.TryGetValue(dofType, out constraintDisplacement))
+                    {
+                        Debug.Assert(elementNodalDisplacements[pos] == 0);
+                        elementNodalDisplacements[pos] = constraintDisplacement;
+                    }
+                    pos++;
+                }
+            }
+            return elementNodalDisplacements;
+        }
+
+
+        public double[] GetLocalVectorFromGlobal(Element element, double[] globalVector)//TODOMaria: here is where the element displacements are assigned to zero if they are restrained
+                                                                                        //TODOMaria: Change visibility to private
         {
             int localDOFs = 0;
             foreach (IList<DOFType> dofs in element.ElementType.DOFEnumerator.GetDOFTypes(element)) localDOFs += dofs.Count;
-            double[] localVector = new double[localDOFs];
+            double[] localVector = new double[localDOFs];//TODOMaria: here is where I have to check if the dof is constrained
 
             int pos = 0;
             for (int i = 0; i < element.ElementType.DOFEnumerator.GetDOFTypes(element).Count; i++)
@@ -243,15 +301,17 @@ namespace ISAAR.MSolve.PreProcessor
             }
         }
 
-        public IVector<double> GetRHSFromSolution(IVector<double> solution, IVector<double> dSolution)
+        public IVector<double> GetRHSFromSolution(IVector<double> solution, IVector<double> dSolution)//TODOMaria: Here is where element CalculcateStresses() is called
         {
             Vector<double> forces = new Vector<double>(TotalDOFs);
             foreach (Element element in elementsDictionary.Values)
             {
-                double[] localSolution = GetLocalVectorFromGlobal(element, ((Vector<double>)solution).Data);
-                double[] localdSolution = GetLocalVectorFromGlobal(element, ((Vector<double>)dSolution).Data);
+                //double[] localSolution = GetLocalVectorFromGlobal(element, ((Vector<double>)solution).Data);//TODOMaria: This is where the element displacements are calculated //removeMaria
+                //double[] localdSolution = GetLocalVectorFromGlobal(element, ((Vector<double>)dSolution).Data);//removeMaria
+                double[] localSolution = CalculateElementNodalDisplacements(element, ((Vector<double>)solution).Data);
+                double[] localdSolution = CalculateElementNodalDisplacements(element, ((Vector<double>)dSolution).Data);
                 element.ElementType.CalculateStresses(element, localSolution, localdSolution);
-                if (element.ElementType.MaterialModified) 
+                if (element.ElementType.MaterialModified)
                     element.Subdomain.MaterialsModified = true;
                 double[] f = element.ElementType.CalculateForces(element, localSolution, localdSolution);
                 AddLocalVectorToGlobal(element, f, forces.Data);

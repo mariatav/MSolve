@@ -9,6 +9,6 @@ namespace ISAAR.MSolve.PreProcessor
     {
         public DOFType DOF { get; set; }//TODOMaria: make constraint immutable (add a constructor taking Node and DOF as arguments) (the same goes for Load, Node)
 
-        //UNDONE: add quantity field
+        public double Amount { get; set; }
     }
 }

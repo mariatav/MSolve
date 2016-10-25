@@ -17,6 +17,7 @@ namespace ISAAR.MSolve.PreProcessor
         private readonly Dictionary<int, Subdomain> subdomainsDictionary = new Dictionary<int, Subdomain>();
         private readonly Dictionary<int, Cluster> clustersDictionary = new Dictionary<int, Cluster>();
         private readonly Dictionary<int, Dictionary<DOFType, int>> nodalDOFsDictionary = new Dictionary<int, Dictionary<DOFType, int>>();
+        private readonly Dictionary<int, Dictionary<DOFType, double>> constraintsDictionary = new Dictionary<int, Dictionary<DOFType, double>>();//TODOMaria: maybe it's useless in model class
         private readonly IList<Load> loads = new List<Load>();
         private readonly IList<ElementMassAccelerationLoad> elementMassAccelerationLoads = new List<ElementMassAccelerationLoad>();
         private readonly IList<MassAccelerationLoad> massAccelerationLoads = new List<MassAccelerationLoad>();
@@ -121,7 +122,7 @@ namespace ISAAR.MSolve.PreProcessor
                     element.Subdomain = subdomain;
         }
 
-        private void BuildInterconnectionData()
+        private void BuildInterconnectionData()//TODOMaria: maybe I have to generate the constraints dictionary for each subdomain here
         {
             BuildSubdomainOfEachElement();
             DuplicateInterSubdomainEmbeddedElements();
@@ -235,6 +236,22 @@ namespace ISAAR.MSolve.PreProcessor
             }
         }
 
+        private void BuildConstraintDisplacementDictionary()
+        {
+            foreach (Node node in nodesDictionary.Values)
+            {
+                if (node.Constraints == null) continue;
+                constraintsDictionary[node.ID] = new Dictionary<DOFType, double>();
+                foreach(Constraint constraint in node.Constraints)
+                {
+                    constraintsDictionary[node.ID][constraint.DOF] = constraint.Amount;
+                }
+            }
+
+            foreach (Subdomain subdomain in subdomainsDictionary.Values)
+                subdomain.BuildConstraintDisplacementDictionary();
+        }
+
         private void AssignNodalLoads()
         {
             foreach (Subdomain subdomain in subdomainsDictionary.Values)
@@ -269,7 +286,6 @@ namespace ISAAR.MSolve.PreProcessor
 
         public void AssignLoads()
         {
-            //TODOMaria: AssignElementalLoads()
             AssignNodalLoads();
             AssignElementMassLoads();
             AssignMassAccelerationLoads();
@@ -299,14 +315,15 @@ namespace ISAAR.MSolve.PreProcessor
         }
 
         public void ConnectDataStructures()
-            //TODOMaria: Here is where the element loads are assembled
-            //QUESTION: Should we maybe rename ConnectDataStructures to something else?? (Maybe prepare for solution?? solutionpreprocessor??)
+        //TODOMaria: Here is where the element loads are assembled
+        //QUESTION: Should we maybe rename ConnectDataStructures to something else?? (Maybe prepare for solution?? solutionpreprocessor??)
         {
             BuildInterconnectionData();
             EnumerateDOFs();
             //EnumerateSubdomainLagranges();
             //EnumerateDOFMultiplicity();
             AssignLoads(); //TODOMaria: Here is where the element loads are assembled
+            BuildConstraintDisplacementDictionary();
         }
         #endregion
 
@@ -318,6 +335,7 @@ namespace ISAAR.MSolve.PreProcessor
             elementsDictionary.Clear();
             nodesDictionary.Clear();
             nodalDOFsDictionary.Clear();
+            constraintsDictionary.Clear();
             elementMassAccelerationHistoryLoads.Clear();
             elementMassAccelerationLoads.Clear();
             massAccelerationHistoryLoads.Clear();

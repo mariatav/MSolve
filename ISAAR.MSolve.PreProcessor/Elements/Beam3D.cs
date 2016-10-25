@@ -402,7 +402,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
 
         private IMatrix2D<double> StiffnessMatrixPure(Element element)
         {
-            var m = (material as IFiniteElementMaterial3D);
+            var m = (material as IFiniteElementMaterial);
             double x2 = Math.Pow(element.Nodes[1].X - element.Nodes[0].X, 2);
             double y2 = Math.Pow(element.Nodes[1].Y - element.Nodes[0].Y, 2);
             double z2 = Math.Pow(element.Nodes[1].Z - element.Nodes[0].Z, 2);

@@ -66,18 +66,13 @@ namespace ISAAR.MSolve.SamplesConsole.Static.Linear
             model.NodesDictionary[1].Constraints.Add(DOFType.RotZ);
 
 
-            // Create a new Beam2D element
-            //var beam = new Beam2D(material)
-            //{
-            //    SectionArea = 1,
-            //    MomentOfInertia = .1
-            //};
-
-            var beam = new EulerBeam2D(youngModulus)
+            //Create a new Beam2D element
+            var beam = new Beam2D(material)
             {
                 SectionArea = 1,
                 MomentOfInertia = .1
             };
+
 
             var element = new Element()
             {

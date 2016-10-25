@@ -69,20 +69,22 @@ namespace ISAAR.MSolve.SamplesConsole.Static.Linear
             model.NodesDictionary[1].Constraints.Add(DOFType.RotZ);
 
 
-            // Create a new Beam2D element
-            //var beam = new Beam2D(material)
-            //{
-            //    SectionArea = 1,
-            //    MomentOfInertia = .1
-            //};
-
-            var beam = new EulerBeam3D(youngModulus, poissonRatio)
+            //Create a new Beam2D element
+            var beam = new Beam3D(material)
             {
                 SectionArea = 1,
                 MomentOfInertiaY = .1,
                 MomentOfInertiaZ = .1,
                 MomentOfInertiaPolar = .1
             };
+
+            //var beam = new EulerBeam3D(youngModulus, poissonRatio)
+            //{
+            //    SectionArea = 1,
+            //    MomentOfInertiaY = .1,
+            //    MomentOfInertiaZ = .1,
+            //    MomentOfInertiaPolar = .1
+            //};
 
             var element = new Element()
             {
@@ -94,7 +96,7 @@ namespace ISAAR.MSolve.SamplesConsole.Static.Linear
             element.AddNode(model.NodesDictionary[1]);
             element.AddNode(model.NodesDictionary[2]);
 
-            var a = beam.StiffnessMatrix(element);
+            //var a = beam.StiffnessMatrix(element);
 
             // Add Hexa element to the element and subdomains dictionary of the model
             model.ElementsDictionary.Add(element.ID, element);

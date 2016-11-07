@@ -18,7 +18,7 @@ namespace ISAAR.MSolve.MaterialsTest
             // initialize gausspoints (we have coordinates in there)
             materialStates = new IMaterialState[gaussPoints.Length];
             for (int i = 0; i < gaussPoints.Length; i++)
-                materialStates[i] = materialProperty.BuildMaterialState(gaussPoints[i])
+                materialStates[i] = materialProperty.BuildMaterialState(gaussPoints[i]);
         }
 
         public double[] GetStiffnessMatrix()

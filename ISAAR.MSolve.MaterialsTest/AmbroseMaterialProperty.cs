@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ISAAR.MSolve.MaterialsTest
 {
-    public class AmbroseMaterialProperty : IMaterialProperty
+     class AmbroseMaterialProperty : IMaterialProperty
     {
         public AmbroseMaterialProperty(double youngModulus, double poissonRation, double alpha, double ksi)
         {
@@ -18,9 +18,9 @@ namespace ISAAR.MSolve.MaterialsTest
             return new AmbroseMaterialState(this, coordinates);
         }
 
-        class AmbroseMaterialState : IMaterialState
+        private class AmbroseMaterialState : IMaterialState
         {
-            internal AmbroseMaterialState(AmbroseMaterialProperty property, double[] coordinates)
+            public AmbroseMaterialState(AmbroseMaterialProperty property, double[] coordinates)
             {
             }
 
@@ -28,7 +28,7 @@ namespace ISAAR.MSolve.MaterialsTest
             {
                 get
                 {
-                    throw new NotImplementedException();
+                    return new double[] { 1, 1 };
                 }
             }
 
@@ -55,7 +55,7 @@ namespace ISAAR.MSolve.MaterialsTest
 
             public void ClearStresses()
             {
-                throw new NotImplementedException();
+                //throw new NotImplementedException();
             }
 
             public void ResetModified()
@@ -70,7 +70,7 @@ namespace ISAAR.MSolve.MaterialsTest
 
             public void UpdateMaterial(double[] strains)
             {
-                throw new NotImplementedException();
+                //throw new NotImplementedException();
             }
         }
     }

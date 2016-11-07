@@ -17,7 +17,7 @@ using ISAAR.MSolve.Matrices;
 
 namespace ISAAR.MSolve.PreProcessor.Materials
 {
-    public class MohrCoulombMaterial : IIsotropicContinuumMaterial3DState
+    public class MohrCoulombMaterialState : IIsotropicContinuumMaterial3DState
     {
         private const double PoissonRatioForIncompressibleSolid = 0.5;
         private bool modified;
@@ -111,7 +111,7 @@ namespace ISAAR.MSolve.PreProcessor.Materials
             var stressesCopy = new double[stresses.Length];
             Array.Copy(stresses, stressesCopy, stresses.Length);
 
-            var m = new MohrCoulombMaterial(this.youngModulus, this.poissonRatio, this.cohesion, this.friction, this.dilation)
+            var m = new MohrCoulombMaterialState(this.youngModulus, this.poissonRatio, this.cohesion, this.friction, this.dilation)
             {
                 modified = this.Modified,
                 constitutiveMatrix = constitutiveMatrixCopy,
@@ -121,7 +121,7 @@ namespace ISAAR.MSolve.PreProcessor.Materials
             return m;
         }
 
-        public MohrCoulombMaterial(double youngModulus, double poissonRatio, double cohesion, double friction, double dilation)
+        public MohrCoulombMaterialState(double youngModulus, double poissonRatio, double cohesion, double friction, double dilation)
         {
             this.youngModulus = youngModulus;
 

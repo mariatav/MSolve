@@ -23,7 +23,7 @@ namespace ISAAR.MSolve.PreProcessor.Materials
     ///   Class for 3D Von Mises materials.
     /// </summary>
     /// <a href = "http://en.wikipedia.org/wiki/Von_Mises_yield_criterion">Wikipedia -Von Mises yield criterion</a>
-    public class VonMisesMaterial3D : IIsotropicContinuumMaterial3DState
+    public class VonMisesMaterial3DState : IIsotropicContinuumMaterial3DState
     {
         /// <summary>
         ///   The Poisson ratio value of an incompressible solid.
@@ -143,7 +143,7 @@ namespace ISAAR.MSolve.PreProcessor.Materials
         private double[] stressesNew = new double[6];
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "VonMisesMaterial3D" /> class.
+        ///   Initializes a new instance of the <see cref = "VonMisesMaterial3DState" /> class.
         /// </summary>
         /// <param name = "youngModulus">
         ///   The young modulus.
@@ -158,7 +158,7 @@ namespace ISAAR.MSolve.PreProcessor.Materials
         ///   The hardening ratio.
         /// </param>
         /// <exception cref = "ArgumentException"> When Poisson ratio is equal to 0.5.</exception>
-        public VonMisesMaterial3D(double youngModulus, double poissonRatio, double yieldStress, double hardeningRatio)
+        public VonMisesMaterial3DState(double youngModulus, double poissonRatio, double yieldStress, double hardeningRatio)
         {
             this.youngModulus = youngModulus;
 
@@ -344,7 +344,7 @@ namespace ISAAR.MSolve.PreProcessor.Materials
             var stressesCopy = new double[stresses.Length];
             Array.Copy(stresses, stressesCopy, stresses.Length);
 
-            VonMisesMaterial3D m = new VonMisesMaterial3D(
+            VonMisesMaterial3DState m = new VonMisesMaterial3DState(
                 this.youngModulus, this.poissonRatio, this.yieldStress, this.hardeningRatio)
                 {
                     modified = this.Modified,

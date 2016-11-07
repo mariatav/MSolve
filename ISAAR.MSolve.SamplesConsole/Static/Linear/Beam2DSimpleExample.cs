@@ -39,7 +39,7 @@ namespace ISAAR.MSolve.SamplesConsole.Static.Linear
             double nodalLoad = 25.0;
 
             // Create a new elastic 3D material
-            ElasticMaterial material = new ElasticMaterial()
+            ElasticMaterialState material = new ElasticMaterialState()
             {
                 YoungModulus = youngModulus,
                 PoissonRatio = poissonRatio,

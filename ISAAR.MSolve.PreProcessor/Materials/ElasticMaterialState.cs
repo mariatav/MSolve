@@ -6,7 +6,7 @@ using ISAAR.MSolve.PreProcessor.Interfaces;
 
 namespace ISAAR.MSolve.PreProcessor.Materials
 {
-    public class ElasticMaterial : IFiniteElementMaterialState //This class is useless
+    public class ElasticMaterialState : IFiniteElementMaterialState //This class is useless
     {
         public double YoungModulus { get; set; }
         public double PoissonRatio { get; set; }
@@ -34,7 +34,7 @@ namespace ISAAR.MSolve.PreProcessor.Materials
 
         public object Clone()
         {
-            return new ElasticMaterial() { YoungModulus = this.YoungModulus, PoissonRatio = this.PoissonRatio };
+            return new ElasticMaterialState() { YoungModulus = this.YoungModulus, PoissonRatio = this.PoissonRatio };
         }
 
         #endregion

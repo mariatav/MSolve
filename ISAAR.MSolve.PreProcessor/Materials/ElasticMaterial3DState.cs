@@ -8,7 +8,7 @@ using ISAAR.MSolve.Matrices;
 
 namespace ISAAR.MSolve.PreProcessor.Materials
 {
-    public class ElasticMaterial3D :  IIsotropicContinuumMaterial3DState
+    public class ElasticMaterial3DState :  IIsotropicContinuumMaterial3DState
     {
         private readonly double[] strains = new double[6];
         private readonly double[] stresses = new double[6];
@@ -103,7 +103,7 @@ namespace ISAAR.MSolve.PreProcessor.Materials
 
         public object Clone()
         {
-            return new ElasticMaterial3D() { YoungModulus = this.YoungModulus, PoissonRatio = this.PoissonRatio };
+            return new ElasticMaterial3DState() { YoungModulus = this.YoungModulus, PoissonRatio = this.PoissonRatio };
         }
 
         #endregion

@@ -8,7 +8,7 @@ using ISAAR.MSolve.Matrices;
 
 namespace ISAAR.MSolve.PreProcessor.Materials
 {
-    public class StochasticElasticMaterial3D : IStochasticIsotropicContinuumMaterial3DState, IIsotropicContinuumMaterial3DState
+    public class StochasticElasticMaterial3DState : IStochasticIsotropicContinuumMaterial3DState, IIsotropicContinuumMaterial3DState
     {
         private IStochasticMaterialCoefficientsProvider coefficientsProvider;
         private readonly double[] strains = new double[6];
@@ -18,7 +18,7 @@ namespace ISAAR.MSolve.PreProcessor.Materials
         public double PoissonRatio { get; set; }
         public double[] Coordinates { get; set; }
 
-        public StochasticElasticMaterial3D(IStochasticMaterialCoefficientsProvider coefficientsProvider)
+        public StochasticElasticMaterial3DState(IStochasticMaterialCoefficientsProvider coefficientsProvider)
         {
             this.coefficientsProvider = coefficientsProvider;
         }
@@ -112,7 +112,7 @@ namespace ISAAR.MSolve.PreProcessor.Materials
 
         public object Clone()
         {
-            return new StochasticElasticMaterial3D(coefficientsProvider) { YoungModulus = this.YoungModulus, PoissonRatio = this.PoissonRatio };
+            return new StochasticElasticMaterial3DState(coefficientsProvider) { YoungModulus = this.YoungModulus, PoissonRatio = this.PoissonRatio };
         }
 
         #endregion

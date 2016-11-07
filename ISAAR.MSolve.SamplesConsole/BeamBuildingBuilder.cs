@@ -160,7 +160,7 @@ namespace ISAAR.MSolve.SamplesConsole
 
             double youngModulus = 2.1e5;
             double poissonRatio = 0.35;
-            ElasticMaterial3D material = new ElasticMaterial3D()
+            ElasticMaterial3DState material = new ElasticMaterial3DState()
             {
                 YoungModulus = youngModulus,
                 PoissonRatio = poissonRatio,

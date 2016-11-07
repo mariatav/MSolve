@@ -150,11 +150,11 @@
     <Compile Include="Load.cs" />
     <Compile Include="MassAccelerationHistoryLoad.cs" />
     <Compile Include="MassAccelerationLoad.cs" />
-    <Compile Include="Materials\MohrCoulombMaterial.cs" />
-    <Compile Include="Materials\StochasticElasticMaterial3D.cs" />
-    <Compile Include="Materials\VonMisesMaterial3D.cs" />
-    <Compile Include="Materials\ElasticMaterial3D.cs" />
-    <Compile Include="Materials\ElasticMaterial.cs" />
+    <Compile Include="Materials\MohrCoulombMaterialState.cs" />
+    <Compile Include="Materials\StochasticElasticMaterial3DState.cs" />
+    <Compile Include="Materials\VonMisesMaterial3DState.cs" />
+    <Compile Include="Materials\ElasticMaterial3DState.cs" />
+    <Compile Include="Materials\ElasticMaterialState.cs" />
     <Compile Include="Model.cs" />
     <Compile Include="Node.cs" />
     <Compile Include="Stochastic\PolynomialChaosCoefficientsCalculator.cs" />

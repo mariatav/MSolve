@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ISAAR.MSolve.PreProcessor.Interfaces
 {
-    public interface IFiniteElementMaterial : ICloneable
+    public interface IFiniteElementMaterialState : ICloneable
     {
         int ID { get; }
         bool Modified { get; }

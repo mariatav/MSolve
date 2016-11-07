@@ -118,7 +118,7 @@ namespace ISAAR.MSolve.PreProcessor.Materials
         private double[] incrementalStrains = new double[6];
 
         /// <summary>
-        ///   Indicates whether this <see cref = "IFiniteElementMaterial" /> is modified.
+        ///   Indicates whether this <see cref = "IFiniteElementMaterialState" /> is modified.
         /// </summary>
         private bool modified;
 
@@ -245,7 +245,7 @@ namespace ISAAR.MSolve.PreProcessor.Materials
         }
 
         /// <summary>
-        ///   Gets a value indicating whether this <see cref = "IFiniteElementMaterial" /> is modified.
+        ///   Gets a value indicating whether this <see cref = "IFiniteElementMaterialState" /> is modified.
         /// </summary>
         /// <value>
         ///   <c>true</c> if modified; otherwise, <c>false</c>.

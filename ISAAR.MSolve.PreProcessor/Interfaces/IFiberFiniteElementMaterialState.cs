@@ -5,8 +5,8 @@ using System.Text;
 
 namespace ISAAR.MSolve.PreProcessor.Interfaces
 {
-    public interface IFiberFiniteElementMaterial : IFiniteElementMaterial
+    public interface IFiberFiniteElementMaterialState : IFiniteElementMaterialState
     {
-        IList<IFiberMaterial> FiberMaterials { get; }
+        IList<IFiberMaterialState> FiberMaterials { get; }
     }
 }

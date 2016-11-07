@@ -6,11 +6,11 @@ using ISAAR.MSolve.Matrices;
 
 namespace ISAAR.MSolve.PreProcessor.Interfaces
 {
-    public interface IContinuumMaterial3D : IFiniteElementMaterial
+    public interface IContinuumMaterial2DState : IFiniteElementMaterialState
     {
-        StressStrainVectorContinuum3D Stresses { get; }
-        ElasticityTensorContinuum3D ConstitutiveMatrix { get; }
-        void UpdateMaterial(StressStrainVectorContinuum3D strains);
+        StressStrainVectorContinuum2D Stresses { get; }
+        ElasticityTensorContinuum2D ConstitutiveMatrix { get; }
+        void UpdateMaterial(StressStrainVectorContinuum2D strains);
         void ClearState();
         void SaveState();
         void ClearStresses();

@@ -6,7 +6,7 @@ using ISAAR.MSolve.PreProcessor.Interfaces;
 
 namespace ISAAR.MSolve.PreProcessor.Materials
 {
-    public class ElasticMaterial : IFiniteElementMaterial //This class is useless
+    public class ElasticMaterial : IFiniteElementMaterialState //This class is useless
     {
         public double YoungModulus { get; set; }
         public double PoissonRatio { get; set; }

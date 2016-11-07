@@ -7,6 +7,6 @@ namespace ISAAR.MSolve.PreProcessor.Interfaces
 {
     public interface IFiber
     {
-        IFiberMaterial Material { get; }
+        IFiberMaterialState Material { get; }
     }
 }

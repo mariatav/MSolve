@@ -5,14 +5,14 @@ using System.Text;
 
 namespace ISAAR.MSolve.PreProcessor.Interfaces
 {
-    public interface IFiberMaterial : IFiniteElementMaterial
+    public interface IFiberMaterialState : IFiniteElementMaterialState
     {
         double Stress { get; }
         double Strain { get; }
         void UpdateMaterial(double dStrain);
         void SaveState();
         void ClearStresses();
-        IFiberMaterial Clone(IFiberFiniteElementMaterial parent);
+        IFiberMaterialState Clone(IFiberFiniteElementMaterialState parent);
 
         double YoungModulus { get; set; }
         double PoissonRatio { get; set; } //It might be useless

@@ -7,7 +7,7 @@ namespace ISAAR.MSolve.PreProcessor.Interfaces
 {
     public interface IFiberFiniteElement : IFiniteElement
     {
-        IFiberFiniteElementMaterial Material { get; }
+        IFiberFiniteElementMaterialState Material { get; }
         IList<IFiber> Fibers { get; }
     }
 }

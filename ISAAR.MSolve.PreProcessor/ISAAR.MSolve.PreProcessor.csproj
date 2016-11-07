@@ -92,8 +92,8 @@
   <ItemGroup>
     <Compile Include="Cluster.cs" />
     <Compile Include="Elements\Hexa8u8pWithStochasticMaterial.cs" />
-    <Compile Include="Interfaces\IContinuumMaterial2D.cs" />
-    <Compile Include="Interfaces\IIsotropicContinuumMaterial3D.cs" />
+    <Compile Include="Interfaces\IContinuumMaterial2DState.cs" />
+    <Compile Include="Interfaces\IIsotropicContinuumMaterial3DState.cs" />
     <Compile Include="Interfaces\IMassAccelerationHistoryLoad.cs" />
     <Compile Include="Interfaces\IStochasticIsotropicContinuumMaterial3D.cs" />
     <Compile Include="MassAccelerationSinusoidalLoad.cs" />
@@ -132,7 +132,7 @@
     <Compile Include="Stochastic\GaussianFileStochasticCoefficientsProvider.cs" />
     <Compile Include="GlobalMatrixAssemblerSkyline.cs" />
     <Compile Include="Interfaces\IStochasticMaterialCoefficientsProvider.cs" />
-    <Compile Include="Interfaces\IStochasticContinuumMaterial3D.cs" />
+    <Compile Include="Interfaces\IStochasticContinuumMaterial3DState.cs" />
     <Compile Include="Interfaces\IStochasticCoefficientsProvider.cs" />
     <Compile Include="Interfaces\IStochasticFiniteElement.cs" />
     <Compile Include="Interfaces\IEmbeddedElement.cs" />
@@ -142,10 +142,10 @@
     <Compile Include="Interfaces\IFiber.cs" />
     <Compile Include="Interfaces\IFiberFiniteElement.cs" />
     <Compile Include="Interfaces\IFiniteElement.cs" />
-    <Compile Include="Interfaces\IFiberFiniteElementMaterial.cs" />
-    <Compile Include="Interfaces\IFiberMaterial.cs" />
-    <Compile Include="Interfaces\IFiniteElementMaterial.cs" />
-    <Compile Include="Interfaces\IContinuumMaterial3D.cs" />
+    <Compile Include="Interfaces\IFiberFiniteElementMaterialState.cs" />
+    <Compile Include="Interfaces\IFiberMaterialState.cs" />
+    <Compile Include="Interfaces\IFiniteElementMaterialState.cs" />
+    <Compile Include="Interfaces\IContinuumMaterial3DState.cs" />
     <Compile Include="Interfaces\IStructuralFiniteElement.cs" />
     <Compile Include="Load.cs" />
     <Compile Include="MassAccelerationHistoryLoad.cs" />

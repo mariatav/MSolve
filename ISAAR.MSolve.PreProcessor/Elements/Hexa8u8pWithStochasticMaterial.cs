@@ -22,14 +22,14 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             new double[] { -0.8611363115941, -0.3399810435849, 0.3399810435849, 0.8611363115941 } 
         };
 
-        public Hexa8u8pWithStochasticMaterial(IStochasticIsotropicContinuumMaterial3D material)
+        public Hexa8u8pWithStochasticMaterial(IStochasticIsotropicContinuumMaterial3DState material)
         {
-            materialsAtGaussPoints = new IIsotropicContinuumMaterial3D[iInt3];
+            materialsAtGaussPoints = new IIsotropicContinuumMaterial3DState[iInt3];
             for (int i = 0; i < iInt3; i++)
-                materialsAtGaussPoints[i] = (IStochasticIsotropicContinuumMaterial3D)material.Clone();
+                materialsAtGaussPoints[i] = (IStochasticIsotropicContinuumMaterial3DState)material.Clone();
         }
 
-        public Hexa8u8pWithStochasticMaterial(IStochasticIsotropicContinuumMaterial3D material, Hexa8Memoizer memoizer)
+        public Hexa8u8pWithStochasticMaterial(IStochasticIsotropicContinuumMaterial3DState material, Hexa8Memoizer memoizer)
             : base(material)
         {
             this.memoizer = memoizer;

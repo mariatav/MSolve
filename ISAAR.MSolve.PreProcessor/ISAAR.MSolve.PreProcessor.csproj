@@ -95,7 +95,7 @@
     <Compile Include="Interfaces\IContinuumMaterial2DState.cs" />
     <Compile Include="Interfaces\IIsotropicContinuumMaterial3DState.cs" />
     <Compile Include="Interfaces\IMassAccelerationHistoryLoad.cs" />
-    <Compile Include="Interfaces\IStochasticIsotropicContinuumMaterial3D.cs" />
+    <Compile Include="Interfaces\IStochasticIsotropicContinuumMaterial3DState.cs" />
     <Compile Include="MassAccelerationSinusoidalLoad.cs" />
     <Compile Include="Elements\ConcentratedMass3D.cs" />
     <Compile Include="Elements\SpringDamper3D.cs" />

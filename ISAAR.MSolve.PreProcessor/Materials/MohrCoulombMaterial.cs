@@ -17,7 +17,7 @@ using ISAAR.MSolve.Matrices;
 
 namespace ISAAR.MSolve.PreProcessor.Materials
 {
-    public class MohrCoulombMaterial : IIsotropicContinuumMaterial3D
+    public class MohrCoulombMaterial : IIsotropicContinuumMaterial3DState
     {
         private const double PoissonRatioForIncompressibleSolid = 0.5;
         private bool modified;

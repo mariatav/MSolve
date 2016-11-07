@@ -76,7 +76,7 @@ namespace ISAAR.MSolve.SamplesConsole.Static.Linear
             //    MomentOfInertia = .1
             //};
 
-            var beam = new EulerBeam3D(youngModulus, poissonRatio)
+            var beam = new Beam3D(material)
             {
                 SectionArea = 1,
                 MomentOfInertiaY = .1,

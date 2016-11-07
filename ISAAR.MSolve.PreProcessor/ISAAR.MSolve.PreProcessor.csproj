@@ -92,9 +92,17 @@
   <ItemGroup>
     <Compile Include="Cluster.cs" />
     <Compile Include="Elements\Hexa8u8pWithStochasticMaterial.cs" />
+    <Compile Include="Interfaces\IContinuumMaterial2DProperty.cs" />
     <Compile Include="Interfaces\IContinuumMaterial2DState.cs" />
+    <Compile Include="Interfaces\IContinuumMaterial3DProperty.cs" />
+    <Compile Include="Interfaces\IFiberFiniteElementMaterialProperty.cs" />
+    <Compile Include="Interfaces\IFiberMaterialProperty.cs" />
+    <Compile Include="Interfaces\IFiniteElementMaterialProperty.cs" />
+    <Compile Include="Interfaces\IIsotropicContinuumMaterial3DProperty.cs" />
     <Compile Include="Interfaces\IIsotropicContinuumMaterial3DState.cs" />
     <Compile Include="Interfaces\IMassAccelerationHistoryLoad.cs" />
+    <Compile Include="Interfaces\IStochasticContinuumMaterial3DProperty.cs" />
+    <Compile Include="Interfaces\IStochasticIsotropicContinuumMaterial3DProperty.cs" />
     <Compile Include="Interfaces\IStochasticIsotropicContinuumMaterial3DState.cs" />
     <Compile Include="MassAccelerationSinusoidalLoad.cs" />
     <Compile Include="Elements\ConcentratedMass3D.cs" />

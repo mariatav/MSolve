@@ -95,7 +95,7 @@ namespace ISAAR.MSolve.PreProcessor.Materials
             get { return poissonRatio; }
         }
 
-        public double[] Coordinates { get; set; }
+        public double[] Coordinates { get; }
         public double Cohesion { get { return cohesion; } }
         public double Friction { get { return friction; } }
         public double Dilation { get { return dilation; } }
@@ -109,7 +109,7 @@ namespace ISAAR.MSolve.PreProcessor.Materials
             var stressesCopy = new double[stresses.Length];
             Array.Copy(stresses, stressesCopy, stresses.Length);
 
-            var m = new MohrCoulombMaterialState(this.youngModulus, this.poissonRatio, this.cohesion, this.friction, this.dilation)
+            var m = new MohrCoulombMaterialState(this.youngModulus, this.poissonRatio, this.cohesion, this.friction, this.dilation, this.Coordinates)
             {
                 modified = this.Modified,
                 constitutiveMatrix = constitutiveMatrixCopy,
@@ -119,7 +119,7 @@ namespace ISAAR.MSolve.PreProcessor.Materials
             return m;
         }
 
-        public MohrCoulombMaterialState(double youngModulus, double poissonRatio, double cohesion, double friction, double dilation)//TODOMaria: make this constructor private
+        public MohrCoulombMaterialState(double youngModulus, double poissonRatio, double cohesion, double friction, double dilation, double[] coordinates)//TODOMaria: make this constructor private
         {
             this.youngModulus = youngModulus;
 
@@ -137,6 +137,7 @@ namespace ISAAR.MSolve.PreProcessor.Materials
             this.shearModulus = this.YoungModulus / (2 * (1 + this.PoissonRatio));
             var Dinv = new double[6, 6];
             DlinElas(youngModulus, poissonRatio, 6, constitutiveMatrix, Dinv);
+            this.Coordinates = coordinates;
 
         }
 

@@ -46,18 +46,18 @@ namespace ISAAR.MSolve.PreProcessor.Materials
         private static readonly double[,] SupportiveMatrixForConsistentConstitutiveMatrix = new[,]
             {
                 {
-                   0, -1, -1, 0, 0, 0 
+                   0, -1, -1, 0, 0, 0
                 }, {
-                      -1, 0, -1, 0, 0, 0, 
+                      -1, 0, -1, 0, 0, 0,
                    }, {
-                         -1, -1, 0, 0, 0, 0 
+                         -1, -1, 0, 0, 0, 0
                       }, {
-                            0, 0, 0, 0.5, 0, 0 
-                         }, 
+                            0, 0, 0, 0.5, 0, 0
+                         },
                 {
-                   0, 0, 0, 0, 0.5, 0 
+                   0, 0, 0, 0, 0.5, 0
                 }, {
-                      0, 0, 0, 0, 0, 0.5 
+                      0, 0, 0, 0, 0, 0.5
                    }
             };
 
@@ -158,7 +158,7 @@ namespace ISAAR.MSolve.PreProcessor.Materials
         ///   The hardening ratio.
         /// </param>
         /// <exception cref = "ArgumentException"> When Poisson ratio is equal to 0.5.</exception>
-        public VonMisesMaterial3DState(double youngModulus, double poissonRatio, double yieldStress, double hardeningRatio)
+        public VonMisesMaterial3DState(double youngModulus, double poissonRatio, double yieldStress, double hardeningRatio, double[] coordinates)//TODOMaria: this constructor should be made private
         {
             this.youngModulus = youngModulus;
 
@@ -190,9 +190,11 @@ namespace ISAAR.MSolve.PreProcessor.Materials
             this.elasticConstitutiveMatrix[3, 3] = mi;
             this.elasticConstitutiveMatrix[4, 4] = mi;
             this.elasticConstitutiveMatrix[5, 5] = mi;
+
+            this.Coordinates = coordinates;
         }
 
-        public double[] Coordinates { get; set; }
+        public double[] Coordinates { get; }
 
         /// <summary>
         ///   Gets the constitutive matrix.
@@ -287,10 +289,6 @@ namespace ISAAR.MSolve.PreProcessor.Materials
             {
                 return this.poissonRatio;
             }
-            set
-            {
-                this.poissonRatio = value;
-            }
         }
 
         /// <summary>
@@ -325,10 +323,6 @@ namespace ISAAR.MSolve.PreProcessor.Materials
             {
                 return this.youngModulus;
             }
-            set
-            {
-                this.youngModulus = value;
-            }
         }
 
         /// <summary>
@@ -346,12 +340,12 @@ namespace ISAAR.MSolve.PreProcessor.Materials
 
             VonMisesMaterial3DState m = new VonMisesMaterial3DState(
                 this.youngModulus, this.poissonRatio, this.yieldStress, this.hardeningRatio)
-                {
-                    modified = this.Modified,
-                    plasticStrain = this.plasticStrain,
-                    incrementalStrains = strainsCopy,
-                    stresses = stressesCopy
-                };
+            {
+                modified = this.Modified,
+                plasticStrain = this.plasticStrain,
+                incrementalStrains = strainsCopy,
+                stresses = stressesCopy
+            };
             return m;
         }
 
@@ -548,7 +542,7 @@ namespace ISAAR.MSolve.PreProcessor.Materials
         public double[] GetStressDeviator(double[] stresses)
         {
             var hydrostaticStress = this.GetMeanStress(stresses);
-            var stressDeviator = new double[] 
+            var stressDeviator = new double[]
             {
                 stresses[0] - hydrostaticStress,
                 stresses[1] - hydrostaticStress,

@@ -14,13 +14,16 @@ namespace ISAAR.MSolve.PreProcessor.Materials
         private readonly double[] strains = new double[6];
         private readonly double[] stresses = new double[6];
         //private double[,] constitutiveMatrix = null;
-        public double YoungModulus { get; set; }
-        public double PoissonRatio { get; set; }
-        public double[] Coordinates { get; set; }
+        public double YoungModulus { get; }
+        public double PoissonRatio { get; }
+        public double[] Coordinates { get; }
 
-        public StochasticElasticMaterial3DState(IStochasticMaterialCoefficientsProvider coefficientsProvider)
+        public StochasticElasticMaterial3DState(double youngModulus, double poissonRatio, IStochasticMaterialCoefficientsProvider coefficientsProvider, double[] coordinates)
         {
+            this.YoungModulus = youngModulus;
+            this.PoissonRatio = poissonRatio;
             this.coefficientsProvider = coefficientsProvider;
+            this.Coordinates = coordinates;
         }
 
         private double[,] GetConstitutiveMatrixInternal(double[] coordinates)
@@ -112,7 +115,7 @@ namespace ISAAR.MSolve.PreProcessor.Materials
 
         public object Clone()
         {
-            return new StochasticElasticMaterial3DState(coefficientsProvider) { YoungModulus = this.YoungModulus, PoissonRatio = this.PoissonRatio };
+            return new StochasticElasticMaterial3DState(this.YoungModulus,this.PoissonRatio, this.coefficientsProvider, this.Coordinates);
         }
 
         #endregion
@@ -121,7 +124,6 @@ namespace ISAAR.MSolve.PreProcessor.Materials
         public IStochasticMaterialCoefficientsProvider CoefficientsProvider
         {
             get { return coefficientsProvider; }
-            set { coefficientsProvider = value; }
         }
 
         public ElasticityTensorContinuum3D GetConstitutiveMatrix(double[] coordinates)

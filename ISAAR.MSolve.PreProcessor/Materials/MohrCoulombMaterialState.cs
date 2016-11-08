@@ -88,13 +88,11 @@ namespace ISAAR.MSolve.PreProcessor.Materials
         public double YoungModulus
         {
             get { return youngModulus; }
-            set { throw new InvalidOperationException(); }
         }
 
         public double PoissonRatio
         {
             get { return poissonRatio; }
-            set { throw new InvalidOperationException(); }
         }
 
         public double[] Coordinates { get; set; }
@@ -121,7 +119,7 @@ namespace ISAAR.MSolve.PreProcessor.Materials
             return m;
         }
 
-        public MohrCoulombMaterialState(double youngModulus, double poissonRatio, double cohesion, double friction, double dilation)
+        public MohrCoulombMaterialState(double youngModulus, double poissonRatio, double cohesion, double friction, double dilation)//TODOMaria: make this constructor private
         {
             this.youngModulus = youngModulus;
 

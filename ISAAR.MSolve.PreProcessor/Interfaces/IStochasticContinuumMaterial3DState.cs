@@ -8,7 +8,7 @@ namespace ISAAR.MSolve.PreProcessor.Interfaces
 {
     public interface IStochasticContinuumMaterial3DState : IContinuumMaterial3DState
     {
-        IStochasticMaterialCoefficientsProvider CoefficientsProvider { get; set; }
+        IStochasticMaterialCoefficientsProvider CoefficientsProvider { get; }
         ElasticityTensorContinuum3D GetConstitutiveMatrix(double[] coordinates);
     }
 }

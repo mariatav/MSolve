@@ -14,8 +14,8 @@ namespace ISAAR.MSolve.PreProcessor.Interfaces
         void ClearStresses();
         IFiberMaterialState Clone(IFiberFiniteElementMaterialState parent);
 
-        double YoungModulus { get; set; }
-        double PoissonRatio { get; set; } //It might be useless
+        double YoungModulus { get; }
+        double PoissonRatio { get; } //It might be useless
 
         //double YoungModulusElastic { get; set; }
     }

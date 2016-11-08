@@ -10,6 +10,6 @@ namespace ISAAR.MSolve.PreProcessor.Interfaces
         int ID { get; }
         bool Modified { get; }
         void ResetModified();
-        double[] Coordinates { get; set; }
+        double[] Coordinates { get; }
     }
 }

@@ -7,7 +7,7 @@ namespace ISAAR.MSolve.PreProcessor.Interfaces
 {
     public interface IIsotropicContinuumMaterial3DState : IContinuumMaterial3DState
     {
-        double YoungModulus { get; set; }//QUESTION: maybe rename to TangentYoungModulus?
-        double PoissonRatio { get; set; }//QUESTION: maybe rename to TangentPoissonRatio?
+        double YoungModulus { get; }//QUESTION: maybe rename to TangentYoungModulus?
+        double PoissonRatio { get; }//QUESTION: maybe rename to TangentPoissonRatio?
     }
 }

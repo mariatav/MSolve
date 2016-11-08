@@ -8,14 +8,21 @@ using ISAAR.MSolve.Matrices;
 
 namespace ISAAR.MSolve.PreProcessor.Materials
 {
-    public class ElasticMaterial3DState :  IIsotropicContinuumMaterial3DState
+    public class ElasticMaterial3DState : IIsotropicContinuumMaterial3DState
     {
         private readonly double[] strains = new double[6];
         private readonly double[] stresses = new double[6];
         private double[,] constitutiveMatrix = null;
-        public double YoungModulus { get; set; }
-        public double PoissonRatio { get; set; }
-        public double[] Coordinates { get; set; }
+        public double YoungModulus { get; }
+        public double PoissonRatio { get; }//QUESTION: should the nested class contain an instance of the MaterialProperty class or should it contain the parameters of the MaterialProperty class??
+        public double[] Coordinates { get; }
+
+        public ElasticMaterial3DState(double youngModulus, double poissonRatio, double[] coordinates)//TODOMaria this constructor should be made private
+        {
+            this.YoungModulus = youngModulus;
+            this.PoissonRatio = poissonRatio;
+            this.Coordinates = coordinates;
+        }
 
         private double[,] GetConstitutiveMatrix()
         {
@@ -64,7 +71,7 @@ namespace ISAAR.MSolve.PreProcessor.Materials
         #region IContinuumMaterial3D Members
 
         public StressStrainVectorContinuum3D Stresses { get { return new StressStrainVectorContinuum3D(stresses); } }
-        
+
         public ElasticityTensorContinuum3D ConstitutiveMatrix
         {
             get
@@ -103,7 +110,7 @@ namespace ISAAR.MSolve.PreProcessor.Materials
 
         public object Clone()
         {
-            return new ElasticMaterial3DState() { YoungModulus = this.YoungModulus, PoissonRatio = this.PoissonRatio };
+            return new ElasticMaterial3DState(this.YoungModulus, this.PoissonRatio, this.Coordinates);
         }
 
         #endregion

@@ -160,11 +160,7 @@ namespace ISAAR.MSolve.SamplesConsole
 
             double youngModulus = 2.1e5;
             double poissonRatio = 0.35;
-            ElasticMaterial3DState material = new ElasticMaterial3DState()
-            {
-                YoungModulus = youngModulus,
-                PoissonRatio = poissonRatio,
-            };
+            ElasticMaterial3DState material = new ElasticMaterial3DState(youngModulus, poissonRatio, new double[] { 0, 0, 0 });//QUESTION: should all material classes accept coordinates as input?
 
             if (isInHexaSoil)
             {

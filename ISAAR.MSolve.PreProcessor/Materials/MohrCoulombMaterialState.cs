@@ -137,8 +137,8 @@ namespace ISAAR.MSolve.PreProcessor.Materials
             this.shearModulus = this.YoungModulus / (2 * (1 + this.PoissonRatio));
             var Dinv = new double[6, 6];
             DlinElas(youngModulus, poissonRatio, 6, constitutiveMatrix, Dinv);
-            this.Coordinates = coordinates;
-
+            this.Coordinates = new double[coordinates.Length];
+            System.Array.Copy(coordinates, this.Coordinates, coordinates.Length);
         }
 
         private void CalculateNextStressStrainPoint()

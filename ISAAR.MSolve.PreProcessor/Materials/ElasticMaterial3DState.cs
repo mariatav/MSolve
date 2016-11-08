@@ -21,7 +21,8 @@ namespace ISAAR.MSolve.PreProcessor.Materials
         {
             this.YoungModulus = youngModulus;
             this.PoissonRatio = poissonRatio;
-            this.Coordinates = coordinates;
+            this.Coordinates = new double[coordinates.Length];
+            System.Array.Copy(coordinates, this.Coordinates, coordinates.Length);
         }
 
         private double[,] GetConstitutiveMatrix()

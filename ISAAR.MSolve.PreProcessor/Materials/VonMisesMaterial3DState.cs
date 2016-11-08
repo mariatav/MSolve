@@ -191,7 +191,8 @@ namespace ISAAR.MSolve.PreProcessor.Materials
             this.elasticConstitutiveMatrix[4, 4] = mi;
             this.elasticConstitutiveMatrix[5, 5] = mi;
 
-            this.Coordinates = coordinates;
+            this.Coordinates = new double[coordinates.Length];
+            System.Array.Copy(coordinates, this.Coordinates, coordinates.Length);
         }
 
         public double[] Coordinates { get; }

@@ -23,7 +23,8 @@ namespace ISAAR.MSolve.PreProcessor.Materials
             this.YoungModulus = youngModulus;
             this.PoissonRatio = poissonRatio;
             this.coefficientsProvider = coefficientsProvider;
-            this.Coordinates = coordinates;
+            this.Coordinates = new double[coordinates.Length];
+            System.Array.Copy(coordinates, this.Coordinates, coordinates.Length);
         }
 
         private double[,] GetConstitutiveMatrixInternal(double[] coordinates)
@@ -115,7 +116,7 @@ namespace ISAAR.MSolve.PreProcessor.Materials
 
         public object Clone()
         {
-            return new StochasticElasticMaterial3DState(this.YoungModulus,this.PoissonRatio, this.coefficientsProvider, this.Coordinates);
+            return new StochasticElasticMaterial3DState(this.YoungModulus, this.PoissonRatio, this.coefficientsProvider, this.Coordinates);
         }
 
         #endregion

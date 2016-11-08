@@ -339,7 +339,7 @@ namespace ISAAR.MSolve.PreProcessor.Materials
             Array.Copy(stresses, stressesCopy, stresses.Length);
 
             VonMisesMaterial3DState m = new VonMisesMaterial3DState(
-                this.youngModulus, this.poissonRatio, this.yieldStress, this.hardeningRatio)
+                this.youngModulus, this.poissonRatio, this.yieldStress, this.hardeningRatio, this.Coordinates)
             {
                 modified = this.Modified,
                 plasticStrain = this.plasticStrain,

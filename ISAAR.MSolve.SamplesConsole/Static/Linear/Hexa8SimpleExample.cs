@@ -6,6 +6,7 @@ using ISAAR.MSolve.Problems;
 using ISAAR.MSolve.Analyzers;
 using ISAAR.MSolve.Logging;
 using ISAAR.MSolve.PreProcessor.Materials;
+using ISAAR.MSolve.PreProcessor.Interfaces;
 using ISAAR.MSolve.PreProcessor.Elements;
 using ISAAR.MSolve.Matrices;
 
@@ -43,7 +44,8 @@ namespace ISAAR.MSolve.SamplesConsole.Examples.Static.Linear
             double nodalLoad = 25.0;
 
             // Create a new elastic 3D material
-            ElasticMaterial3DState material = new ElasticMaterial3DState(youngModulus, poissonRatio, new double[] { 0, 0, 0 });
+            ElasticMaterial3DProperty materialProperty = new ElasticMaterial3DProperty(youngModulus, poissonRatio);
+            IContinuumMaterial3DState material = materialProperty.BuildIsotropicContinuumMaterial3DState(new double[3] { 0, 0, 0 });
 
             // Node creation
             IList<Node> nodes = CreateNodes();

@@ -110,7 +110,7 @@ namespace ISAAR.MSolve.PreProcessor.Materials
             /// <remarks>
             ///   <a href = "http://en.wikipedia.org/wiki/Poisson%27s_ratio">Wikipedia - Poisson's Ratio</a>
             /// </remarks>
-            private double poissonRatio;
+            private double poissonRatio;//QUESTION: why are the material properties hidden in this class, whereas in the other material classes they are public???
 
             /// <summary>
             ///   The shear modulus.

@@ -45,7 +45,6 @@ namespace ISAAR.MSolve.SamplesConsole.Examples.Static.Linear
 
             // Create a new elastic 3D material
             ElasticMaterial3DProperty materialProperty = new ElasticMaterial3DProperty(youngModulus, poissonRatio);
-            IContinuumMaterial3DState material = materialProperty.BuildIsotropicContinuumMaterial3DState(new double[3] { 0, 0, 0 });
 
             // Node creation
             IList<Node> nodes = CreateNodes();
@@ -81,7 +80,7 @@ namespace ISAAR.MSolve.SamplesConsole.Examples.Static.Linear
             var element = new Element()
             {
                 ID = 1,
-                ElementType = new Hexa8(material)
+                ElementType = new Hexa8(materialProperty)
             };
 
             // Add nodes to the created element

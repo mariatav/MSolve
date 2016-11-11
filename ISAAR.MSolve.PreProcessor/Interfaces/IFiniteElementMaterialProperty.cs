@@ -7,6 +7,6 @@ namespace ISAAR.MSolve.PreProcessor.Interfaces
 {
     public interface IFiniteElementMaterialProperty //QUESTION: Maybe it's useless. Could we define a material class that actually implements this?
     {
-        IFiniteElementMaterialState BuildFiniteElementMaterialState(double[] coordinates);
+        IFiniteElementMaterialState BuildMaterialState(double[] coordinates);
     }
 }

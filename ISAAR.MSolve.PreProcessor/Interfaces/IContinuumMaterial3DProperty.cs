@@ -5,8 +5,8 @@ using System.Text;
 
 namespace ISAAR.MSolve.PreProcessor.Interfaces
 {
-    public interface IContinuumMaterial3DProperty
+    public interface IContinuumMaterial3DProperty: IFiniteElementMaterialProperty
     {
-        IContinuumMaterial3DState BuildContinuumMaterial3DState(double[] coordinates);
+        IContinuumMaterial3DState BuildMaterialState(double[] coordinates);
     }
 }

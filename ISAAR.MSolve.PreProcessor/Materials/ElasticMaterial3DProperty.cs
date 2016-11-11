@@ -19,9 +19,19 @@ namespace ISAAR.MSolve.PreProcessor.Materials
             this.PoissonRatio = poissonRatio;
         }
 
-        public IIsotropicContinuumMaterial3DState BuildIsotropicContinuumMaterial3DState(double[] coordinates)
+        public IIsotropicContinuumMaterial3DState BuildMaterialState(double[] coordinates)
         {
             return new ElasticMaterial3DState(this.YoungModulus, this.PoissonRatio, coordinates);
+        }
+
+        IContinuumMaterial3DState IContinuumMaterial3DProperty.BuildMaterialState(double[] coordinates)
+        {
+            return BuildMaterialState(coordinates);
+        }
+
+        IFiniteElementMaterialState IFiniteElementMaterialProperty.BuildMaterialState(double[] coordinates)
+        {
+            return BuildMaterialState(coordinates);
         }
 
         private class ElasticMaterial3DState : IIsotropicContinuumMaterial3DState

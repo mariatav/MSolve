@@ -162,7 +162,7 @@ namespace ISAAR.MSolve.SamplesConsole
             double youngModulus = 2.1e5;
             double poissonRatio = 0.35;
             ElasticMaterial3DProperty materialProperty = new ElasticMaterial3DProperty(youngModulus, poissonRatio);
-            IIsotropicContinuumMaterial3DState materialState = materialProperty.BuildIsotropicContinuumMaterial3DState(new double[3]);//QUESTION: should all material classes accept coordinates as input?
+            IIsotropicContinuumMaterial3DState materialState = materialProperty.BuildMaterialState(new double[3]);//QUESTION: should all material classes accept coordinates as input?
 
             if (isInHexaSoil)
             {

@@ -5,8 +5,8 @@ using System.Text;
 
 namespace ISAAR.MSolve.PreProcessor.Interfaces
 {
-    public interface IStochasticIsotropicContinuumMaterial3DProperty
+    public interface IStochasticIsotropicContinuumMaterial3DProperty: IIsotropicContinuumMaterial3DProperty
     {
-        IStochasticIsotropicContinuumMaterial3DState BuildStochasticIsotropicContinuumMaterial3DState(double[] coordinates);
+        IStochasticIsotropicContinuumMaterial3DState BuildMaterialState(double[] coordinates);
     }
 }

@@ -5,8 +5,8 @@ using System.Text;
 
 namespace ISAAR.MSolve.PreProcessor.Interfaces
 {
-    public interface IFiberMaterialProperty
+    public interface IFiberMaterialProperty: IFiniteElementMaterialProperty
     {
-        IFiberMaterialState BuildFiberMaterialState(double[] coordinates);
+        IFiberMaterialState BuildMaterialState(double[] coordinates);
     }
 }

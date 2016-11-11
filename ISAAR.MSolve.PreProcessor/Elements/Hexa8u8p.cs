@@ -107,7 +107,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
                 gaussPointsCoords[i] = new double[noOfDimensions];
         }
 
-        public Hexa8u8p(IIsotropicContinuumMaterial3DProperty materialProperty)
+        public Hexa8u8p(IIsotropicContinuumMaterial3DProperty materialProperty):this()
         {
             this.materialProperty = materialProperty;
 

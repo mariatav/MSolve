@@ -20,7 +20,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
         protected readonly static DOFType[] nodalDOFTypes = new DOFType[] { DOFType.X, DOFType.Y, DOFType.Z };
         protected readonly static DOFType[][] dofTypes = new DOFType[][] { nodalDOFTypes, nodalDOFTypes, nodalDOFTypes,
             nodalDOFTypes, nodalDOFTypes, nodalDOFTypes, nodalDOFTypes, nodalDOFTypes };
-        private readonly IContinuumMaterial3DProperty materialProperty;//TODOMaria change to protected
+        protected readonly IContinuumMaterial3DProperty materialProperty;
         protected readonly IContinuumMaterial3DState[] materialStatesAtGaussPoints;
         protected readonly double[][] gaussPointsCoords;
         protected IFiniteElementDOFEnumerator dofEnumerator = new GenericDOFEnumerator();
@@ -74,7 +74,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
                 gaussPointsCoords[i] = new double[noOfDimensions];//QUESTION: is there a need for a no-arguments constructor?? (because stochasticity is going to be treated differently)
         }
 
-        public Hexa8(IContinuumMaterial3DProperty materialProperty)
+        public Hexa8(IContinuumMaterial3DProperty materialProperty):this()
         {
             this.materialProperty = materialProperty;
 

@@ -25,7 +25,7 @@ namespace ISAAR.MSolve.PreProcessor.Materials
         public double Cohesion { get; }
         public double Friction { get; }
         public double Dilation { get; }
-        public MohrCoulombMaterialProperty(double youngModulus, double poissonRatio, double cohesion, double friction, double dilation)//TODOMaria: make this constructor private
+        public MohrCoulombMaterialProperty(double youngModulus, double poissonRatio, double cohesion, double friction, double dilation)
         {
             this.YoungModulus = youngModulus;
 
@@ -156,7 +156,7 @@ namespace ISAAR.MSolve.PreProcessor.Materials
                 return m;
             }
 
-            public MohrCoulombMaterialState(double youngModulus, double poissonRatio, double cohesion, double friction, double dilation, double[] coordinates)//TODOMaria: make this constructor private
+            public MohrCoulombMaterialState(double youngModulus, double poissonRatio, double cohesion, double friction, double dilation, double[] coordinates)
             {
                 this.youngModulus = youngModulus;
                 this.poissonRatio = poissonRatio;

@@ -160,7 +160,7 @@
     <Compile Include="MassAccelerationLoad.cs" />
     <Compile Include="Materials\MohrCoulombMaterialState.cs" />
     <Compile Include="Materials\StochasticElasticMaterial3DState.cs" />
-    <Compile Include="Materials\VonMisesMaterial3DState.cs" />
+    <Compile Include="Materials\VonMisesMaterial3DProperty.cs" />
     <Compile Include="Materials\ElasticMaterial3DProperty.cs" />
     <Compile Include="Materials\ElasticMaterialState.cs" />
     <Compile Include="Model.cs" />

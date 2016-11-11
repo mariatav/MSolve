@@ -17,7 +17,9 @@ namespace ISAAR.MSolve.PreProcessor.Elements
         private readonly static DOFType[] nodalDOFTypes = new DOFType[] { DOFType.X, DOFType.Y, DOFType.Z, DOFType.Pore };
         private readonly static DOFType[][] dofTypes = new DOFType[][] { nodalDOFTypes, nodalDOFTypes, nodalDOFTypes,
             nodalDOFTypes, nodalDOFTypes, nodalDOFTypes, nodalDOFTypes, nodalDOFTypes };
-        protected IIsotropicContinuumMaterial3DState[] materialsAtGaussPoints;
+        protected readonly IContinuumMaterial3DProperty materialProperty;
+        protected IIsotropicContinuumMaterial3DState[] materialStatesAtGaussPoints;
+        protected readonly double[][] gaussPointsCoords;
         protected IFiniteElementDOFEnumerator dofEnumerator = new GenericDOFEnumerator();
 
         #region Fortran imports
@@ -98,14 +100,24 @@ namespace ISAAR.MSolve.PreProcessor.Elements
         {
         }
 
-        public Hexa8u8p(IIsotropicContinuumMaterial3DState material)
+        public Hexa8u8p(IIsotropicContinuumMaterial3DProperty materialProperty)
         {
-            materialsAtGaussPoints = new IIsotropicContinuumMaterial3DState[Hexa8u8p.iInt3];
+            this.materialProperty = materialProperty;
+
+            //double[,] coordinates = this.GetCoordinates(element);//UNDONE Gauss points physical coordinates need to be calculated!!
+            //GaussLegendrePoint3D[] integrationPoints = this.CalculateGaussMatrices(coordinates);
+
+            this.gaussPointsCoords = new double[Hexa8u8p.iInt3][];//UNDONE Gauss Points cartesian coordinates need to be calculated!!!
+            int noOfDimensions = 3;
+            for (int i = 0; i < gaussPointsCoords.Length; i++)
+                gaussPointsCoords[i] = new double[noOfDimensions];
+
+            materialStatesAtGaussPoints = new IIsotropicContinuumMaterial3DState[Hexa8u8p.iInt3];
             for (int i = 0; i < Hexa8u8p.iInt3; i++)
-                materialsAtGaussPoints[i] = (IIsotropicContinuumMaterial3DState)material.Clone();
+                materialStatesAtGaussPoints[i] = materialProperty.BuildMaterialState(gaussPointsCoords[i]);
         }
 
-        public Hexa8u8p(IIsotropicContinuumMaterial3DState material, IFiniteElementDOFEnumerator dofEnumerator) : this(material)
+        public Hexa8u8p(IIsotropicContinuumMaterial3DProperty materialProperty, IFiniteElementDOFEnumerator dofEnumerator) : this(materialProperty)
         {
             this.dofEnumerator = dofEnumerator;
         }
@@ -128,7 +140,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
         public double RayleighAlpha { get; set; }
         public double RayleighBeta { get; set; }
 
-        public double SolidBulkModulus { get { return materialsAtGaussPoints[0].YoungModulus / (3 - 6 * materialsAtGaussPoints[0].PoissonRatio); } }
+        public double SolidBulkModulus { get { return materialStatesAtGaussPoints[0].YoungModulus / (3 - 6 * materialStatesAtGaussPoints[0].PoissonRatio); } }
         public double Density { get { return Porosity * Saturation * FluidDensity + 
             (1 - Porosity) * SolidDensity; } }
         public double QInv { get { return Cs + Porosity * Saturation / FluidBulkModulus + 
@@ -174,7 +186,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             for (int i = 0; i < iInt3; i++)
                 for (int j = 0; j < 6; j++)
                     for (int k = 0; k < 6; k++)
-                        afE[i, j, k] = ((Matrix2D<double>)materialsAtGaussPoints[i].ConstitutiveMatrix)[j, k];
+                        afE[i, j, k] = ((Matrix2D<double>)materialStatesAtGaussPoints[i].ConstitutiveMatrix)[j, k];
             double[,] faXYZ = GetCoordinates(element);
             double[,] faDS = new double[iInt3, 24];
             double[,] faS = new double[iInt3, 8];
@@ -319,14 +331,14 @@ namespace ISAAR.MSolve.PreProcessor.Elements
 
             double[] dStrains = new double[6];
             double[] strains = new double[6];
-            for (int i = 0; i < materialsAtGaussPoints.Length; i++)
+            for (int i = 0; i < materialStatesAtGaussPoints.Length; i++)
             {
                 for (int j = 0; j < 6; j++) dStrains[j] = fadStrains[i, j];
                 for (int j = 0; j < 6; j++) strains[j] = faStrains[i, j];
-                materialsAtGaussPoints[i].UpdateMaterial(new StressStrainVectorContinuum3D(dStrains));
+                materialStatesAtGaussPoints[i].UpdateMaterial(new StressStrainVectorContinuum3D(dStrains));
             }
 
-            return new Tuple<double[], double[]>(strains, materialsAtGaussPoints[materialsAtGaussPoints.Length - 1].Stresses.Data);
+            return new Tuple<double[], double[]>(strains, materialStatesAtGaussPoints[materialStatesAtGaussPoints.Length - 1].Stresses.Data);
         }
 
         public double[] CalculateForcesForLogging(Element element, double[] localDisplacements)
@@ -337,8 +349,8 @@ namespace ISAAR.MSolve.PreProcessor.Elements
         public double[] CalculateForces(Element element, double[] localTotalDisplacements, double[] localDisplacements)
         {
             double[,] faStresses = new double[iInt3, 6];
-            for (int i = 0; i < materialsAtGaussPoints.Length; i++)
-                for (int j = 0; j < 6; j++) faStresses[i, j] = materialsAtGaussPoints[i].Stresses[j];
+            for (int i = 0; i < materialStatesAtGaussPoints.Length; i++)
+                for (int j = 0; j < 6; j++) faStresses[i, j] = materialStatesAtGaussPoints[i].Stresses[j];
 
             double[,] faXYZ = GetCoordinates(element);
             double[,] faDS = new double[iInt3, 24];
@@ -472,7 +484,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
         {
             get 
             {
-                foreach (IContinuumMaterial3DState material in materialsAtGaussPoints)
+                foreach (IContinuumMaterial3DState material in materialStatesAtGaussPoints)
                     if (material.Modified) return true;
                 return false;
             }
@@ -480,22 +492,22 @@ namespace ISAAR.MSolve.PreProcessor.Elements
 
         public void ResetMaterialModified()
         {
-            foreach (IContinuumMaterial3DState material in materialsAtGaussPoints) material.ResetModified();
+            foreach (IContinuumMaterial3DState material in materialStatesAtGaussPoints) material.ResetModified();
         }
 
         public void ClearMaterialState()
         {
-            foreach (IContinuumMaterial3DState m in materialsAtGaussPoints) m.ClearState();
+            foreach (IContinuumMaterial3DState m in materialStatesAtGaussPoints) m.ClearState();
         }
 
         public void SaveMaterialState()
         {
-            foreach (IContinuumMaterial3DState m in materialsAtGaussPoints) m.SaveState();
+            foreach (IContinuumMaterial3DState m in materialStatesAtGaussPoints) m.SaveState();
         }
 
         public void ClearMaterialStresses()
         {
-            foreach (IContinuumMaterial3DState m in materialsAtGaussPoints) m.ClearStresses();
+            foreach (IContinuumMaterial3DState m in materialStatesAtGaussPoints) m.ClearStresses();
         }
 
         #endregion

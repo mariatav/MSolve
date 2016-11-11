@@ -20,7 +20,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
         protected readonly static DOFType[] nodalDOFTypes = new DOFType[] { DOFType.X, DOFType.Y, DOFType.Z };
         protected readonly static DOFType[][] dofTypes = new DOFType[][] { nodalDOFTypes, nodalDOFTypes, nodalDOFTypes,
             nodalDOFTypes, nodalDOFTypes, nodalDOFTypes, nodalDOFTypes, nodalDOFTypes };
-        private readonly IContinuumMaterial3DProperty materialProperty;
+        private readonly IContinuumMaterial3DProperty materialProperty;//TODOMaria change to protected
         protected readonly IContinuumMaterial3DState[] materialStatesAtGaussPoints;
         protected readonly double[][] gaussPointsCoords;
         protected IFiniteElementDOFEnumerator dofEnumerator = new GenericDOFEnumerator();
@@ -65,20 +65,19 @@ namespace ISAAR.MSolve.PreProcessor.Elements
 
         protected Hexa8()
         {
-        }
-
-        public Hexa8(IContinuumMaterial3DProperty materialProperty)
-        {
-            this.materialProperty = materialProperty;
-
             //double[,] coordinates = this.GetCoordinates(element);//UNDONE Gauss points physical coordinates need to be calculated!!
             //GaussLegendrePoint3D[] integrationPoints = this.CalculateGaussMatrices(coordinates);
 
             this.gaussPointsCoords = new double[iInt3][];//UNDONE Gauss Points cartesian coordinates need to be calculated!!!
             int noOfDimensions = 3;
             for (int i = 0; i < gaussPointsCoords.Length; i++)
-                gaussPointsCoords[i] = new double[noOfDimensions];
-            
+                gaussPointsCoords[i] = new double[noOfDimensions];//QUESTION: is there a need for a no-arguments constructor?? (because stochasticity is going to be treated differently)
+        }
+
+        public Hexa8(IContinuumMaterial3DProperty materialProperty)
+        {
+            this.materialProperty = materialProperty;
+
             materialStatesAtGaussPoints = new IContinuumMaterial3DState[iInt3];
             for (int i = 0; i < iInt3; i++)
                 materialStatesAtGaussPoints[i] = materialProperty.BuildMaterialState(gaussPointsCoords[i]);

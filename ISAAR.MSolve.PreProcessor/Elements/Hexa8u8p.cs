@@ -98,12 +98,6 @@ namespace ISAAR.MSolve.PreProcessor.Elements
 
         protected Hexa8u8p()
         {
-        }
-
-        public Hexa8u8p(IIsotropicContinuumMaterial3DProperty materialProperty)
-        {
-            this.materialProperty = materialProperty;
-
             //double[,] coordinates = this.GetCoordinates(element);//UNDONE Gauss points physical coordinates need to be calculated!!
             //GaussLegendrePoint3D[] integrationPoints = this.CalculateGaussMatrices(coordinates);
 
@@ -111,6 +105,11 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             int noOfDimensions = 3;
             for (int i = 0; i < gaussPointsCoords.Length; i++)
                 gaussPointsCoords[i] = new double[noOfDimensions];
+        }
+
+        public Hexa8u8p(IIsotropicContinuumMaterial3DProperty materialProperty)
+        {
+            this.materialProperty = materialProperty;
 
             materialStatesAtGaussPoints = new IIsotropicContinuumMaterial3DState[Hexa8u8p.iInt3];
             for (int i = 0; i < Hexa8u8p.iInt3; i++)

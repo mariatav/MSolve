@@ -28,7 +28,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
 
     public class Hexa8WithStochasticMaterial : Hexa8
     {
-        protected readonly new IStochasticContinuumMaterial3DState[] materialsAtGaussPoints;
+        protected readonly new IStochasticContinuumMaterial3DState[] materialStatesAtGaussPoints;
         protected readonly Hexa8Memoizer memoizer;
 
         private static double[][] integrationPoints = new double[][] 
@@ -40,14 +40,14 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             new double[] { -0.8611363115941, -0.3399810435849, 0.3399810435849, 0.8611363115941 } 
         };
 
-        public Hexa8WithStochasticMaterial(IStochasticContinuumMaterial3DState material)
+        public Hexa8WithStochasticMaterial(IStochasticContinuumMaterial3DProperty materialProperty)
         {
-            materialsAtGaussPoints = new IStochasticContinuumMaterial3DState[iInt3];
+            materialStatesAtGaussPoints = new IStochasticContinuumMaterial3DState[iInt3];
             for (int i = 0; i < iInt3; i++)
-                materialsAtGaussPoints[i] = (IStochasticContinuumMaterial3DState)material.Clone();
+                materialStatesAtGaussPoints[i] = materialProperty.BuildMaterialState(gaussPointsCoords[i]);
         }
 
-        public Hexa8WithStochasticMaterial(IStochasticContinuumMaterial3DState material, Hexa8Memoizer memoizer) : this(material)
+        public Hexa8WithStochasticMaterial(IStochasticContinuumMaterial3DProperty materialProperty, Hexa8Memoizer memoizer) : this(materialProperty)
         {
             this.memoizer = memoizer;
         }
@@ -67,7 +67,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
                     for (int i3 = 0; i3 < iInt; i3++)
                     {
                         iPos = i1 * iInt2 + i2 * iInt + i3;
-                        var e = ((Matrix2D<double>)materialsAtGaussPoints[iPos].GetConstitutiveMatrix(GetStochasticPoints(element, i1, i2, i3)));
+                        var e = ((Matrix2D<double>)materialStatesAtGaussPoints[iPos].GetConstitutiveMatrix(GetStochasticPoints(element, i1, i2, i3)));
                         for (int j = 0; j < 6; j++)
                             for (int k = 0; k < 6; k++)
                                 afE[iPos, j, k] = e[j, k];

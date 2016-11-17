@@ -9,6 +9,6 @@ namespace ISAAR.MSolve.PreProcessor.Interfaces
     public interface IEmbeddedHostElement
     {
         EmbeddedNode BuildHostElementEmbeddedNode(Node node, IEmbeddedDOFInHostTransformationVector transformationVector);
-        double[] GetShapeFunctionsForNode(IFiniteElement element, EmbeddedNode node); 
+        double[] GetShapeFunctionsForNode(EmbeddedNode node);
     }
 }

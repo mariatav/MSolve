@@ -74,7 +74,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
                 gaussPointsCoords[i] = new double[noOfDimensions];//QUESTION: is there a need for a no-arguments constructor?? (because stochasticity is going to be treated differently)
         }
 
-        public Hexa8(IContinuumMaterial3DProperty materialProperty):this()
+        public Hexa8(IContinuumMaterial3DProperty materialProperty) : this()
         {
             this.materialProperty = materialProperty;
 
@@ -584,9 +584,9 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             return embeddedNode;
         }
 
-        public double[] GetShapeFunctionsForNode(IFiniteElement element, EmbeddedNode node)
+        public double[] GetShapeFunctionsForNode(EmbeddedNode node)
         {
-            double[,] elementCoordinates = GetCoordinatesTranspose(element);
+            double[,] elementCoordinates = GetCoordinatesTranspose(this);
             var shapeFunctions = CalcH8Shape(node.Coordinates[0], node.Coordinates[1], node.Coordinates[2]);
             var nablaShapeFunctions = CalcH8NablaShape(node.Coordinates[0], node.Coordinates[1], node.Coordinates[2]);
             var jacobian = CalcH8JDetJ(elementCoordinates, nablaShapeFunctions);

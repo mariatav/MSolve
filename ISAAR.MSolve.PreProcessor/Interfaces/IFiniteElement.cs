@@ -17,19 +17,22 @@ namespace ISAAR.MSolve.PreProcessor.Interfaces
 
     public interface IFiniteElement
     {
-        int ID { get; }
+        int ID { get; }//QUESTION: do I need to add the Element public methods/properties to the interface or are element's methods only needed by the ElementTypes??
+        IList<Node> Nodes { get; }
+        Dictionary<int, Node> NodesDictionary { get; }
+        Subdomain Subdomain { get; set; }
         ElementDimensions ElementDimensions { get; }
         IFiniteElementDOFEnumerator DOFEnumerator { get; set; }
-        IList<IList<DOFType>> GetElementDOFTypes(Element element);
+        IList<IList<DOFType>> GetElementDOFTypes();
         bool MaterialModified { get; }
-        IMatrix2D<double> StiffnessMatrix(Element element);
-        IMatrix2D<double> MassMatrix(Element element);
-        IMatrix2D<double> DampingMatrix(Element element);
+        IMatrix2D<double> StiffnessMatrix();
+        IMatrix2D<double> MassMatrix();
+        IMatrix2D<double> DampingMatrix();
         void ResetMaterialModified();
-        Tuple<double[], double[]> CalculateStresses(Element element, double[] localDisplacements, double[] localdDisplacements);
-        double[] CalculateForces(Element element, double[] localDisplacements, double[] localdDisplacements);
-        double[] CalculateForcesForLogging(Element element, double[] localDisplacements);
-        double[] CalculateAccelerationForces(Element element, IList<MassAccelerationLoad> loads);
+        Tuple<double[], double[]> CalculateStresses(double[] localDisplacements, double[] localdDisplacements);
+        double[] CalculateForces(double[] localDisplacements, double[] localdDisplacements);
+        double[] CalculateForcesForLogging(double[] localDisplacements);
+        double[] CalculateAccelerationForces(IList<MassAccelerationLoad> loads);
         void SaveMaterialState();
         void ClearMaterialState();
 

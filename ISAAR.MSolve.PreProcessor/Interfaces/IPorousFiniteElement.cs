@@ -8,8 +8,8 @@ namespace ISAAR.MSolve.PreProcessor.Interfaces
 {
     public interface IPorousFiniteElement : IFiniteElement
     {
-        IMatrix2D<double> PermeabilityMatrix(Element element);
-        IMatrix2D<double> CouplingMatrix(Element element);
-        IMatrix2D<double> SaturationMatrix(Element element);
+        IMatrix2D<double> PermeabilityMatrix();
+        IMatrix2D<double> CouplingMatrix();
+        IMatrix2D<double> SaturationMatrix();
     }
 }

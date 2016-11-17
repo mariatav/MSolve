@@ -4,22 +4,23 @@ using System.Linq;
 using System.Text;
 using ISAAR.MSolve.Logging.Interfaces;
 using ISAAR.MSolve.PreProcessor;
+using ISAAR.MSolve.PreProcessor.Interfaces;
 
 namespace ISAAR.MSolve.Logging
 {
     public class LinearAnalyzerLogFactory
     {
         private readonly int[] dofs;
-        private readonly Element[] stressElements, forceElements;
+        private readonly IFiniteElement[] stressElements, forceElements;
 
-        public LinearAnalyzerLogFactory(int[] dofs, Element[] stressElements, Element[] dofElements)
+        public LinearAnalyzerLogFactory(int[] dofs, IFiniteElement[] stressElements, IFiniteElement[] dofElements)
         {
             this.dofs = dofs;
             this.stressElements = stressElements;
             this.forceElements = dofElements;
         }
 
-        public LinearAnalyzerLogFactory(int[] dofs) : this(dofs, new Element[0], new Element[0])
+        public LinearAnalyzerLogFactory(int[] dofs) : this(dofs, new IFiniteElement[0], new IFiniteElement[0])
         {
         }
 

@@ -77,11 +77,13 @@ namespace ISAAR.MSolve.SamplesConsole.Examples.Static.Linear
 
 
             // Create a new Hexa8 element
-            var element = new Element()
-            {
-                ID = 1,
-                ElementType = new Hexa8(materialProperty)
-            };
+            //var element = new Element()
+            //{
+            //    ID = 1,
+            //    ElementType = new Hexa8(materialProperty)
+            //};
+
+            var element = new Hexa8(materialProperty);
 
             // Add nodes to the created element
             element.AddNode(model.NodesDictionary[1]);

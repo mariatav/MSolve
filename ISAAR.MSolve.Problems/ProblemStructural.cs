@@ -10,6 +10,7 @@ using ISAAR.MSolve.Analyzers.Interfaces;
 using System.Threading.Tasks;
 using ISAAR.MSolve.PreProcessor.Providers;
 using ISAAR.MSolve.Analyzers;
+using ISAAR.MSolve.PreProcessor.Interfaces;
 
 namespace ISAAR.MSolve.Problems
 {
@@ -124,8 +125,8 @@ namespace ISAAR.MSolve.Problems
         public void Reset()
         {
             foreach (Subdomain subdomain in model.SubdomainsDictionary.Values)
-                foreach (var element in subdomain.ElementsDictionary.Values)
-                    element.ElementType.ClearMaterialState();
+                foreach (IFiniteElement element in subdomain.ElementsDictionary.Values)
+                    element.ClearMaterialState();
                 
             cs = null;
             ks = null;

@@ -39,24 +39,21 @@ namespace ISAAR.MSolve.PreProcessor.Elements
 
         #region IElementType Members
 
-        public int ID
-        {
-            get { return 1; }
-        }
+        public int ID { get; set; }
 
         public ElementDimensions ElementDimensions
         {
             get { return ElementDimensions.TwoD; }
         }
 
-        public IList<IList<DOFType>> GetElementDOFTypes(Element element)
+        public IList<IList<DOFType>> GetElementDOFTypes()
         {
             return dofs;
         }
 
-        public IList<Node> GetNodesForMatrixAssembly(Element element)
+        public IList<Node> GetNodesForMatrixAssembly()
         {
-            return element.Nodes;
+            return this.Nodes;
         }
 
         //[  c^2*E*A/L+12*s^2*E*I/L^3,  s*E*A/L*c-12*c*E*I/L^3*s,              -6*E*I/L^2*s, -c^2*E*A/L-12*s^2*E*I/L^3, -s*E*A/L*c+12*c*E*I/L^3*s,              -6*E*I/L^2*s]
@@ -65,14 +62,14 @@ namespace ISAAR.MSolve.PreProcessor.Elements
         //[ -c^2*E*A/L-12*s^2*E*I/L^3, -s*E*A/L*c+12*c*E*I/L^3*s,               6*E*I/L^2*s,  c^2*E*A/L+12*s^2*E*I/L^3,  s*E*A/L*c-12*c*E*I/L^3*s,               6*E*I/L^2*s]
         //[ -s*E*A/L*c+12*c*E*I/L^3*s, -s^2*E*A/L-12*c^2*E*I/L^3,              -6*E*I/L^2*c,  s*E*A/L*c-12*c*E*I/L^3*s,  s^2*E*A/L+12*c^2*E*I/L^3,              -6*E*I/L^2*c]
         //[              -6*E*I/L^2*s,               6*E*I/L^2*c,                   2*E*I/L,               6*E*I/L^2*s,              -6*E*I/L^2*c,                   4*E*I/L]
-        public IMatrix2D<double> StiffnessMatrix(Element element)
+        public IMatrix2D<double> StiffnessMatrix()
         {
-            double x2 = Math.Pow(element.Nodes[1].X - element.Nodes[0].X, 2);
-            double y2 = Math.Pow(element.Nodes[1].Y - element.Nodes[0].Y, 2);
+            double x2 = Math.Pow(this.Nodes[1].X - this.Nodes[0].X, 2);
+            double y2 = Math.Pow(this.Nodes[1].Y - this.Nodes[0].Y, 2);
             double L = Math.Sqrt(x2 + y2);
-            double c = (element.Nodes[1].X - element.Nodes[0].X) / L;
+            double c = (this.Nodes[1].X - this.Nodes[0].X) / L;
             double c2 = c * c;
-            double s = (element.Nodes[1].Y - element.Nodes[0].Y) / L;
+            double s = (this.Nodes[1].Y - this.Nodes[0].Y) / L;
             double s2 = s * s;
             double EL = this.youngModulus;
             double EAL = EL * SectionArea;
@@ -118,15 +115,15 @@ namespace ISAAR.MSolve.PreProcessor.Elements
         //[   70*c^2+54*s^2,          16*c*s,         -13*s*L, 140*c^2+156*s^2,         -16*c*s,          22*s*L]
         //[          16*c*s,   70*s^2+54*c^2,          13*c*L,         -16*c*s, 140*s^2+156*c^2,         -22*c*L]
         //[          13*s*L,         -13*c*L,          -3*L^2,          22*s*L,         -22*c*L,           4*L^2]
-        public IMatrix2D<double> MassMatrix(Element element)
+        public IMatrix2D<double> MassMatrix()
         {
-            double x2 = Math.Pow(element.Nodes[1].X - element.Nodes[0].X, 2);
-            double y2 = Math.Pow(element.Nodes[1].Y - element.Nodes[0].Y, 2);
+            double x2 = Math.Pow(this.Nodes[1].X - this.Nodes[0].X, 2);
+            double y2 = Math.Pow(this.Nodes[1].Y - this.Nodes[0].Y, 2);
             double L = Math.Sqrt(x2 + y2);
             double L2 = L * L;
-            double c = (element.Nodes[1].X - element.Nodes[0].X) / L;
+            double c = (this.Nodes[1].X - this.Nodes[0].X) / L;
             double c2 = c * c;
-            double s = (element.Nodes[1].Y - element.Nodes[0].Y) / L;
+            double s = (this.Nodes[1].Y - this.Nodes[0].Y) / L;
             double s2 = s * s;
             double dAL420 = Density * SectionArea * L / 420;
 
@@ -142,30 +139,30 @@ namespace ISAAR.MSolve.PreProcessor.Elements
                 0 });
         }
 
-        public IMatrix2D<double> DampingMatrix(Element element)
+        public IMatrix2D<double> DampingMatrix()
         {
             throw new NotImplementedException();
         }
 
-        public Tuple<double[], double[]> CalculateStresses(Element element, double[] localDisplacements, double[] localdDisplacements)
+        public Tuple<double[], double[]> CalculateStresses(double[] localDisplacements, double[] localdDisplacements)
         {
             throw new NotImplementedException();
         }
 
-        public double[] CalculateForcesForLogging(Element element, double[] localDisplacements)
+        public double[] CalculateForcesForLogging(double[] localDisplacements)
         {
-            return CalculateForces(element, localDisplacements, new double[localDisplacements.Length]);
+            return CalculateForces(localDisplacements, new double[localDisplacements.Length]);
         }
 
-        public double[] CalculateForces(Element element, double[] localDisplacements, double[] localdDisplacements)
+        public double[] CalculateForces(double[] localDisplacements, double[] localdDisplacements)
         {
             throw new NotImplementedException();
         }
 
-        public double[] CalculateAccelerationForces(Element element, IList<MassAccelerationLoad> loads)
+        public double[] CalculateAccelerationForces(IList<MassAccelerationLoad> loads)
         {
             Vector<double> accelerations = new Vector<double>(6);
-            IMatrix2D<double> massMatrix = MassMatrix(element);
+            IMatrix2D<double> massMatrix = this.MassMatrix();
 
             int index = 0;
             foreach (MassAccelerationLoad load in loads)
@@ -188,7 +185,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
 
         #endregion
 
-        
+
         #region IFiniteElement Members
 
 
@@ -202,7 +199,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
 
         public void ResetMaterialModified()
         {
-            
+
         }
 
         #endregion
@@ -219,5 +216,55 @@ namespace ISAAR.MSolve.PreProcessor.Elements
         }
 
         #endregion
+
+        #region Element Members
+        private readonly Dictionary<int, Node> nodesDictionary = new Dictionary<int, Node>();
+        private readonly Dictionary<DOFType, AbsorptionType> absorptions = new Dictionary<DOFType, AbsorptionType>();
+        private readonly IList<Node> embeddedNodes = new List<Node>();
+
+        public Dictionary<int, Node> NodesDictionary
+        {
+            get { return nodesDictionary; }
+        }
+
+        public Dictionary<DOFType, AbsorptionType> Absorptions
+        {
+            get { return absorptions; }
+        }
+
+        public IList<Node> Nodes
+        {
+            get { return nodesDictionary.Values.ToList<Node>(); }
+        }
+
+        public IList<Node> EmbeddedNodes
+        {
+            get { return embeddedNodes; }
+        }
+
+        //public IFiniteElementMaterial MaterialType { get; set; }
+        public Subdomain Subdomain { get; set; }
+        public int[] DOFs { get; set; }
+
+        public void AddNode(Node node)
+        {
+            nodesDictionary.Add(node.ID, node);
+        }
+
+        public void AddNodes(IList<Node> nodes)
+        {
+            foreach (Node node in nodes) AddNode(node);
+        }
+
+        //public IMatrix2D<double> K
+        //{
+        //    get { return ElementType.StiffnessMatrix(this); }
+        //}
+
+        //public IMatrix2D<double> M
+        //{
+        //    get { return ElementType.MassMatrix(this); }
+        //}
+        #endregion Element Members
     }
 }

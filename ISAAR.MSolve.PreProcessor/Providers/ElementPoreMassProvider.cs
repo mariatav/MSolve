@@ -19,11 +19,11 @@ namespace ISAAR.MSolve.PreProcessor.Providers
             this.massCoefficient = massCoefficient;
         }
 
-        private IMatrix2D<double> PorousMatrix(Element element)
+        private IMatrix2D<double> PorousMatrix(IFiniteElement element)
         {
-            IPorousFiniteElement elementType = (IPorousFiniteElement)element.ElementType;
+            IPorousFiniteElement porousElement = (IPorousFiniteElement)element;
             int dofs = 0;
-            foreach (IList<DOFType> dofTypes in elementType.DOFEnumerator.GetDOFTypes(element))
+            foreach (IList<DOFType> dofTypes in porousElement.DOFEnumerator.GetDOFTypes(element))
                 foreach (DOFType dofType in dofTypes) dofs++;
             SymmetricMatrix2D<double> poreMass = new SymmetricMatrix2D<double>(dofs);
 
@@ -31,12 +31,12 @@ namespace ISAAR.MSolve.PreProcessor.Providers
 
             int matrixRow = 0;
             int solidRow = 0;
-            foreach (IList<DOFType> dofTypesRow in elementType.DOFEnumerator.GetDOFTypes(element))
+            foreach (IList<DOFType> dofTypesRow in porousElement.DOFEnumerator.GetDOFTypes(element))
                 foreach (DOFType dofTypeRow in dofTypesRow)
                 {
                     int matrixCol = 0;
                     int solidCol = 0;
-                    foreach (IList<DOFType> dofTypesCol in elementType.DOFEnumerator.GetDOFTypes(element))
+                    foreach (IList<DOFType> dofTypesCol in porousElement.DOFEnumerator.GetDOFTypes(element))
                         foreach (DOFType dofTypeCol in dofTypesCol)
                         {
                             if (dofTypeCol == DOFType.Pore)
@@ -60,9 +60,9 @@ namespace ISAAR.MSolve.PreProcessor.Providers
 
         #region IElementMatrixProvider Members
 
-        public IMatrix2D<double> Matrix(Element element)
+        public IMatrix2D<double> Matrix(IFiniteElement element)
         {
-            if (element.ElementType is IPorousFiniteElement)
+            if (element is IPorousFiniteElement)
                 return PorousMatrix(element);
             else
             {

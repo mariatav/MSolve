@@ -8,7 +8,7 @@ namespace ISAAR.MSolve.PreProcessor.Interfaces
 {
     public interface IEmbeddedHostElement
     {
-        EmbeddedNode BuildHostElementEmbeddedNode(Element element, Node node, IEmbeddedDOFInHostTransformationVector transformationVector);
-        double[] GetShapeFunctionsForNode(Element element, EmbeddedNode node); 
+        EmbeddedNode BuildHostElementEmbeddedNode(Node node, IEmbeddedDOFInHostTransformationVector transformationVector);
+        double[] GetShapeFunctionsForNode(EmbeddedNode node); 
     }
 }

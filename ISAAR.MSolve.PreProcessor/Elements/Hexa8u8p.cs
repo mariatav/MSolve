@@ -28,21 +28,21 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             CallingConvention = CallingConvention.Cdecl)]
         protected static extern void CalcH8GaussMatrices(ref int iInt, [MarshalAs(UnmanagedType.LPArray)]double[,] faXYZ,
             [MarshalAs(UnmanagedType.LPArray)]double[] faWeight, [MarshalAs(UnmanagedType.LPArray)]double[,] faS,
-            [MarshalAs(UnmanagedType.LPArray)]double[,] faDS, [MarshalAs(UnmanagedType.LPArray)]double[, ,] faJ,
-            [MarshalAs(UnmanagedType.LPArray)]double[] faDetJ, [MarshalAs(UnmanagedType.LPArray)]double[, ,] faB);
+            [MarshalAs(UnmanagedType.LPArray)]double[,] faDS, [MarshalAs(UnmanagedType.LPArray)]double[,,] faJ,
+            [MarshalAs(UnmanagedType.LPArray)]double[] faDetJ, [MarshalAs(UnmanagedType.LPArray)]double[,,] faB);
 
         [DllImport("femelements.dll",
             EntryPoint = "CALCH8STRAINS",
             CallingConvention = CallingConvention.Cdecl)]
         private static extern void CalcH8Strains(ref int iInt,
-            [MarshalAs(UnmanagedType.LPArray)]double[, ,] faB, [MarshalAs(UnmanagedType.LPArray)]double[] fau,
+            [MarshalAs(UnmanagedType.LPArray)]double[,,] faB, [MarshalAs(UnmanagedType.LPArray)]double[] fau,
             [MarshalAs(UnmanagedType.LPArray)]double[,] faStrains);
 
         [DllImport("femelements.dll",
             EntryPoint = "CALCH8FORCES",
             CallingConvention = CallingConvention.Cdecl)]
         private static extern void CalcH8Forces(ref int iInt,
-            [MarshalAs(UnmanagedType.LPArray)]double[, ,] faB, [MarshalAs(UnmanagedType.LPArray)]double[] faWeight,
+            [MarshalAs(UnmanagedType.LPArray)]double[,,] faB, [MarshalAs(UnmanagedType.LPArray)]double[] faWeight,
             [MarshalAs(UnmanagedType.LPArray)]double[,] faStresses,
             [MarshalAs(UnmanagedType.LPArray)]double[] faForces);
 
@@ -50,20 +50,20 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             EntryPoint = "CALCH20U8PFORCESWATERACC",
             CallingConvention = CallingConvention.Cdecl)]
         private static extern void CalcH20u8pForcesWaterAcc(ref int iInt,
-            [MarshalAs(UnmanagedType.LPArray)]bool[] alImpermeable, ref double ffDensity, 
+            [MarshalAs(UnmanagedType.LPArray)]bool[] alImpermeable, ref double ffDensity,
             [MarshalAs(UnmanagedType.LPArray)]double[] afPermeability,
             [MarshalAs(UnmanagedType.LPArray)]double[] afXw,
             [MarshalAs(UnmanagedType.LPArray)]double[] afSw,
             [MarshalAs(UnmanagedType.LPArray)]double[] afAcc,
             [MarshalAs(UnmanagedType.LPArray)]double[,] afS,
-            [MarshalAs(UnmanagedType.LPArray)]double[, ,] afB, [MarshalAs(UnmanagedType.LPArray)]double[] afWeights,
+            [MarshalAs(UnmanagedType.LPArray)]double[,,] afB, [MarshalAs(UnmanagedType.LPArray)]double[] afWeights,
             [MarshalAs(UnmanagedType.LPArray)]double[] afLocalForces);
 
         [DllImport("femelements.dll",
             EntryPoint = "CALCH8K",
             CallingConvention = CallingConvention.Cdecl)]
-        protected static extern void CalcH8K(ref int iInt, [MarshalAs(UnmanagedType.LPArray)]double[, ,] faE,
-            [MarshalAs(UnmanagedType.LPArray)]double[, ,] faB, [MarshalAs(UnmanagedType.LPArray)]double[] faWeight,
+        protected static extern void CalcH8K(ref int iInt, [MarshalAs(UnmanagedType.LPArray)]double[,,] faE,
+            [MarshalAs(UnmanagedType.LPArray)]double[,,] faB, [MarshalAs(UnmanagedType.LPArray)]double[] faWeight,
             [MarshalAs(UnmanagedType.LPArray)]double[] faK);
 
         [DllImport("femelements.dll",
@@ -76,7 +76,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             EntryPoint = "CALCH20U8PH",
             CallingConvention = CallingConvention.Cdecl)]
         private static extern void CalcH20u8pH(ref int iInt, [MarshalAs(UnmanagedType.LPArray)]double[] faPermeability,
-            [MarshalAs(UnmanagedType.LPArray)]double[,] faS, [MarshalAs(UnmanagedType.LPArray)]double[, ,] faB,
+            [MarshalAs(UnmanagedType.LPArray)]double[,] faS, [MarshalAs(UnmanagedType.LPArray)]double[,,] faB,
             [MarshalAs(UnmanagedType.LPArray)]double[] faWeight, [MarshalAs(UnmanagedType.LPArray)]double[] faH);
 
         [DllImport("femelements.dll",
@@ -89,9 +89,9 @@ namespace ISAAR.MSolve.PreProcessor.Elements
         [DllImport("femelements.dll",
             EntryPoint = "CALCH8U8PQMINUS",
             CallingConvention = CallingConvention.Cdecl)]
-        private static extern void CalcH8u8pQMinus(ref int iInt, ref double fPoreA, 
+        private static extern void CalcH8u8pQMinus(ref int iInt, ref double fPoreA,
             [MarshalAs(UnmanagedType.LPArray)]double[] faXw,
-            [MarshalAs(UnmanagedType.LPArray)]double[, ,] faB, [MarshalAs(UnmanagedType.LPArray)]double[,] faS,
+            [MarshalAs(UnmanagedType.LPArray)]double[,,] faB, [MarshalAs(UnmanagedType.LPArray)]double[,] faS,
             [MarshalAs(UnmanagedType.LPArray)]double[] faWeight, [MarshalAs(UnmanagedType.LPArray)]double[,] faQ);
 
         #endregion
@@ -107,7 +107,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
                 gaussPointsCoords[i] = new double[noOfDimensions];
         }
 
-        public Hexa8u8p(IIsotropicContinuumMaterial3DProperty materialProperty):this()
+        public Hexa8u8p(IIsotropicContinuumMaterial3DProperty materialProperty) : this()
         {
             this.materialProperty = materialProperty;
 
@@ -140,58 +140,67 @@ namespace ISAAR.MSolve.PreProcessor.Elements
         public double RayleighBeta { get; set; }
 
         public double SolidBulkModulus { get { return materialStatesAtGaussPoints[0].YoungModulus / (3 - 6 * materialStatesAtGaussPoints[0].PoissonRatio); } }
-        public double Density { get { return Porosity * Saturation * FluidDensity + 
-            (1 - Porosity) * SolidDensity; } }
-        public double QInv { get { return Cs + Porosity * Saturation / FluidBulkModulus + 
-            (PoreA - Porosity) * Saturation / SolidBulkModulus; } }
+        public double Density
+        {
+            get
+            {
+                return Porosity * Saturation * FluidDensity +
+(1 - Porosity) * SolidDensity;
+            }
+        }
+        public double QInv
+        {
+            get
+            {
+                return Cs + Porosity * Saturation / FluidBulkModulus +
+(PoreA - Porosity) * Saturation / SolidBulkModulus;
+            }
+        }
 
-        protected double[,] GetCoordinates(Element element)
+        protected double[,] GetCoordinates()
         {
             double[,] faXYZ = new double[dofTypes.Length, 3];
             for (int i = 0; i < dofTypes.Length; i++)
             {
-                faXYZ[i, 0] = element.Nodes[i].X;
-                faXYZ[i, 1] = element.Nodes[i].Y;
-                faXYZ[i, 2] = element.Nodes[i].Z;
+                faXYZ[i, 0] = this.Nodes[i].X;
+                faXYZ[i, 1] = this.Nodes[i].Y;
+                faXYZ[i, 2] = this.Nodes[i].Z;
             }
             return faXYZ;
         }
 
         #region IElementType Members
 
-        public int ID
-        {
-            get { return 11; }
-        }
+        public int ID { get; set; }
 
         public ElementDimensions ElementDimensions
         {
             get { return ElementDimensions.ThreeD; }
         }
 
-        public IList<IList<DOFType>> GetElementDOFTypes(Element element)
+        public IList<IList<DOFType>> GetElementDOFTypes()
         {
-            return dofTypes;
+            return Hexa8u8p.dofTypes;
         }
 
-        public IList<Node> GetNodesForMatrixAssembly(Element element)
+        public IList<Node> GetNodesForMatrixAssembly()
         {
-            return element.Nodes;
+            return this.Nodes;
         }
 
-        public virtual IMatrix2D<double> StiffnessMatrix(Element element)
+        public virtual IMatrix2D<double> StiffnessMatrix()
         {
-            double[, ,] afE = new double[iInt3, 6, 6];
+            double[,,] afE = new double[iInt3, 6, 6];
             for (int i = 0; i < iInt3; i++)
                 for (int j = 0; j < 6; j++)
                     for (int k = 0; k < 6; k++)
                         afE[i, j, k] = ((Matrix2D<double>)materialStatesAtGaussPoints[i].ConstitutiveMatrix)[j, k];
-            double[,] faXYZ = GetCoordinates(element);
+            double[,] faXYZ = this.GetCoordinates();
             double[,] faDS = new double[iInt3, 24];
             double[,] faS = new double[iInt3, 8];
-            double[, ,] faB = new double[iInt3, 24, 6];
+            double[,,] faB = new double[iInt3, 24, 6];
             double[] faDetJ = new double[iInt3];
-            double[, ,] faJ = new double[iInt3, 3, 3];
+            double[,,] faJ = new double[iInt3, 3, 3];
             double[] faWeight = new double[iInt3];
             double[] faK = new double[300];
             CalcH8GaussMatrices(ref iInt, faXYZ, faWeight, faS, faDS, faJ, faDetJ, faB);
@@ -199,14 +208,14 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             return dofEnumerator.GetTransformedMatrix(new SymmetricMatrix2D<double>(faK));
         }
 
-        public IMatrix2D<double> MassMatrix(Element element)
+        public IMatrix2D<double> MassMatrix()
         {
-            double[,] faXYZ = GetCoordinates(element);
+            double[,] faXYZ = this.GetCoordinates();
             double[,] faDS = new double[iInt3, 24];
             double[,] faS = new double[iInt3, 8];
-            double[, ,] faB = new double[iInt3, 24, 6];
+            double[,,] faB = new double[iInt3, 24, 6];
             double[] faDetJ = new double[iInt3];
-            double[, ,] faJ = new double[iInt3, 3, 3];
+            double[,,] faJ = new double[iInt3, 3, 3];
             double[] faWeight = new double[iInt3];
             double[] faM = new double[300];
             double fDensity = Density;
@@ -215,10 +224,10 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             return new SymmetricMatrix2D<double>(faM);
         }
 
-        public IMatrix2D<double> DampingMatrix(Element element)
+        public IMatrix2D<double> DampingMatrix()
         {
-            var m = MassMatrix(element);
-            m.LinearCombination(new double[] { RayleighAlpha, RayleighBeta }, new IMatrix2D<double>[] { MassMatrix(element), StiffnessMatrix(element) });
+            var m = this.MassMatrix();
+            m.LinearCombination(new double[] { RayleighAlpha, RayleighBeta }, new IMatrix2D<double>[] { this.MassMatrix(), this.StiffnessMatrix() });
             return m;
         }
 
@@ -310,14 +319,14 @@ namespace ISAAR.MSolve.PreProcessor.Elements
                 }
         }
 
-        public Tuple<double[], double[]> CalculateStresses(Element element, double[] localDisplacements, double[] localdDisplacements)
+        public Tuple<double[], double[]> CalculateStresses(double[] localDisplacements, double[] localdDisplacements)
         {
-            double[,] faXYZ = GetCoordinates(element);
+            double[,] faXYZ = this.GetCoordinates();
             double[,] faDS = new double[iInt3, 24];
             double[,] faS = new double[iInt3, 8];
-            double[, ,] faB = new double[iInt3, 24, 6];
+            double[,,] faB = new double[iInt3, 24, 6];
             double[] faDetJ = new double[iInt3];
-            double[, ,] faJ = new double[iInt3, 3, 3];
+            double[,,] faJ = new double[iInt3, 3, 3];
             double[] faWeight = new double[iInt3];
             double[,] faStrains = new double[iInt3, 6];
             double[,] fadStrains = new double[iInt3, 6];
@@ -340,30 +349,30 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             return new Tuple<double[], double[]>(strains, materialStatesAtGaussPoints[materialStatesAtGaussPoints.Length - 1].Stresses.Data);
         }
 
-        public double[] CalculateForcesForLogging(Element element, double[] localDisplacements)
+        public double[] CalculateForcesForLogging(double[] localDisplacements)
         {
-            return CalculateForces(element, localDisplacements, new double[localDisplacements.Length]);
+            return CalculateForces(localDisplacements, new double[localDisplacements.Length]);
         }
 
-        public double[] CalculateForces(Element element, double[] localTotalDisplacements, double[] localDisplacements)
+        public double[] CalculateForces(double[] localTotalDisplacements, double[] localDisplacements)
         {
             double[,] faStresses = new double[iInt3, 6];
             for (int i = 0; i < materialStatesAtGaussPoints.Length; i++)
                 for (int j = 0; j < 6; j++) faStresses[i, j] = materialStatesAtGaussPoints[i].Stresses[j];
 
-            double[,] faXYZ = GetCoordinates(element);
+            double[,] faXYZ = this.GetCoordinates();
             double[,] faDS = new double[iInt3, 24];
             double[,] faS = new double[iInt3, 8];
-            double[, ,] faB = new double[iInt3, 24, 6];
+            double[,,] faB = new double[iInt3, 24, 6];
             double[] faDetJ = new double[iInt3];
-            double[, ,] faJ = new double[iInt3, 3, 3];
+            double[,,] faJ = new double[iInt3, 3, 3];
             double[] faWeight = new double[iInt3];
             double[] solidForces = new double[24];
             CalcH8GaussMatrices(ref iInt, faXYZ, faWeight, faS, faDS, faJ, faDetJ, faB);
             CalcH8Forces(ref iInt, faB, faWeight, faStresses, solidForces);
 
             double[] faH = new double[36];
-            double[] faPermeability = new double[] { Permeability, Permeability, Permeability, Permeability, 
+            double[] faPermeability = new double[] { Permeability, Permeability, Permeability, Permeability,
                 Permeability, Permeability, Permeability, Permeability };
             CalcH20u8pH(ref iInt, faPermeability, faS, faB, faWeight, faH);
 
@@ -376,7 +385,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             // Changed! Check for errors...
             //Vector<double> fluidDisplacements = new Vector<double>(ExtractFluidVector(localDisplacements));
             Vector<double> fluidDisplacements = new Vector<double>(ExtractFluidVector(localTotalDisplacements));
-            
+
             //double[] solidAndFluidForces = solidForces;
             ////double[] solidAndFluidForces = q * fluidDisplacements + (new Vector<double>(solidForces));
             // H correction
@@ -389,7 +398,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             return totalForces;
         }
 
-        public double[] CalculateAccelerationForces(Element element, IList<MassAccelerationLoad> loads)
+        public double[] CalculateAccelerationForces(IList<MassAccelerationLoad> loads)
         {
             Vector<double> accelerations = new Vector<double>(24);
             int index = 0;
@@ -409,14 +418,14 @@ namespace ISAAR.MSolve.PreProcessor.Elements
                         throw new InvalidOperationException("Cannot handle global acceleration for water pore when NOT translational.");
                 }
             double[] solidForces = new double[24];
-            MassMatrix(element).Multiply(accelerations, solidForces);
+            this.MassMatrix().Multiply(accelerations, solidForces);
 
-            double[,] faXYZ = GetCoordinates(element);
+            double[,] faXYZ = this.GetCoordinates();
             double[,] faDS = new double[iInt3, 24];
             double[,] faS = new double[iInt3, 8];
-            double[, ,] faB = new double[iInt3, 24, 6];
+            double[,,] faB = new double[iInt3, 24, 6];
             double[] faDetJ = new double[iInt3];
-            double[, ,] faJ = new double[iInt3, 3, 3];
+            double[,,] faJ = new double[iInt3, 3, 3];
             double[] faWeight = new double[iInt3];
             CalcH8GaussMatrices(ref iInt, faXYZ, faWeight, faS, faDS, faJ, faDetJ, faB);
 
@@ -439,19 +448,19 @@ namespace ISAAR.MSolve.PreProcessor.Elements
 
             bool[] impermeableDOFs = new bool[8];
             index = 0;
-            foreach (Node node in element.NodesDictionary.Values)
-                foreach (DOFType dofType in element.Subdomain.NodalDOFsDictionary[node.ID].Keys)
+            foreach (Node node in this.NodesDictionary.Values)
+                foreach (DOFType dofType in this.Subdomain.NodalDOFsDictionary[node.ID].Keys)
                 {
                     if (dofType != DOFType.Pore) continue;
-                    if (element.Subdomain.NodalDOFsDictionary[node.ID][dofType] < 0) impermeableDOFs[index] = true;
+                    if (this.Subdomain.NodalDOFsDictionary[node.ID][dofType] < 0) impermeableDOFs[index] = true;
                     index++;
                 }
 
             double fD = FluidDensity;
-            double[] faPermeability = new double[] { Permeability, Permeability, Permeability, Permeability, 
+            double[] faPermeability = new double[] { Permeability, Permeability, Permeability, Permeability,
                 Permeability, Permeability, Permeability, Permeability };
             double[] faXw = new double[] { Xw, Xw, Xw, Xw, Xw, Xw, Xw, Xw };
-            double[] faSw = new double[] { Saturation, Saturation, Saturation, Saturation, Saturation, 
+            double[] faSw = new double[] { Saturation, Saturation, Saturation, Saturation, Saturation,
                 Saturation, Saturation, Saturation };
             double[] fluidDrags = new double[8];
             CalcH20u8pForcesWaterAcc(ref iInt, impermeableDOFs, ref fD, faPermeability,
@@ -466,10 +475,10 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             return totalForces;
         }
 
-        public double[] CalculateSolidForcesFromPorePressures(Element element, double[] porePressures)
+        public double[] CalculateSolidForcesFromPorePressures(double[] porePressures)
         {
             double[] solidForces = new double[24];
-            Matrix2D<double> Q = ((Matrix2D<double>)CouplingMatrix(element)).Transpose();
+            Matrix2D<double> Q = ((Matrix2D<double>)this.CouplingMatrix()).Transpose();
             Q.Multiply(new Vector<double>(porePressures), solidForces);
             return solidForces;
         }
@@ -481,7 +490,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
 
         public bool MaterialModified
         {
-            get 
+            get
             {
                 foreach (IContinuumMaterial3DState material in materialStatesAtGaussPoints)
                     if (material.Modified) return true;
@@ -513,16 +522,16 @@ namespace ISAAR.MSolve.PreProcessor.Elements
 
         #region IPorousFiniteElement Members
 
-        public IMatrix2D<double> PermeabilityMatrix(Element element)
+        public IMatrix2D<double> PermeabilityMatrix()
         {
-            double[,] faXYZ = GetCoordinates(element);
+            double[,] faXYZ = this.GetCoordinates();
             double[,] faDS = new double[iInt3, 24];
             double[,] faS = new double[iInt3, 8];
-            double[, ,] faB = new double[iInt3, 24, 6];
+            double[,,] faB = new double[iInt3, 24, 6];
             double[] faDetJ = new double[iInt3];
-            double[, ,] faJ = new double[iInt3, 3, 3];
+            double[,,] faJ = new double[iInt3, 3, 3];
             double[] faWeight = new double[iInt3];
-            double[] faPermeability = new double[] { Permeability, Permeability, Permeability, Permeability, 
+            double[] faPermeability = new double[] { Permeability, Permeability, Permeability, Permeability,
                 Permeability, Permeability, Permeability, Permeability };
             double[] faH = new double[36];
             CalcH8GaussMatrices(ref iInt, faXYZ, faWeight, faS, faDS, faJ, faDetJ, faB);
@@ -531,14 +540,14 @@ namespace ISAAR.MSolve.PreProcessor.Elements
         }
 
         // Rows are fluid DOFs and columns are solid DOFs
-        public IMatrix2D<double> CouplingMatrix(Element element)
+        public IMatrix2D<double> CouplingMatrix()
         {
-            double[,] faXYZ = GetCoordinates(element);
+            double[,] faXYZ = this.GetCoordinates();
             double[,] faDS = new double[iInt3, 24];
             double[,] faS = new double[iInt3, 8];
-            double[, ,] faB = new double[iInt3, 24, 6];
+            double[,,] faB = new double[iInt3, 24, 6];
             double[] faDetJ = new double[iInt3];
-            double[, ,] faJ = new double[iInt3, 3, 3];
+            double[,,] faJ = new double[iInt3, 3, 3];
             double[] faWeight = new double[iInt3];
             //double fDensity = Density;
             double fPoreA = PoreA;
@@ -549,16 +558,16 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             return new Matrix2D<double>(faQ);
         }
 
-        public IMatrix2D<double> SaturationMatrix(Element element)
+        public IMatrix2D<double> SaturationMatrix()
         {
-            double[,] faXYZ = GetCoordinates(element);
+            double[,] faXYZ = this.GetCoordinates();
             double[,] faDS = new double[iInt3, 24];
             double[,] faS = new double[iInt3, 8];
-            double[, ,] faB = new double[iInt3, 24, 6];
+            double[,,] faB = new double[iInt3, 24, 6];
             double[] faDetJ = new double[iInt3];
-            double[, ,] faJ = new double[iInt3, 3, 3];
+            double[,,] faJ = new double[iInt3, 3, 3];
             double[] faWeight = new double[iInt3];
-            double[] faXwDivQ = new double[] { Xw * QInv, Xw * QInv, Xw * QInv, Xw * QInv, Xw * QInv, 
+            double[] faXwDivQ = new double[] { Xw * QInv, Xw * QInv, Xw * QInv, Xw * QInv, Xw * QInv,
                 Xw * QInv, Xw * QInv, Xw * QInv};
             double[] faSaturation = new double[36];
             CalcH8GaussMatrices(ref iInt, faXYZ, faWeight, faS, faDS, faJ, faDetJ, faB);
@@ -567,5 +576,56 @@ namespace ISAAR.MSolve.PreProcessor.Elements
         }
 
         #endregion
+
+        #region Element Members
+        private readonly Dictionary<int, Node> nodesDictionary = new Dictionary<int, Node>();
+        private readonly Dictionary<DOFType, AbsorptionType> absorptions = new Dictionary<DOFType, AbsorptionType>();
+        private readonly IList<Node> embeddedNodes = new List<Node>();
+
+        public Dictionary<int, Node> NodesDictionary
+        {
+            get { return nodesDictionary; }
+        }
+
+        public Dictionary<DOFType, AbsorptionType> Absorptions
+        {
+            get { return absorptions; }
+        }
+
+        public IList<Node> Nodes
+        {
+            get { return nodesDictionary.Values.ToList<Node>(); }
+        }
+
+        public IList<Node> EmbeddedNodes
+        {
+            get { return embeddedNodes; }
+        }
+
+        //public IFiniteElementMaterial MaterialType { get; set; }
+        public Subdomain Subdomain { get; set; }
+        public int[] DOFs { get; set; }
+
+        public void AddNode(Node node)
+        {
+            nodesDictionary.Add(node.ID, node);
+        }
+
+        public void AddNodes(IList<Node> nodes)
+        {
+            foreach (Node node in nodes) AddNode(node);
+        }
+
+        //public IMatrix2D<double> K
+        //{
+        //    get { return ElementType.StiffnessMatrix(this); }
+        //}
+
+        //public IMatrix2D<double> M
+        //{
+        //    get { return ElementType.MassMatrix(this); }
+        //}
+        #endregion Element Members
     }
 }
+

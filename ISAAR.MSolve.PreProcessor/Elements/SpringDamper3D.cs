@@ -27,10 +27,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
         private readonly SpringDirections springDirections, dampingDirections;
         private IFiniteElementDOFEnumerator dofEnumerator = new GenericDOFEnumerator();
 
-        public int ID
-        {
-            get { return 999; }
-        }
+        public int ID { get; set; }
 
         public ElementDimensions ElementDimensions
         {
@@ -43,12 +40,12 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             set { dofEnumerator = value; }
         }
 
-        public IList<IList<DOFType>> GetElementDOFTypes(Element element)
+        public IList<IList<DOFType>> GetElementDOFTypes()//QUESTION: Is it right for this class to contain more than one node??
         {
-            if (element == null) return dofs;
+            //if (element == null) return dofs;
 
             var d = new List<IList<DOFType>>();
-            foreach (var node in element.Nodes)
+            foreach (var node in this.Nodes)
             {
                 var nodeDofs = new List<DOFType>();
                 nodeDofs.AddRange(nodalDOFTypes);
@@ -76,13 +73,13 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             this.dofEnumerator = dofEnumerator;
         }
 
-        public IMatrix2D<double> StiffnessMatrix(Element element)
+        public IMatrix2D<double> StiffnessMatrix()
         {
             double x = (springDirections == SpringDirections.X || springDirections == SpringDirections.XY || springDirections == SpringDirections.XZ || springDirections == SpringDirections.XYZ) ? springCoefficient : 0;
             double y = (springDirections == SpringDirections.Y || springDirections == SpringDirections.XY || springDirections == SpringDirections.YZ || springDirections == SpringDirections.XYZ) ? springCoefficient : 0;
             double z = (springDirections == SpringDirections.Z || springDirections == SpringDirections.XZ || springDirections == SpringDirections.YZ || springDirections == SpringDirections.XYZ) ? springCoefficient : 0;
             return new SymmetricMatrix2D<double>(new double[] { x, 0, 0, -x, 0, 0,
-                y, 0, 0, -y, 0, 
+                y, 0, 0, -y, 0,
                 z, 0, 0, -z,
                 x, 0, 0,
                 y, 0,
@@ -90,10 +87,10 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             });
         }
 
-        public IMatrix2D<double> MassMatrix(Element element)
+        public IMatrix2D<double> MassMatrix()
         {
             return new SymmetricMatrix2D<double>(new double[] { 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 
+                0, 0, 0, 0, 0,
                 0, 0, 0, 0,
                 0, 0, 0,
                 0, 0,
@@ -101,13 +98,13 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             });
         }
 
-        public IMatrix2D<double> DampingMatrix(Element element)
+        public IMatrix2D<double> DampingMatrix()
         {
             double x = (dampingDirections == SpringDirections.X || dampingDirections == SpringDirections.XY || dampingDirections == SpringDirections.XZ || dampingDirections == SpringDirections.XYZ) ? dampingCoefficient : 0;
             double y = (dampingDirections == SpringDirections.Y || dampingDirections == SpringDirections.XY || dampingDirections == SpringDirections.YZ || dampingDirections == SpringDirections.XYZ) ? dampingCoefficient : 0;
             double z = (dampingDirections == SpringDirections.Z || dampingDirections == SpringDirections.XZ || dampingDirections == SpringDirections.YZ || dampingDirections == SpringDirections.XYZ) ? dampingCoefficient : 0;
             return new SymmetricMatrix2D<double>(new double[] { x, 0, 0, -x, 0, 0,
-                y, 0, 0, -y, 0, 
+                y, 0, 0, -y, 0,
                 z, 0, 0, -z,
                 x, 0, 0,
                 y, 0,
@@ -119,26 +116,26 @@ namespace ISAAR.MSolve.PreProcessor.Elements
         {
         }
 
-        public Tuple<double[], double[]> CalculateStresses(Element element, double[] localDisplacements, double[] localdDisplacements)
+        public Tuple<double[], double[]> CalculateStresses(double[] localDisplacements, double[] localdDisplacements)
         {
             return new Tuple<double[], double[]>(new double[6], new double[6]);
         }
 
-        public double[] CalculateForcesForLogging(Element element, double[] localDisplacements)
+        public double[] CalculateForcesForLogging(double[] localDisplacements)
         {
-            return CalculateForces(element, localDisplacements, new double[localDisplacements.Length]);
+            return CalculateForces(localDisplacements, new double[localDisplacements.Length]);
         }
 
-        public double[] CalculateForces(Element element, double[] localDisplacements, double[] localdDisplacements)
+        public double[] CalculateForces(double[] localDisplacements, double[] localdDisplacements)
         {
-            IMatrix2D<double> stiffnessMatrix = StiffnessMatrix(element);
+            IMatrix2D<double> stiffnessMatrix = StiffnessMatrix();
             Vector<double> disps = new Vector<double>(localDisplacements);
             double[] forces = new double[localDisplacements.Length];
             stiffnessMatrix.Multiply(disps, forces);
             return forces;
         }
 
-        public double[] CalculateAccelerationForces(Element element, IList<MassAccelerationLoad> loads)
+        public double[] CalculateAccelerationForces(IList<MassAccelerationLoad> loads)
         {
             return new double[6];
         }
@@ -154,5 +151,55 @@ namespace ISAAR.MSolve.PreProcessor.Elements
         public void ClearMaterialStresses()
         {
         }
+
+        #region Element Members
+        private readonly Dictionary<int, Node> nodesDictionary = new Dictionary<int, Node>();
+        private readonly Dictionary<DOFType, AbsorptionType> absorptions = new Dictionary<DOFType, AbsorptionType>();
+        private readonly IList<Node> embeddedNodes = new List<Node>();
+
+        public Dictionary<int, Node> NodesDictionary
+        {
+            get { return nodesDictionary; }
+        }
+
+        public Dictionary<DOFType, AbsorptionType> Absorptions
+        {
+            get { return absorptions; }
+        }
+
+        public IList<Node> Nodes
+        {
+            get { return nodesDictionary.Values.ToList<Node>(); }
+        }
+
+        public IList<Node> EmbeddedNodes
+        {
+            get { return embeddedNodes; }
+        }
+
+        //public IFiniteElementMaterial MaterialType { get; set; }
+        public Subdomain Subdomain { get; set; }
+        public int[] DOFs { get; set; }
+
+        public void AddNode(Node node)
+        {
+            nodesDictionary.Add(node.ID, node);
+        }
+
+        public void AddNodes(IList<Node> nodes)
+        {
+            foreach (Node node in nodes) AddNode(node);
+        }
+
+        //public IMatrix2D<double> K
+        //{
+        //    get { return ElementType.StiffnessMatrix(this); }
+        //}
+
+        //public IMatrix2D<double> M
+        //{
+        //    get { return ElementType.MassMatrix(this); }
+        //}
+        #endregion Element Members
     }
 }

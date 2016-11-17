@@ -123,13 +123,13 @@ namespace ISAAR.MSolve.Logging
         {
             var embeddedNodeValues = new Dictionary<Tuple<int, DOFType>, double>();
 
-            foreach (var element in model.Elements)
+            foreach (IFiniteElement element in model.Elements)
             {
-                IEmbeddedElement e = element.ElementType as IEmbeddedElement;
+                IEmbeddedElement e = element as IEmbeddedElement;
                 if (e == null) continue;
 
-                var superElementNodes = element.ElementType.DOFEnumerator.GetNodesForMatrixAssembly(element);
-                var superElementDOFs = element.ElementType.DOFEnumerator.GetDOFTypes(element);
+                var superElementNodes = element.DOFEnumerator.GetNodesForMatrixAssembly(element);
+                var superElementDOFs = element.DOFEnumerator.GetDOFTypes(element);
                 var superElementVector = new double[superElementDOFs.SelectMany(x => x).Count()];
 
                 int index = 0;
@@ -144,7 +144,7 @@ namespace ISAAR.MSolve.Logging
 
                 index = 0;
                 var elementVector = e.GetLocalDOFValues(element, superElementVector);
-                var elementDOFs = element.ElementType.GetElementDOFTypes(element);
+                var elementDOFs = element.GetElementDOFTypes();
                 for (int i = 0; i < elementDOFs.Count; i++)
                     for (int j = 0; j < elementDOFs[i].Count; j++)
                     {

@@ -74,7 +74,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
                 gaussPointsCoords[i] = new double[noOfDimensions];//QUESTION: is there a need for a no-arguments constructor?? (because stochasticity is going to be treated differently)
         }
 
-        public Hexa8(IContinuumMaterial3DProperty materialProperty):this()
+        public Hexa8(IContinuumMaterial3DProperty materialProperty) : this()
         {
             this.materialProperty = materialProperty;
 
@@ -99,50 +99,47 @@ namespace ISAAR.MSolve.PreProcessor.Elements
         public double RayleighAlpha { get; set; }
         public double RayleighBeta { get; set; }
 
-        protected double[,] GetCoordinates(Element element)
+        protected double[,] GetCoordinates()//QUESTION: Is this redundant??
         {
             double[,] faXYZ = new double[dofTypes.Length, 3];
             for (int i = 0; i < dofTypes.Length; i++)
             {
-                faXYZ[i, 0] = element.Nodes[i].X;
-                faXYZ[i, 1] = element.Nodes[i].Y;
-                faXYZ[i, 2] = element.Nodes[i].Z;
+                faXYZ[i, 0] = this.Nodes[i].X;
+                faXYZ[i, 1] = this.Nodes[i].Y;
+                faXYZ[i, 2] = this.Nodes[i].Z;
             }
             return faXYZ;
         }
 
-        protected double[,] GetCoordinatesTranspose(Element element)
+        protected double[,] GetCoordinatesTranspose()
         {
             double[,] faXYZ = new double[3, dofTypes.Length];
             for (int i = 0; i < dofTypes.Length; i++)
             {
-                faXYZ[0, i] = element.Nodes[i].X;
-                faXYZ[1, i] = element.Nodes[i].Y;
-                faXYZ[2, i] = element.Nodes[i].Z;
+                faXYZ[0, i] = this.Nodes[i].X;
+                faXYZ[1, i] = this.Nodes[i].Y;
+                faXYZ[2, i] = this.Nodes[i].Z;
             }
             return faXYZ;
         }
 
         #region IElementType Members
 
-        public int ID
-        {
-            get { return 11; }
-        }
+        public int ID { get; set; }
 
         public ElementDimensions ElementDimensions
         {
             get { return ElementDimensions.ThreeD; }
         }
 
-        public virtual IList<IList<DOFType>> GetElementDOFTypes(Element element)
+        public virtual IList<IList<DOFType>> GetElementDOFTypes()
         {
-            return dofTypes;
+            return Hexa8.dofTypes;
         }
 
-        public IList<Node> GetNodesForMatrixAssembly(Element element)
+        public IList<Node> GetNodesForMatrixAssembly()
         {
-            return element.Nodes;
+            return this.Nodes;
         }
 
         private double[] CalcH8Shape(double fXi, double fEta, double fZeta)
@@ -376,9 +373,9 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             return integrationPoints;
         }
 
-        public virtual IMatrix2D<double> StiffnessMatrix(Element element)
+        public virtual IMatrix2D<double> StiffnessMatrix()
         {
-            double[,] coordinates = this.GetCoordinates(element);
+            double[,] coordinates = this.GetCoordinates();
             GaussLegendrePoint3D[] integrationPoints = this.CalculateGaussMatrices(coordinates);
 
             SymmetricMatrix2D<double> stiffnessMatrix = new SymmetricMatrix2D<double>(24);
@@ -411,9 +408,9 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             return stiffnessMatrix;
         }
 
-        public IMatrix2D<double> CalculateConsistentMass(Element element)
+        public IMatrix2D<double> CalculateConsistentMass()
         {
-            double[,] coordinates = this.GetCoordinates(element);
+            double[,] coordinates = this.GetCoordinates();
             GaussLegendrePoint3D[] integrationPoints = this.CalculateGaussMatrices(coordinates);
 
             SymmetricMatrix2D<double> consistentMass = new SymmetricMatrix2D<double>(24);
@@ -447,23 +444,23 @@ namespace ISAAR.MSolve.PreProcessor.Elements
 
         #endregion
 
-        public virtual IMatrix2D<double> MassMatrix(Element element)
+        public virtual IMatrix2D<double> MassMatrix()
         {
-            return CalculateConsistentMass(element);
+            return this.CalculateConsistentMass();
         }
 
-        public virtual IMatrix2D<double> DampingMatrix(Element element)
+        public virtual IMatrix2D<double> DampingMatrix()
         {
-            var m = MassMatrix(element);
-            m.LinearCombination(new double[] { RayleighAlpha, RayleighBeta }, new IMatrix2D<double>[] { MassMatrix(element), StiffnessMatrix(element) });
+            var m = this.MassMatrix();
+            m.LinearCombination(new double[] { RayleighAlpha, RayleighBeta }, new IMatrix2D<double>[] { this.MassMatrix(), this.StiffnessMatrix() });
             return m;
             //double[] faD = new double[300];
             //return new SymmetricMatrix2D<double>(faD);
         }
 
-        public Tuple<double[], double[]> CalculateStresses(Element element, double[] localDisplacements, double[] localdDisplacements)
+        public Tuple<double[], double[]> CalculateStresses(double[] localDisplacements, double[] localdDisplacements)
         {
-            double[,] faXYZ = GetCoordinates(element);
+            double[,] faXYZ = this.GetCoordinates();
             double[,] faDS = new double[iInt3, 24];
             double[,] faS = new double[iInt3, 8];
             double[,,] faB = new double[iInt3, 24, 6];
@@ -488,12 +485,12 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             return new Tuple<double[], double[]>(strains, materialStatesAtGaussPoints[materialStatesAtGaussPoints.Length - 1].Stresses.Data);
         }
 
-        public double[] CalculateForcesForLogging(Element element, double[] localDisplacements)
+        public double[] CalculateForcesForLogging(double[] localDisplacements)
         {
-            return CalculateForces(element, localDisplacements, new double[localDisplacements.Length]);
+            return CalculateForces(localDisplacements, new double[localDisplacements.Length]);
         }
 
-        public double[] CalculateForces(Element element, double[] localTotalDisplacements, double[] localdDisplacements)
+        public double[] CalculateForces(double[] localTotalDisplacements, double[] localdDisplacements)
         {
             //Vector<double> d = new Vector<double>(localdDisplacements.Length);
             //for (int i = 0; i < localdDisplacements.Length; i++) 
@@ -506,7 +503,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             for (int i = 0; i < materialStatesAtGaussPoints.Length; i++)
                 for (int j = 0; j < 6; j++) faStresses[i, j] = materialStatesAtGaussPoints[i].Stresses[j];
 
-            double[,] faXYZ = GetCoordinates(element);
+            double[,] faXYZ = this.GetCoordinates();
             double[,] faDS = new double[iInt3, 24];
             double[,] faS = new double[iInt3, 8];
             double[,,] faB = new double[iInt3, 24, 6];
@@ -520,10 +517,10 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             return faForces;
         }
 
-        public double[] CalculateAccelerationForces(Element element, IList<MassAccelerationLoad> loads)
+        public double[] CalculateAccelerationForces(IList<MassAccelerationLoad> loads)
         {
             Vector<double> accelerations = new Vector<double>(24);
-            IMatrix2D<double> massMatrix = MassMatrix(element);
+            IMatrix2D<double> massMatrix = this.MassMatrix();
 
             foreach (MassAccelerationLoad load in loads)
             {
@@ -578,21 +575,21 @@ namespace ISAAR.MSolve.PreProcessor.Elements
 
         #region IEmbeddedHostElement Members
 
-        public EmbeddedNode BuildHostElementEmbeddedNode(Element element, Node node, IEmbeddedDOFInHostTransformationVector transformationVector)
+        public EmbeddedNode BuildHostElementEmbeddedNode(Node node, IEmbeddedDOFInHostTransformationVector transformationVector)
         {
-            var points = GetNaturalCoordinates(element, node);
+            var points = this.GetNaturalCoordinates(node);
             if (points.Length == 0) return null;
 
-            element.EmbeddedNodes.Add(node);
-            var embeddedNode = new EmbeddedNode(node, element, transformationVector.GetDependentDOFTypes);
+            this.EmbeddedNodes.Add(node);
+            var embeddedNode = new EmbeddedNode(node, this, transformationVector.GetDependentDOFTypes);
             for (int i = 0; i < points.Length; i++)
                 embeddedNode.Coordinates.Add(points[i]);
             return embeddedNode;
         }
 
-        public double[] GetShapeFunctionsForNode(Element element, EmbeddedNode node)
+        public double[] GetShapeFunctionsForNode(EmbeddedNode node)
         {
-            double[,] elementCoordinates = GetCoordinatesTranspose(element);
+            double[,] elementCoordinates = this.GetCoordinatesTranspose();
             var shapeFunctions = CalcH8Shape(node.Coordinates[0], node.Coordinates[1], node.Coordinates[2]);
             var nablaShapeFunctions = CalcH8NablaShape(node.Coordinates[0], node.Coordinates[1], node.Coordinates[2]);
             var jacobian = CalcH8JDetJ(elementCoordinates, nablaShapeFunctions);
@@ -627,18 +624,18 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             //    fXiM * fEtaP * fZetaP };
         }
 
-        private double[] GetNaturalCoordinates(Element element, Node node)
+        private double[] GetNaturalCoordinates(Node node)
         {
-            double[] mins = new double[] { element.Nodes[0].X, element.Nodes[0].Y, element.Nodes[0].Z };
-            double[] maxes = new double[] { element.Nodes[0].X, element.Nodes[0].Y, element.Nodes[0].Z };
-            for (int i = 0; i < element.Nodes.Count; i++)
+            double[] mins = new double[] { this.Nodes[0].X, this.Nodes[0].Y, this.Nodes[0].Z };
+            double[] maxes = new double[] { this.Nodes[0].X, this.Nodes[0].Y, this.Nodes[0].Z };
+            for (int i = 0; i < this.Nodes.Count; i++)
             {
-                mins[0] = mins[0] > element.Nodes[i].X ? element.Nodes[i].X : mins[0];
-                mins[1] = mins[1] > element.Nodes[i].Y ? element.Nodes[i].Y : mins[1];
-                mins[2] = mins[2] > element.Nodes[i].Z ? element.Nodes[i].Z : mins[2];
-                maxes[0] = maxes[0] < element.Nodes[i].X ? element.Nodes[i].X : maxes[0];
-                maxes[1] = maxes[1] < element.Nodes[i].Y ? element.Nodes[i].Y : maxes[1];
-                maxes[2] = maxes[2] < element.Nodes[i].Z ? element.Nodes[i].Z : maxes[2];
+                mins[0] = mins[0] > this.Nodes[i].X ? this.Nodes[i].X : mins[0];
+                mins[1] = mins[1] > this.Nodes[i].Y ? this.Nodes[i].Y : mins[1];
+                mins[2] = mins[2] > this.Nodes[i].Z ? this.Nodes[i].Z : mins[2];
+                maxes[0] = maxes[0] < this.Nodes[i].X ? this.Nodes[i].X : maxes[0];
+                maxes[1] = maxes[1] < this.Nodes[i].Y ? this.Nodes[i].Y : maxes[1];
+                maxes[2] = maxes[2] < this.Nodes[i].Z ? this.Nodes[i].Z : maxes[2];
             }
             //return new double[] { (node.X - mins[0]) / ((maxes[0] - mins[0]) / 2) - 1,
             //    (node.Y - mins[1]) / ((maxes[1] - mins[1]) / 2) - 1,
@@ -664,15 +661,15 @@ namespace ISAAR.MSolve.PreProcessor.Elements
                 double[] coordinateDifferences = new double[] { 0, 0, 0 };
                 for (int i = 0; i < shapeFunctions.Length; i++)
                 {
-                    coordinateDifferences[0] += shapeFunctions[i] * element.Nodes[i].X;
-                    coordinateDifferences[1] += shapeFunctions[i] * element.Nodes[i].Y;
-                    coordinateDifferences[2] += shapeFunctions[i] * element.Nodes[i].Z;
+                    coordinateDifferences[0] += shapeFunctions[i] * this.Nodes[i].X;
+                    coordinateDifferences[1] += shapeFunctions[i] * this.Nodes[i].Y;
+                    coordinateDifferences[2] += shapeFunctions[i] * this.Nodes[i].Z;
                 }
                 coordinateDifferences[0] = node.X - coordinateDifferences[0];
                 coordinateDifferences[1] = node.Y - coordinateDifferences[1];
                 coordinateDifferences[2] = node.Z - coordinateDifferences[2];
 
-                double[,] faXYZ = GetCoordinatesTranspose(element);
+                double[,] faXYZ = this.GetCoordinatesTranspose();
                 double[] nablaShapeFunctions = CalcH8NablaShape(naturalCoordinates[0], naturalCoordinates[1], naturalCoordinates[2]);
                 var inverseJacobian = CalcH8JDetJ(faXYZ, nablaShapeFunctions).Item2;
 
@@ -693,5 +690,55 @@ namespace ISAAR.MSolve.PreProcessor.Elements
         }
 
         #endregion
+
+        #region Element Members
+        private readonly Dictionary<int, Node> nodesDictionary = new Dictionary<int, Node>();
+        private readonly Dictionary<DOFType, AbsorptionType> absorptions = new Dictionary<DOFType, AbsorptionType>();
+        private readonly IList<Node> embeddedNodes = new List<Node>();
+
+        public Dictionary<int, Node> NodesDictionary
+        {
+            get { return nodesDictionary; }
+        }
+
+        public Dictionary<DOFType, AbsorptionType> Absorptions
+        {
+            get { return absorptions; }
+        }
+
+        public IList<Node> Nodes
+        {
+            get { return nodesDictionary.Values.ToList<Node>(); }
+        }
+
+        public IList<Node> EmbeddedNodes
+        {
+            get { return embeddedNodes; }
+        }
+
+        //public IFiniteElementMaterial MaterialType { get; set; }
+        public Subdomain Subdomain { get; set; }
+        public int[] DOFs { get; set; }
+
+        public void AddNode(Node node)
+        {
+            nodesDictionary.Add(node.ID, node);
+        }
+
+        public void AddNodes(IList<Node> nodes)
+        {
+            foreach (Node node in nodes) AddNode(node);
+        }
+
+        //public IMatrix2D<double> K
+        //{
+        //    get { return ElementType.StiffnessMatrix(this); }
+        //}
+
+        //public IMatrix2D<double> M
+        //{
+        //    get { return ElementType.MassMatrix(this); }
+        //}
+        #endregion Element Members
     }
 }

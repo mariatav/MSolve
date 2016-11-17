@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ISAAR.MSolve.PreProcessor.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,16 +9,16 @@ namespace ISAAR.MSolve.PreProcessor.Embedding
     public class EmbeddedNode
     {
         private readonly Node node;
-        private readonly Element embeddedInElement;
+        private readonly IFiniteElement embeddedInElement;//QUESTION:is this needed???
         private readonly IList<double> coordinates = new List<double>();
         private readonly IList<DOFType> dependentDOFs;
 
         public Node Node { get { return node; } }
-        public Element EmbeddedInElement { get { return embeddedInElement; } }
+        public IFiniteElement EmbeddedInElement { get { return embeddedInElement; } }
         public IList<DOFType> DependentDOFs { get { return dependentDOFs; } }
         public IList<double> Coordinates { get { return coordinates; } }
 
-        public EmbeddedNode(Node node, Element hostElement, IList<DOFType> dependentDOFs)
+        public EmbeddedNode(Node node, IFiniteElement hostElement, IList<DOFType> dependentDOFs)
         {
             this.node = node;
             this.embeddedInElement = hostElement;

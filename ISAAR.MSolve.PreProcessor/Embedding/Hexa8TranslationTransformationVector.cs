@@ -15,18 +15,18 @@ namespace ISAAR.MSolve.PreProcessor.Embedding
 
         public IList<IList<DOFType>> GetDOFTypesOfHost(EmbeddedNode node)
         {
-            return node.EmbeddedInElement.ElementType.GetElementDOFTypes(node.EmbeddedInElement);
+            return node.EmbeddedInElement.GetElementDOFTypes();
         }
 
         public double[][] GetTransformationVector(EmbeddedNode node)
         {
-            if (node.EmbeddedInElement.ElementType is Hexa8 == false)
+            if (node.EmbeddedInElement is Hexa8 == false)
                 throw new ArgumentException("Host element is not Hexa8.");
 
             const int commonDofsPerNode = 3;
             const int hostDofsPerNode = 3;
             const int hostShapeFunctionLength = 8;
-            double[] hostShapeFunctions = ((IEmbeddedHostElement)node.EmbeddedInElement.ElementType).GetShapeFunctionsForNode(node.EmbeddedInElement, node);
+            double[] hostShapeFunctions = ((IEmbeddedHostElement)node.EmbeddedInElement).GetShapeFunctionsForNode(node);
 
             var transformation = new double[commonDofsPerNode][];
             for (int j = 0; j < commonDofsPerNode; j++)
@@ -35,7 +35,7 @@ namespace ISAAR.MSolve.PreProcessor.Embedding
                 for (int k = 0; k < hostShapeFunctionLength; k++)
                     transformation[j][hostDofsPerNode * k + j] = hostShapeFunctions[k];
             }
-            
+
             return transformation;
         }
     }

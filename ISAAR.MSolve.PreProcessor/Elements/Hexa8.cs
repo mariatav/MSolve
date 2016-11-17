@@ -370,9 +370,9 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             return integrationPoints;
         }
 
-        public virtual IMatrix2D<double> StiffnessMatrix(IFiniteElement element)
+        public virtual IMatrix2D<double> StiffnessMatrix()
         {
-            double[,] coordinates = this.GetCoordinates(element);
+            double[,] coordinates = this.GetCoordinates(this);
             GaussLegendrePoint3D[] integrationPoints = this.CalculateGaussMatrices(coordinates);
 
             SymmetricMatrix2D<double> stiffnessMatrix = new SymmetricMatrix2D<double>(24);
@@ -449,7 +449,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
         public virtual IMatrix2D<double> DampingMatrix(IFiniteElement element)
         {
             var m = MassMatrix(element);
-            m.LinearCombination(new double[] { RayleighAlpha, RayleighBeta }, new IMatrix2D<double>[] { MassMatrix(element), StiffnessMatrix(element) });
+            m.LinearCombination(new double[] { RayleighAlpha, RayleighBeta }, new IMatrix2D<double>[] { MassMatrix(element), StiffnessMatrix() });
             return m;
             //double[] faD = new double[300];
             //return new SymmetricMatrix2D<double>(faD);

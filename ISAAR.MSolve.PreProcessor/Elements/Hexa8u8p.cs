@@ -174,14 +174,14 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             return element.Nodes;
         }
 
-        public virtual IMatrix2D<double> StiffnessMatrix(IFiniteElement element)
+        public virtual IMatrix2D<double> StiffnessMatrix()
         {
             double[, ,] afE = new double[iInt3, 6, 6];
             for (int i = 0; i < iInt3; i++)
                 for (int j = 0; j < 6; j++)
                     for (int k = 0; k < 6; k++)
                         afE[i, j, k] = ((Matrix2D<double>)materialStatesAtGaussPoints[i].ConstitutiveMatrix)[j, k];
-            double[,] faXYZ = GetCoordinates(element);
+            double[,] faXYZ = GetCoordinates(this);
             double[,] faDS = new double[iInt3, 24];
             double[,] faS = new double[iInt3, 8];
             double[, ,] faB = new double[iInt3, 24, 6];
@@ -213,7 +213,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
         public IMatrix2D<double> DampingMatrix(IFiniteElement element)
         {
             var m = MassMatrix(element);
-            m.LinearCombination(new double[] { RayleighAlpha, RayleighBeta }, new IMatrix2D<double>[] { MassMatrix(element), StiffnessMatrix(element) });
+            m.LinearCombination(new double[] { RayleighAlpha, RayleighBeta }, new IMatrix2D<double>[] { MassMatrix(element), StiffnessMatrix() });
             return m;
         }
 

@@ -65,7 +65,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             });
         }
 
-        public IMatrix2D<double> StiffnessMatrix(IFiniteElement element)
+        public IMatrix2D<double> StiffnessMatrix()
         {
             return new SymmetricMatrix2D<double>(new double[6]);
         }

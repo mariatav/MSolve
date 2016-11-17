@@ -540,10 +540,10 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             //return transformedMatrix;
         }
 
-        public IMatrix2D<double> StiffnessMatrix(IFiniteElement element)
+        public IMatrix2D<double> StiffnessMatrix()
         {
-            CalculateRotTranformation(element);
-            return dofEnumerator.GetTransformedMatrix(new SymmetricMatrix2D<double>(rotTransformation.Transpose() * ((SymmetricMatrix2D<double>)StiffnessMatrixPure(element)).ToMatrix2D() * rotTransformation));
+            CalculateRotTranformation(this);
+            return dofEnumerator.GetTransformedMatrix(new SymmetricMatrix2D<double>(rotTransformation.Transpose() * ((SymmetricMatrix2D<double>)StiffnessMatrixPure(this)).ToMatrix2D() * rotTransformation));
         }
 
         public IMatrix2D<double> MassMatrix(IFiniteElement element)
@@ -614,7 +614,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
         public IMatrix2D<double> DampingMatrix(IFiniteElement element)
         {
             var m = MassMatrix(element);
-            m.LinearCombination(new double[] { RayleighAlpha, RayleighBeta }, new IMatrix2D<double>[] { MassMatrix(element), StiffnessMatrix(element) });
+            m.LinearCombination(new double[] { RayleighAlpha, RayleighBeta }, new IMatrix2D<double>[] { MassMatrix(element), StiffnessMatrix() });
             return m;
         }
 
@@ -636,7 +636,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
 
         public double[] CalculateForces(IFiniteElement element, double[] localDisplacements, double[] localdDisplacements)
         {
-            IMatrix2D<double> stiffnessMatrix = StiffnessMatrix(element);
+            IMatrix2D<double> stiffnessMatrix = StiffnessMatrix();
             Vector<double> disps = new Vector<double>(localDisplacements.Length);
             double[] forces = new double[localDisplacements.Length];
             for (int i = 0; i < localDisplacements.Length; i++)

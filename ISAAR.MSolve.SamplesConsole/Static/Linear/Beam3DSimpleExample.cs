@@ -90,7 +90,7 @@ namespace ISAAR.MSolve.SamplesConsole.Static.Linear
             element.AddNode(model.NodesDictionary[1]);
             element.AddNode(model.NodesDictionary[2]);
 
-            var a = element.StiffnessMatrix(element);
+            var a = element.StiffnessMatrix();
 
             // Add Hexa element to the element and subdomains dictionary of the model
             model.ElementsDictionary.Add(element.ID, element);

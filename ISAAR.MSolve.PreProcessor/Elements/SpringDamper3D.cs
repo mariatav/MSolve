@@ -72,7 +72,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             this.dofEnumerator = dofEnumerator;
         }
 
-        public IMatrix2D<double> StiffnessMatrix(IFiniteElement element)
+        public IMatrix2D<double> StiffnessMatrix()
         {
             double x = (springDirections == SpringDirections.X || springDirections == SpringDirections.XY || springDirections == SpringDirections.XZ || springDirections == SpringDirections.XYZ) ? springCoefficient : 0;
             double y = (springDirections == SpringDirections.Y || springDirections == SpringDirections.XY || springDirections == SpringDirections.YZ || springDirections == SpringDirections.XYZ) ? springCoefficient : 0;
@@ -127,7 +127,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
 
         public double[] CalculateForces(IFiniteElement element, double[] localDisplacements, double[] localdDisplacements)
         {
-            IMatrix2D<double> stiffnessMatrix = StiffnessMatrix(element);
+            IMatrix2D<double> stiffnessMatrix = StiffnessMatrix();
             Vector<double> disps = new Vector<double>(localDisplacements);
             double[] forces = new double[localDisplacements.Length];
             stiffnessMatrix.Multiply(disps, forces);

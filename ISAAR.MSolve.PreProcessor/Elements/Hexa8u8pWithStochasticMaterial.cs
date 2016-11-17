@@ -41,7 +41,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
         //    this.coefficientsProvider = coefficientsProvider;
         //}
 
-        public override IMatrix2D<double> StiffnessMatrix(IFiniteElement element)
+        public override IMatrix2D<double> StiffnessMatrix()
         {
             double[, ,] afE = new double[iInt3, 6, 6];
             int iPos = 0;
@@ -50,7 +50,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
                     for (int i3 = 0; i3 < iInt; i3++)
                     {
                         iPos = i1 * iInt2 + i2 * iInt + i3;
-                        var e = ((Matrix2D<double>)((IStochasticContinuumMaterial3DState)materialStatesAtGaussPoints[iPos]).GetConstitutiveMatrix(GetStochasticPoints(element, i1, i2, i3)));
+                        var e = ((Matrix2D<double>)((IStochasticContinuumMaterial3DState)materialStatesAtGaussPoints[iPos]).GetConstitutiveMatrix(GetStochasticPoints(this, i1, i2, i3)));
                         for (int j = 0; j < 6; j++)
                             for (int k = 0; k < 6; k++)
                                 afE[iPos, j, k] = e[j, k];
@@ -61,12 +61,12 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             double[] faWeight;
             Tuple<double[], double[, ,]> integrationData = new Tuple<double[],double[,,]>(null, null);
             if (memoizer != null)
-                integrationData = memoizer.GetIntegrationData(element.ID);
+                integrationData = memoizer.GetIntegrationData(this.ID);
             if (integrationData.Item1 == null)
             {
                 faB = new double[iInt3, 24, 6];
                 faWeight = new double[iInt3];
-                double[,] faXYZ = GetCoordinates(element);
+                double[,] faXYZ = GetCoordinates(this);
                 double[,] faDS = new double[iInt3, 24];
                 double[,] faS = new double[iInt3, 8];
                 double[] faDetJ = new double[iInt3];
@@ -80,7 +80,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
                 //            //faWeight[i * iInt * iInt + j * iInt + k] *= coefficientsProvider.GetCoefficient(new double[] { integrationPoints[iInt][i], integrationPoints[iInt][j], integrationPoints[iInt][k] });
                 //        }
                 if (memoizer != null)
-                    memoizer.SetIntegrationData(element.ID, new Tuple<double[], double[, ,]>(faWeight, faB));
+                    memoizer.SetIntegrationData(this.ID, new Tuple<double[], double[, ,]>(faWeight, faB));
             }
             else
             {

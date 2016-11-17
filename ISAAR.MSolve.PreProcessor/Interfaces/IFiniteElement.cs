@@ -25,7 +25,7 @@ namespace ISAAR.MSolve.PreProcessor.Interfaces
         IFiniteElementDOFEnumerator DOFEnumerator { get; set; }
         IList<IList<DOFType>> GetElementDOFTypes();
         bool MaterialModified { get; }
-        IMatrix2D<double> StiffnessMatrix(IFiniteElement element);
+        IMatrix2D<double> StiffnessMatrix();
         IMatrix2D<double> MassMatrix(IFiniteElement element);
         IMatrix2D<double> DampingMatrix(IFiniteElement element);
         void ResetMaterialModified();

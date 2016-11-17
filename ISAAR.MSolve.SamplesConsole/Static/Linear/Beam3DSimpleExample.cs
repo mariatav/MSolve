@@ -76,25 +76,21 @@ namespace ISAAR.MSolve.SamplesConsole.Static.Linear
             //    MomentOfInertia = .1
             //};
 
-            var beam = new EulerBeam3D(youngModulus, poissonRatio)
+            var element = new EulerBeam3D(youngModulus, poissonRatio)
             {
+                ID = 1,
                 SectionArea = 1,
                 MomentOfInertiaY = .1,
                 MomentOfInertiaZ = .1,
                 MomentOfInertiaPolar = .1
             };
 
-            var element = new Element()
-            {
-                ID = 1,
-                ElementType = beam
-            };
 
             //// Add nodes to the created element
             element.AddNode(model.NodesDictionary[1]);
             element.AddNode(model.NodesDictionary[2]);
 
-            var a = beam.StiffnessMatrix(element);
+            var a = element.StiffnessMatrix(element);
 
             // Add Hexa element to the element and subdomains dictionary of the model
             model.ElementsDictionary.Add(element.ID, element);

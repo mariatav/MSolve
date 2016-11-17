@@ -73,16 +73,11 @@ namespace ISAAR.MSolve.SamplesConsole.Static.Linear
             //    MomentOfInertia = .1
             //};
 
-            var beam = new EulerBeam2D(youngModulus)
-            {
-                SectionArea = 1,
-                MomentOfInertia = .1
-            };
-
-            var element = new Element()
+            var element = new EulerBeam2D(youngModulus)
             {
                 ID = 1,
-                ElementType = beam
+                SectionArea = 1,
+                MomentOfInertia = .1
             };
 
             //// Add nodes to the created element

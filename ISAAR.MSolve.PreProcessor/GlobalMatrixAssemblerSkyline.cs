@@ -18,17 +18,17 @@ namespace ISAAR.MSolve.PreProcessor
             {
                 int minDOF = Int32.MaxValue;
                 //foreach (Node node in element.NodesDictionary.Values.Where(e => e.EmbeddedInElement == null))
-                foreach (Node node in element.ElementType.DOFEnumerator.GetNodesForMatrixAssembly(element))
+                foreach (Node node in element.DOFEnumerator.GetNodesForMatrixAssembly(element))
                 {
-                    if ((nodalDOFsDictionary.ContainsKey(node.ID) == false) && (element.ElementType is IEmbeddedElement))
+                    if ((nodalDOFsDictionary.ContainsKey(node.ID) == false) && (element is IEmbeddedElement))
                         continue;
                     foreach (int dof in nodalDOFsDictionary[node.ID].Values)
                         if (dof != -1) minDOF = Math.Min(dof, minDOF);
                 }
                 //foreach (Node node in element.NodesDictionary.Values.Where(e => e.EmbeddedInElement == null))
-                foreach (Node node in element.ElementType.DOFEnumerator.GetNodesForMatrixAssembly(element))
+                foreach (Node node in element.DOFEnumerator.GetNodesForMatrixAssembly(element))
                 {
-                    if ((nodalDOFsDictionary.ContainsKey(node.ID) == false) && (element.ElementType is IEmbeddedElement))
+                    if ((nodalDOFsDictionary.ContainsKey(node.ID) == false) && (element is IEmbeddedElement))
                         continue;
                     foreach (int dof in nodalDOFsDictionary[node.ID].Values)
                         if (dof != -1) rowHeights[dof] = Math.Max(rowHeights[dof], dof - minDOF);
@@ -59,14 +59,14 @@ namespace ISAAR.MSolve.PreProcessor
             times.Add("addition", TimeSpan.Zero);
             foreach (IFiniteElement element in subdomain.ElementsDictionary.Values)
             {
-                var isEmbeddedElement = element.ElementType is IEmbeddedElement;
+                var isEmbeddedElement = element is IEmbeddedElement;
                 var elStart = DateTime.Now;
                 IMatrix2D<double> ElementK = elementProvider.Matrix(element);
                 times["element"] += DateTime.Now - elStart;
 
                 elStart = DateTime.Now;
-                var elementDOFTypes = element.ElementType.DOFEnumerator.GetDOFTypes(element);
-                var matrixAssemblyNodes = element.ElementType.DOFEnumerator.GetNodesForMatrixAssembly(element);
+                var elementDOFTypes = element.DOFEnumerator.GetDOFTypes(element);
+                var matrixAssemblyNodes = element.DOFEnumerator.GetNodesForMatrixAssembly(element);
                 int iElementMatrixRow = 0;
                 for (int i = 0; i < elementDOFTypes.Count; i++)
                 {

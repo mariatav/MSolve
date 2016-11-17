@@ -125,7 +125,7 @@ namespace ISAAR.MSolve.Problems
         {
             foreach (Subdomain subdomain in model.SubdomainsDictionary.Values)
                 foreach (var element in subdomain.ElementsDictionary.Values)
-                    element.ElementType.ClearMaterialState();
+                    element.ClearMaterialState();
                 
             cs = null;
             ks = null;

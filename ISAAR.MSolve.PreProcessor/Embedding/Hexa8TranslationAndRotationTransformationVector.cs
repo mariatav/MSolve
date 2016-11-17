@@ -20,7 +20,7 @@ namespace ISAAR.MSolve.PreProcessor.Embedding
 
         public IList<IList<DOFType>> GetDOFTypesOfHost(EmbeddedNode node)
         {
-            return node.EmbeddedInElement.ElementType.GetElementDOFTypes(node.EmbeddedInElement);
+            return node.EmbeddedInElement.GetElementDOFTypes(node.EmbeddedInElement);
         }
 
         private Tuple<double[,], double[,]> GetJacobiansFromShapeFunctionsVector(double[] shapeFunctionsVector)
@@ -39,10 +39,10 @@ namespace ISAAR.MSolve.PreProcessor.Embedding
 
         private double[][] GetTransformationVectorForTranslationsOnly(EmbeddedNode node)
         {
-            if (node.EmbeddedInElement.ElementType is Hexa8 == false)
+            if (node.EmbeddedInElement is Hexa8 == false)
                 throw new ArgumentException("Host element is not Hexa8.");
 
-            double[] hostShapeFunctions = ((IEmbeddedHostElement)node.EmbeddedInElement.ElementType).GetShapeFunctionsForNode(node.EmbeddedInElement, node);
+            double[] hostShapeFunctions = ((IEmbeddedHostElement)node.EmbeddedInElement).GetShapeFunctionsForNode(node.EmbeddedInElement, node);
             var transformation = new double[commonDofsPerNode + rotationalDofsPerNode][];
             for (int j = 0; j < commonDofsPerNode; j++)
             {

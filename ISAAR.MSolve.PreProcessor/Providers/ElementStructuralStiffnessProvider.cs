@@ -31,7 +31,7 @@ namespace ISAAR.MSolve.PreProcessor.Providers
             //    }
             //}
 
-            return element.ElementType.StiffnessMatrix(element);
+            return element.StiffnessMatrix(element);
 
         }
 

@@ -84,7 +84,7 @@ namespace ISAAR.MSolve.PreProcessor
                 {
                     if (!nodalDOFTypesDictionary.ContainsKey(element.Nodes[i].ID))
                         nodalDOFTypesDictionary.Add(element.Nodes[i].ID, new List<DOFType>());
-                    nodalDOFTypesDictionary[element.Nodes[i].ID].AddRange(element.ElementType.DOFEnumerator.GetDOFTypesForDOFEnumeration(element)[i]);
+                    nodalDOFTypesDictionary[element.Nodes[i].ID].AddRange(element.DOFEnumerator.GetDOFTypesForDOFEnumeration(element)[i]);
                 }
             }
 
@@ -211,14 +211,14 @@ namespace ISAAR.MSolve.PreProcessor
         public double[] GetLocalVectorFromGlobal(IFiniteElement element, double[] globalVector)
         {
             int localDOFs = 0;
-            foreach (IList<DOFType> dofs in element.ElementType.DOFEnumerator.GetDOFTypes(element)) localDOFs += dofs.Count;
+            foreach (IList<DOFType> dofs in element.DOFEnumerator.GetDOFTypes(element)) localDOFs += dofs.Count;
             double[] localVector = new double[localDOFs];
 
             int pos = 0;
-            for (int i = 0; i < element.ElementType.DOFEnumerator.GetDOFTypes(element).Count; i++)
+            for (int i = 0; i < element.DOFEnumerator.GetDOFTypes(element).Count; i++)
             {
                 Node node = element.Nodes[i];
-                foreach (DOFType dofType in element.ElementType.DOFEnumerator.GetDOFTypes(element)[i])
+                foreach (DOFType dofType in element.DOFEnumerator.GetDOFTypes(element)[i])
                 {
                     int dof = NodalDOFsDictionary[node.ID][dofType];
                     if (dof != -1) localVector[pos] = globalVector[dof];
@@ -231,10 +231,10 @@ namespace ISAAR.MSolve.PreProcessor
         public void AddLocalVectorToGlobal(IFiniteElement element, double[] localVector, double[] globalVector)
         {
             int pos = 0;
-            for (int i = 0; i < element.ElementType.DOFEnumerator.GetDOFTypes(element).Count; i++)
+            for (int i = 0; i < element.DOFEnumerator.GetDOFTypes(element).Count; i++)
             {
                 Node node = element.Nodes[i];
-                foreach (DOFType dofType in element.ElementType.DOFEnumerator.GetDOFTypes(element)[i])
+                foreach (DOFType dofType in element.DOFEnumerator.GetDOFTypes(element)[i])
                 {
                     int dof = NodalDOFsDictionary[node.ID][dofType];
                     if (dof != -1) globalVector[dof] += localVector[pos];
@@ -250,10 +250,10 @@ namespace ISAAR.MSolve.PreProcessor
             {
                 double[] localSolution = GetLocalVectorFromGlobal(element, ((Vector<double>)solution).Data);
                 double[] localdSolution = GetLocalVectorFromGlobal(element, ((Vector<double>)dSolution).Data);
-                element.ElementType.CalculateStresses(element, localSolution, localdSolution);
-                if (element.ElementType.MaterialModified) 
+                element.CalculateStresses(element, localSolution, localdSolution);
+                if (element.MaterialModified) 
                     element.Subdomain.MaterialsModified = true;
-                double[] f = element.ElementType.CalculateForces(element, localSolution, localdSolution);
+                double[] f = element.CalculateForces(element, localSolution, localdSolution);
                 AddLocalVectorToGlobal(element, f, forces.Data);
             }
             return forces;
@@ -261,18 +261,18 @@ namespace ISAAR.MSolve.PreProcessor
 
         public void SaveMaterialState()
         {
-            foreach (IFiniteElement element in elementsDictionary.Values) element.ElementType.SaveMaterialState();
+            foreach (IFiniteElement element in elementsDictionary.Values) element.SaveMaterialState();
         }
 
         public void ResetMaterialsModifiedProperty()
         {
             this.MaterialsModified = false;
-            foreach (IFiniteElement element in elementsDictionary.Values) element.ElementType.ResetMaterialModified();
+            foreach (IFiniteElement element in elementsDictionary.Values) element.ResetMaterialModified();
         }
 
         public void ClearMaterialStresses()
         {
-            foreach (IFiniteElement element in elementsDictionary.Values) element.ElementType.ClearMaterialStresses();
+            foreach (IFiniteElement element in elementsDictionary.Values) element.ClearMaterialStresses();
         }
     }
 }

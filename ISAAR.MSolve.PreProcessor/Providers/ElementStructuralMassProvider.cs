@@ -14,7 +14,7 @@ namespace ISAAR.MSolve.PreProcessor.Providers
         public IMatrix2D<double> Matrix(IFiniteElement element)
         {
             //return element.M;
-            return element.ElementType.MassMatrix(element);
+            return element.MassMatrix(element);
         }
 
         #endregion

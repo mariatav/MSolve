@@ -73,8 +73,8 @@ namespace ISAAR.MSolve.Analyzers
             //coefficientsProvider = new FileStochasticCoefficientsProvider("Lognormal.csv", stochasticDomain);
             //coefficientsProvider = new FileStochasticCoefficientsProvider("Gaussian.txt", 50, '\t', stochasticDomain);
             foreach (var subdomain in model.Subdomains)
-                foreach (var e in subdomain.ElementsDictionary.Values.Where(e => e.ElementType is IStochasticFiniteElement))
-                    ((IStochasticFiniteElement)e.ElementType).CoefficientsProvider = coefficientsProvider;
+                foreach (var e in subdomain.ElementsDictionary.Values.Where(e => e is IStochasticFiniteElement))
+                    ((IStochasticFiniteElement)e).CoefficientsProvider = coefficientsProvider;
         }
 
         private void MakePreconditioners()

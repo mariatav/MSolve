@@ -137,9 +137,9 @@ namespace ISAAR.MSolve.PreProcessor
 
         private void DuplicateInterSubdomainEmbeddedElements()
         {
-            foreach (var e in elementsDictionary.Values.Where(x => x.ElementType is IEmbeddedElement))
+            foreach (var e in elementsDictionary.Values.Where(x => x is IEmbeddedElement))
             {
-                var subs = ((IEmbeddedElement)e.ElementType).EmbeddedNodes.Select(x => x.EmbeddedInElement.Subdomain).Distinct();
+                var subs = ((IEmbeddedElement)e).EmbeddedNodes.Select(x => x.EmbeddedInElement.Subdomain).Distinct();
                 foreach (var s in subs.Where(x => x.ID != e.Subdomain.ID))
                     s.ElementsDictionary.Add(e.ID, e);
             }
@@ -172,7 +172,7 @@ namespace ISAAR.MSolve.PreProcessor
                 {
                     if (!nodalDOFTypesDictionary.ContainsKey(element.Nodes[i].ID))
                         nodalDOFTypesDictionary.Add(element.Nodes[i].ID, new List<DOFType>());
-                    nodalDOFTypesDictionary[element.Nodes[i].ID].AddRange(element.ElementType.DOFEnumerator.GetDOFTypesForDOFEnumeration(element)[i]);
+                    nodalDOFTypesDictionary[element.Nodes[i].ID].AddRange(element.DOFEnumerator.GetDOFTypesForDOFEnumeration(element)[i]);
                 }
             }
 
@@ -241,7 +241,7 @@ namespace ISAAR.MSolve.PreProcessor
         {
             foreach (ElementMassAccelerationLoad load in elementMassAccelerationLoads)
                 load.Element.Subdomain.AddLocalVectorToGlobal(load.Element,
-                    load.Element.ElementType.CalculateAccelerationForces(load.Element, massAccelerationLoads),
+                    load.Element.CalculateAccelerationForces(load.Element, massAccelerationLoads),
                     load.Element.Subdomain.Forces);
         }
 
@@ -252,7 +252,7 @@ namespace ISAAR.MSolve.PreProcessor
             foreach (Subdomain subdomain in subdomainsDictionary.Values)
                 foreach (IFiniteElement element in subdomain.ElementsDictionary.Values)
                     subdomain.AddLocalVectorToGlobal(element,
-                        element.ElementType.CalculateAccelerationForces(element, massAccelerationLoads),
+                        element.CalculateAccelerationForces(element, massAccelerationLoads),
                         subdomain.Forces);
         }
 
@@ -274,14 +274,14 @@ namespace ISAAR.MSolve.PreProcessor
                 foreach (Subdomain subdomain in subdomainsDictionary.Values)
                     foreach (IFiniteElement element in subdomain.ElementsDictionary.Values)
                         subdomain.AddLocalVectorToGlobal(element,
-                            element.ElementType.CalculateAccelerationForces(element, m), subdomain.Forces);
+                            element.CalculateAccelerationForces(element, m), subdomain.Forces);
             }
 
             foreach (ElementMassAccelerationHistoryLoad load in elementMassAccelerationHistoryLoads)
             {
                 MassAccelerationLoad hl = new MassAccelerationLoad() { Amount = load.HistoryLoad[timeStep] * 564000000, DOF = load.HistoryLoad.DOF };
                 load.Element.Subdomain.AddLocalVectorToGlobal(load.Element,
-                    load.Element.ElementType.CalculateAccelerationForces(load.Element, (new MassAccelerationLoad[] { hl }).ToList()),
+                    load.Element.CalculateAccelerationForces(load.Element, (new MassAccelerationLoad[] { hl }).ToList()),
                     load.Element.Subdomain.Forces);
             }
         }

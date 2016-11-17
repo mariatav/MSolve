@@ -300,7 +300,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             {
                 var embeddedNode = embeddedNodes.Where(x => x.Node == node).FirstOrDefault();
                 if (embeddedNode != null)
-                    hostDOFTypes.AddRange(embeddedNode.EmbeddedInElement.ElementType.DOFEnumerator.GetDOFTypes(null).SelectMany(x => x));
+                    hostDOFTypes.AddRange(embeddedNode.EmbeddedInElement.DOFEnumerator.GetDOFTypes(null).SelectMany(x => x));
             }
             hostDOFTypes = hostDOFTypes.Distinct().ToList();
 
@@ -320,7 +320,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
                 else
                 {
                     //d.AddRange(node.EmbeddedInElement.ElementType.GetDOFTypes(null));
-                    var hostDOFsPerNode = embeddedNode.EmbeddedInElement.ElementType.DOFEnumerator.GetDOFTypes(null);
+                    var hostDOFsPerNode = embeddedNode.EmbeddedInElement.DOFEnumerator.GetDOFTypes(null);
                     for (int i = 0; i < hostDOFsPerNode.Count; i++)
                     {
                         if (!d.ContainsKey(embeddedNode.EmbeddedInElement.Nodes[i]))

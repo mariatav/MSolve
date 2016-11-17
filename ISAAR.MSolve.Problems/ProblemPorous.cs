@@ -115,16 +115,16 @@ namespace ISAAR.MSolve.Problems
             Sparse2D<double> qSubdomain = new Sparse2D<double>(subdomain.TotalDOFs, subdomain.TotalDOFs);
             foreach (IFiniteElement element in subdomain.ElementsDictionary.Values)
             {
-                if (!(element.ElementType is IPorousFiniteElement)) continue;
+                if (!(element is IPorousFiniteElement)) continue;
 
-                IPorousFiniteElement e = (IPorousFiniteElement)element.ElementType;
+                IPorousFiniteElement e = (IPorousFiniteElement)element;
                 IMatrix2D<double> q = e.CouplingMatrix(element);
 
                 int iElementMatrixRow = 0;
-                for (int i = 0; i < element.ElementType.DOFEnumerator.GetDOFTypes(element).Count; i++)
+                for (int i = 0; i < element.DOFEnumerator.GetDOFTypes(element).Count; i++)
                 {
                     Node nodeRow = element.Nodes[i];
-                    foreach (DOFType dofTypeRow in element.ElementType.DOFEnumerator.GetDOFTypes(element)[i])
+                    foreach (DOFType dofTypeRow in element.DOFEnumerator.GetDOFTypes(element)[i])
                     {
                         if (dofTypeRow != DOFType.Pore) continue;
 
@@ -132,10 +132,10 @@ namespace ISAAR.MSolve.Problems
                         if (dofRow != -1)
                         {
                             int iElementMatrixColumn = 0;
-                            for (int j = 0; j < element.ElementType.DOFEnumerator.GetDOFTypes(element).Count; j++)
+                            for (int j = 0; j < element.DOFEnumerator.GetDOFTypes(element).Count; j++)
                             {
                                 Node nodeColumn = element.Nodes[j];
-                                foreach (DOFType dofTypeColumn in element.ElementType.DOFEnumerator.GetDOFTypes(element)[j])
+                                foreach (DOFType dofTypeColumn in element.DOFEnumerator.GetDOFTypes(element)[j])
                                 {
                                     if (dofTypeColumn == DOFType.Pore) continue;
 
@@ -186,7 +186,7 @@ namespace ISAAR.MSolve.Problems
         {
             foreach (Subdomain subdomain in model.SubdomainsDictionary.Values)
                 foreach (var element in subdomain.ElementsDictionary.Values)
-                    element.ElementType.ClearMaterialState();
+                    element.ClearMaterialState();
 
             cs = null;
             ks = null;

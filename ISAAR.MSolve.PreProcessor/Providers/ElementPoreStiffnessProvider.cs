@@ -21,7 +21,7 @@ namespace ISAAR.MSolve.PreProcessor.Providers
 
         private IMatrix2D<double> PorousMatrix(IFiniteElement element)
         {
-            IPorousFiniteElement elementType = (IPorousFiniteElement)element.ElementType;
+            IPorousFiniteElement elementType = (IPorousFiniteElement)element;
             int dofs = 0;
             foreach (IList<DOFType> dofTypes in elementType.DOFEnumerator.GetDOFTypes(element))
                 foreach (DOFType dofType in dofTypes) dofs++;
@@ -73,7 +73,7 @@ namespace ISAAR.MSolve.PreProcessor.Providers
 
         public IMatrix2D<double> Matrix(IFiniteElement element)
         {
-            if (element.ElementType is IPorousFiniteElement)
+            if (element is IPorousFiniteElement)
                 return PorousMatrix(element);
             else
             {

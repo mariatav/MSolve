@@ -39,11 +39,6 @@ namespace ISAAR.MSolve.PreProcessor.Elements
 
         #region IElementType Members
 
-        public int ID
-        {
-            get { return 1; }
-        }
-
         public ElementDimensions ElementDimensions
         {
             get { return ElementDimensions.TwoD; }
@@ -188,7 +183,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
 
         #endregion
 
-        
+
         #region IFiniteElement Members
 
 
@@ -202,7 +197,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
 
         public void ResetMaterialModified()
         {
-            
+
         }
 
         #endregion
@@ -218,6 +213,47 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             throw new NotImplementedException();
         }
 
+        #endregion
+
+        #region Element Class members
+        public int ID { get; set; }
+        private readonly Dictionary<int, Node> nodesDictionary = new Dictionary<int, Node>();
+        public Dictionary<int, Node> NodesDictionary
+        {
+            get { return nodesDictionary; }
+        }
+        public IList<Node> Nodes
+        {
+            get { return nodesDictionary.Values.ToList<Node>(); }
+        }
+        public Subdomain Subdomain { get; set; }
+
+        #region Possibly useless code
+        private readonly Dictionary<DOFType, AbsorptionType> absorptions = new Dictionary<DOFType, AbsorptionType>();
+        //private readonly IList<Node> embeddedNodes = new List<Node>();
+
+        public Dictionary<DOFType, AbsorptionType> Absorptions
+        {
+            get { return absorptions; }
+        }
+
+        //public IList<Node> EmbeddedNodes
+        //{
+        //    get { return embeddedNodes; }
+        //}
+
+        public int[] DOFs { get; set; }
+
+        public void AddNode(Node node)
+        {
+            nodesDictionary.Add(node.ID, node);
+        }
+
+        public void AddNodes(IList<Node> nodes)
+        {
+            foreach (Node node in nodes) AddNode(node);
+        }
+        #endregion
         #endregion
     }
 }

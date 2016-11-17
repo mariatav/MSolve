@@ -145,7 +145,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
         public double QInv { get { return Cs + Porosity * Saturation / FluidBulkModulus + 
             (PoreA - Porosity) * Saturation / SolidBulkModulus; } }
 
-        protected double[,] GetCoordinates(Element element)
+        protected double[,] GetCoordinates(IFiniteElement element)
         {
             double[,] faXYZ = new double[dofTypes.Length, 3];
             for (int i = 0; i < dofTypes.Length; i++)
@@ -169,17 +169,17 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             get { return ElementDimensions.ThreeD; }
         }
 
-        public IList<IList<DOFType>> GetElementDOFTypes(Element element)
+        public IList<IList<DOFType>> GetElementDOFTypes(IFiniteElement element)
         {
             return dofTypes;
         }
 
-        public IList<Node> GetNodesForMatrixAssembly(Element element)
+        public IList<Node> GetNodesForMatrixAssembly(IFiniteElement element)
         {
             return element.Nodes;
         }
 
-        public virtual IMatrix2D<double> StiffnessMatrix(Element element)
+        public virtual IMatrix2D<double> StiffnessMatrix(IFiniteElement element)
         {
             double[, ,] afE = new double[iInt3, 6, 6];
             for (int i = 0; i < iInt3; i++)
@@ -199,7 +199,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             return dofEnumerator.GetTransformedMatrix(new SymmetricMatrix2D<double>(faK));
         }
 
-        public IMatrix2D<double> MassMatrix(Element element)
+        public IMatrix2D<double> MassMatrix(IFiniteElement element)
         {
             double[,] faXYZ = GetCoordinates(element);
             double[,] faDS = new double[iInt3, 24];
@@ -215,7 +215,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             return new SymmetricMatrix2D<double>(faM);
         }
 
-        public IMatrix2D<double> DampingMatrix(Element element)
+        public IMatrix2D<double> DampingMatrix(IFiniteElement element)
         {
             var m = MassMatrix(element);
             m.LinearCombination(new double[] { RayleighAlpha, RayleighBeta }, new IMatrix2D<double>[] { MassMatrix(element), StiffnessMatrix(element) });
@@ -310,7 +310,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
                 }
         }
 
-        public Tuple<double[], double[]> CalculateStresses(Element element, double[] localDisplacements, double[] localdDisplacements)
+        public Tuple<double[], double[]> CalculateStresses(IFiniteElement element, double[] localDisplacements, double[] localdDisplacements)
         {
             double[,] faXYZ = GetCoordinates(element);
             double[,] faDS = new double[iInt3, 24];
@@ -340,12 +340,12 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             return new Tuple<double[], double[]>(strains, materialStatesAtGaussPoints[materialStatesAtGaussPoints.Length - 1].Stresses.Data);
         }
 
-        public double[] CalculateForcesForLogging(Element element, double[] localDisplacements)
+        public double[] CalculateForcesForLogging(IFiniteElement element, double[] localDisplacements)
         {
             return CalculateForces(element, localDisplacements, new double[localDisplacements.Length]);
         }
 
-        public double[] CalculateForces(Element element, double[] localTotalDisplacements, double[] localDisplacements)
+        public double[] CalculateForces(IFiniteElement element, double[] localTotalDisplacements, double[] localDisplacements)
         {
             double[,] faStresses = new double[iInt3, 6];
             for (int i = 0; i < materialStatesAtGaussPoints.Length; i++)
@@ -389,7 +389,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             return totalForces;
         }
 
-        public double[] CalculateAccelerationForces(Element element, IList<MassAccelerationLoad> loads)
+        public double[] CalculateAccelerationForces(IFiniteElement element, IList<MassAccelerationLoad> loads)
         {
             Vector<double> accelerations = new Vector<double>(24);
             int index = 0;
@@ -466,7 +466,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             return totalForces;
         }
 
-        public double[] CalculateSolidForcesFromPorePressures(Element element, double[] porePressures)
+        public double[] CalculateSolidForcesFromPorePressures(IFiniteElement element, double[] porePressures)
         {
             double[] solidForces = new double[24];
             Matrix2D<double> Q = ((Matrix2D<double>)CouplingMatrix(element)).Transpose();
@@ -513,7 +513,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
 
         #region IPorousFiniteElement Members
 
-        public IMatrix2D<double> PermeabilityMatrix(Element element)
+        public IMatrix2D<double> PermeabilityMatrix(IFiniteElement element)
         {
             double[,] faXYZ = GetCoordinates(element);
             double[,] faDS = new double[iInt3, 24];
@@ -531,7 +531,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
         }
 
         // Rows are fluid DOFs and columns are solid DOFs
-        public IMatrix2D<double> CouplingMatrix(Element element)
+        public IMatrix2D<double> CouplingMatrix(IFiniteElement element)
         {
             double[,] faXYZ = GetCoordinates(element);
             double[,] faDS = new double[iInt3, 24];
@@ -549,7 +549,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             return new Matrix2D<double>(faQ);
         }
 
-        public IMatrix2D<double> SaturationMatrix(Element element)
+        public IMatrix2D<double> SaturationMatrix(IFiniteElement element)
         {
             double[,] faXYZ = GetCoordinates(element);
             double[,] faDS = new double[iInt3, 24];

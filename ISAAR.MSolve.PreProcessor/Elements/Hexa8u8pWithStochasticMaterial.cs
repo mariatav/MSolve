@@ -41,7 +41,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
         //    this.coefficientsProvider = coefficientsProvider;
         //}
 
-        public override IMatrix2D<double> StiffnessMatrix(Element element)
+        public override IMatrix2D<double> StiffnessMatrix(IFiniteElement element)
         {
             double[, ,] afE = new double[iInt3, 6, 6];
             int iPos = 0;
@@ -92,7 +92,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             return dofEnumerator.GetTransformedMatrix(new SymmetricMatrix2D<double>(faK));
         }
 
-        private double[] GetStochasticPoints(Element element, int iX, int iY, int iZ)
+        private double[] GetStochasticPoints(IFiniteElement element, int iX, int iY, int iZ)
         {
             // Calculate for element centroid
             double X = 0;

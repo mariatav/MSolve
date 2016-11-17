@@ -31,7 +31,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             set { dofEnumerator = value; }
         }
 
-        public IList<IList<DOFType>> GetElementDOFTypes(Element element)
+        public IList<IList<DOFType>> GetElementDOFTypes(IFiniteElement element)
         {
             if (element == null) return dofs;
 
@@ -61,7 +61,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             this.dofEnumerator = dofEnumerator;
         }
 
-        public IMatrix2D<double> MassMatrix(Element element)
+        public IMatrix2D<double> MassMatrix(IFiniteElement element)
         {
             return new SymmetricMatrix2D<double>(new double[] { massCoefficient, 0, 0,
                 massCoefficient, 0,
@@ -69,12 +69,12 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             });
         }
 
-        public IMatrix2D<double> StiffnessMatrix(Element element)
+        public IMatrix2D<double> StiffnessMatrix(IFiniteElement element)
         {
             return new SymmetricMatrix2D<double>(new double[6]);
         }
 
-        public IMatrix2D<double> DampingMatrix(Element element)
+        public IMatrix2D<double> DampingMatrix(IFiniteElement element)
         {
             return new SymmetricMatrix2D<double>(new double[6]);
         }
@@ -83,22 +83,22 @@ namespace ISAAR.MSolve.PreProcessor.Elements
         {
         }
 
-        public Tuple<double[], double[]> CalculateStresses(Element element, double[] localDisplacements, double[] localdDisplacements)
+        public Tuple<double[], double[]> CalculateStresses(IFiniteElement element, double[] localDisplacements, double[] localdDisplacements)
         {
             return new Tuple<double[], double[]>(new double[6], new double[6]);
         }
 
-        public double[] CalculateForcesForLogging(Element element, double[] localDisplacements)
+        public double[] CalculateForcesForLogging(IFiniteElement element, double[] localDisplacements)
         {
             return CalculateForces(element, localDisplacements, new double[localDisplacements.Length]);
         }
 
-        public double[] CalculateForces(Element element, double[] localDisplacements, double[] localdDisplacements)
+        public double[] CalculateForces(IFiniteElement element, double[] localDisplacements, double[] localdDisplacements)
         {
             return new double[6];
         }
 
-        public double[] CalculateAccelerationForces(Element element, IList<MassAccelerationLoad> loads)
+        public double[] CalculateAccelerationForces(IFiniteElement element, IList<MassAccelerationLoad> loads)
         {
             Vector<double> accelerations = new Vector<double>(3);
             IMatrix2D<double> massMatrix = MassMatrix(element);

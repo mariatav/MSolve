@@ -113,7 +113,7 @@ namespace ISAAR.MSolve.Problems
         private Sparse2D<double> BuildQFromSubdomain(Subdomain subdomain)
         {
             Sparse2D<double> qSubdomain = new Sparse2D<double>(subdomain.TotalDOFs, subdomain.TotalDOFs);
-            foreach (Element element in subdomain.ElementsDictionary.Values)
+            foreach (IFiniteElement element in subdomain.ElementsDictionary.Values)
             {
                 if (!(element.ElementType is IPorousFiniteElement)) continue;
 

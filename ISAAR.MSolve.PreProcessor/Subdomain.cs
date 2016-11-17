@@ -11,7 +11,7 @@ namespace ISAAR.MSolve.PreProcessor
     public class Subdomain
     {
         //private readonly IList<EmbeddedNode> embeddedNodes = new List<EmbeddedNode>();
-        private readonly Dictionary<int, Element> elementsDictionary = new Dictionary<int, Element>();
+        private readonly Dictionary<int, IFiniteElement> elementsDictionary = new Dictionary<int, IFiniteElement>();
         private readonly Dictionary<int, Node> nodesDictionary = new Dictionary<int, Node>();
         private readonly Dictionary<int, Dictionary<DOFType, int>> nodalDOFsDictionary = new Dictionary<int, Dictionary<DOFType, int>>();
         private readonly Dictionary<int, Dictionary<DOFType, int>> globalNodalDOFsDictionary = new Dictionary<int, Dictionary<DOFType, int>>();
@@ -23,7 +23,7 @@ namespace ISAAR.MSolve.PreProcessor
         //    get { return embeddedNodes; }
         //}
 
-        public Dictionary<int, Element> ElementsDictionary
+        public Dictionary<int, IFiniteElement> ElementsDictionary
         {
             get { return elementsDictionary; }
         }
@@ -78,7 +78,7 @@ namespace ISAAR.MSolve.PreProcessor
         {
             TotalDOFs = 0;
             Dictionary<int, List<DOFType>> nodalDOFTypesDictionary = new Dictionary<int, List<DOFType>>();
-            foreach (Element element in elementsDictionary.Values)
+            foreach (IFiniteElement element in elementsDictionary.Values)
             {
                 for (int i = 0; i < element.Nodes.Count; i++)
                 {
@@ -150,7 +150,7 @@ namespace ISAAR.MSolve.PreProcessor
         {
             List<int> nodeIDs = new List<int>();
             Dictionary<int, Node> nodes = new Dictionary<int, Node>();
-            foreach (Element element in elementsDictionary.Values)
+            foreach (IFiniteElement element in elementsDictionary.Values)
                 foreach (Node node in element.Nodes)
                 {
                     nodeIDs.Add(node.ID);
@@ -208,7 +208,7 @@ namespace ISAAR.MSolve.PreProcessor
             return new[] { nodex1y1z1, nodex2y1z1, nodex1y2z1, nodex2y2z1, nodex1y1z2, nodex2y1z2, nodex1y2z2, nodex2y2z2 };
         }
 
-        public double[] GetLocalVectorFromGlobal(Element element, double[] globalVector)
+        public double[] GetLocalVectorFromGlobal(IFiniteElement element, double[] globalVector)
         {
             int localDOFs = 0;
             foreach (IList<DOFType> dofs in element.ElementType.DOFEnumerator.GetDOFTypes(element)) localDOFs += dofs.Count;
@@ -228,7 +228,7 @@ namespace ISAAR.MSolve.PreProcessor
             return localVector;
         }
 
-        public void AddLocalVectorToGlobal(Element element, double[] localVector, double[] globalVector)
+        public void AddLocalVectorToGlobal(IFiniteElement element, double[] localVector, double[] globalVector)
         {
             int pos = 0;
             for (int i = 0; i < element.ElementType.DOFEnumerator.GetDOFTypes(element).Count; i++)
@@ -246,7 +246,7 @@ namespace ISAAR.MSolve.PreProcessor
         public IVector<double> GetRHSFromSolution(IVector<double> solution, IVector<double> dSolution)
         {
             Vector<double> forces = new Vector<double>(TotalDOFs);
-            foreach (Element element in elementsDictionary.Values)
+            foreach (IFiniteElement element in elementsDictionary.Values)
             {
                 double[] localSolution = GetLocalVectorFromGlobal(element, ((Vector<double>)solution).Data);
                 double[] localdSolution = GetLocalVectorFromGlobal(element, ((Vector<double>)dSolution).Data);
@@ -261,18 +261,18 @@ namespace ISAAR.MSolve.PreProcessor
 
         public void SaveMaterialState()
         {
-            foreach (Element element in elementsDictionary.Values) element.ElementType.SaveMaterialState();
+            foreach (IFiniteElement element in elementsDictionary.Values) element.ElementType.SaveMaterialState();
         }
 
         public void ResetMaterialsModifiedProperty()
         {
             this.MaterialsModified = false;
-            foreach (Element element in elementsDictionary.Values) element.ElementType.ResetMaterialModified();
+            foreach (IFiniteElement element in elementsDictionary.Values) element.ElementType.ResetMaterialModified();
         }
 
         public void ClearMaterialStresses()
         {
-            foreach (Element element in elementsDictionary.Values) element.ElementType.ClearMaterialStresses();
+            foreach (IFiniteElement element in elementsDictionary.Values) element.ElementType.ClearMaterialStresses();
         }
     }
 }

@@ -9,12 +9,12 @@ namespace ISAAR.MSolve.PreProcessor
 {
     public class GenericDOFEnumerator : IFiniteElementDOFEnumerator
     {
-        public IList<IList<DOFType>> GetDOFTypes(Element element)
+        public IList<IList<DOFType>> GetDOFTypes(IFiniteElement element)
         {
             return element.ElementType.GetElementDOFTypes(element);
         }
 
-        public IList<IList<DOFType>> GetDOFTypesForDOFEnumeration(Element element)
+        public IList<IList<DOFType>> GetDOFTypesForDOFEnumeration(IFiniteElement element)
         {
             return element.ElementType.GetElementDOFTypes(element);
         }
@@ -24,7 +24,7 @@ namespace ISAAR.MSolve.PreProcessor
             return matrix;
         }
 
-        public IList<Node> GetNodesForMatrixAssembly(Element element)
+        public IList<Node> GetNodesForMatrixAssembly(IFiniteElement element)
         {
             return element.Nodes;
         }

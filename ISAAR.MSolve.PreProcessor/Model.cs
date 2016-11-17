@@ -13,7 +13,7 @@ namespace ISAAR.MSolve.PreProcessor
         private int totalDOFs = 0;
         private readonly Dictionary<int, Node> nodesDictionary = new Dictionary<int, Node>();
         //private readonly IList<EmbeddedNode> embeddedNodes = new List<EmbeddedNode>();
-        private readonly Dictionary<int, Element> elementsDictionary = new Dictionary<int, Element>();
+        private readonly Dictionary<int, IFiniteElement> elementsDictionary = new Dictionary<int, IFiniteElement>();
         private readonly Dictionary<int, Subdomain> subdomainsDictionary = new Dictionary<int, Subdomain>();
         private readonly Dictionary<int, Cluster> clustersDictionary = new Dictionary<int, Cluster>();
         private readonly Dictionary<int, Dictionary<DOFType, int>> nodalDOFsDictionary = new Dictionary<int, Dictionary<DOFType, int>>();
@@ -34,7 +34,7 @@ namespace ISAAR.MSolve.PreProcessor
             get { return nodesDictionary; }
         }
 
-        public Dictionary<int, Element> ElementsDictionary
+        public Dictionary<int, IFiniteElement> ElementsDictionary
         {
             get { return elementsDictionary; }
         }
@@ -54,9 +54,9 @@ namespace ISAAR.MSolve.PreProcessor
             get { return nodesDictionary.Values.ToList<Node>(); }
         }
 
-        public IList<Element> Elements
+        public IList<IFiniteElement> Elements
         {
-            get { return elementsDictionary.Values.ToList<Element>(); }
+            get { return elementsDictionary.Values.ToList<IFiniteElement>(); }
         }
 
         public IList<Subdomain> Subdomains
@@ -109,7 +109,7 @@ namespace ISAAR.MSolve.PreProcessor
         #region Data interconnection routines
         private void BuildElementDictionaryOfEachNode()
         {
-            foreach (Element element in elementsDictionary.Values)
+            foreach (IFiniteElement element in elementsDictionary.Values)
                 foreach (Node node in element.Nodes)
                     node.ElementsDictionary.Add(element.ID, element);
         }
@@ -117,7 +117,7 @@ namespace ISAAR.MSolve.PreProcessor
         private void BuildSubdomainOfEachElement()
         {
             foreach (Subdomain subdomain in subdomainsDictionary.Values)
-                foreach (Element element in subdomain.ElementsDictionary.Values)
+                foreach (IFiniteElement element in subdomain.ElementsDictionary.Values)
                     element.Subdomain = subdomain;
         }
 
@@ -148,7 +148,7 @@ namespace ISAAR.MSolve.PreProcessor
         private void BuildNonConformingNodes()
         {
             List<int> subIDs = new List<int>();
-            foreach (Element element in elementsDictionary.Values)
+            foreach (IFiniteElement element in elementsDictionary.Values)
             {
                 subIDs.Clear();
 
@@ -166,7 +166,7 @@ namespace ISAAR.MSolve.PreProcessor
         {
             totalDOFs = 0;
             Dictionary<int, List<DOFType>> nodalDOFTypesDictionary = new Dictionary<int, List<DOFType>>();
-            foreach (Element element in elementsDictionary.Values)
+            foreach (IFiniteElement element in elementsDictionary.Values)
             {
                 for (int i = 0; i < element.Nodes.Count; i++)
                 {
@@ -250,7 +250,7 @@ namespace ISAAR.MSolve.PreProcessor
             if (massAccelerationLoads.Count < 1) return;
 
             foreach (Subdomain subdomain in subdomainsDictionary.Values)
-                foreach (Element element in subdomain.ElementsDictionary.Values)
+                foreach (IFiniteElement element in subdomain.ElementsDictionary.Values)
                     subdomain.AddLocalVectorToGlobal(element,
                         element.ElementType.CalculateAccelerationForces(element, massAccelerationLoads),
                         subdomain.Forces);
@@ -272,7 +272,7 @@ namespace ISAAR.MSolve.PreProcessor
                     m.Add(new MassAccelerationLoad() { Amount = l[timeStep], DOF = l.DOF });
 
                 foreach (Subdomain subdomain in subdomainsDictionary.Values)
-                    foreach (Element element in subdomain.ElementsDictionary.Values)
+                    foreach (IFiniteElement element in subdomain.ElementsDictionary.Values)
                         subdomain.AddLocalVectorToGlobal(element,
                             element.ElementType.CalculateAccelerationForces(element, m), subdomain.Forces);
             }

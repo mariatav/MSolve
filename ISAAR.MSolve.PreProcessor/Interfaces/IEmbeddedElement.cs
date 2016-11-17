@@ -9,7 +9,7 @@ namespace ISAAR.MSolve.PreProcessor.Interfaces
     public interface IEmbeddedElement
     {
         IList<EmbeddedNode> EmbeddedNodes { get; }
-        Dictionary<DOFType, int> GetInternalNodalDOFs(Element element, Node node);
-        double[] GetLocalDOFValues(Element hostElement, double[] hostDOFValues);
+        Dictionary<DOFType, int> GetInternalNodalDOFs(IFiniteElement element, Node node);
+        double[] GetLocalDOFValues(IFiniteElement hostElement, double[] hostDOFValues);
     }
 }

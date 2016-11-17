@@ -11,7 +11,7 @@ namespace ISAAR.MSolve.PreProcessor.Embedding
 {
     public class SuperElementDOF
     {
-        public Element Element { get; set; }
+        public IFiniteElement Element { get; set; }
         public Node HostNode { get; set; }
         public Node EmbeddedNode { get; set; }
         public DOFType DOF { get; set; }
@@ -50,14 +50,14 @@ namespace ISAAR.MSolve.PreProcessor.Embedding
     public class ElementEmbedder : IFiniteElementDOFEnumerator
     {
         private readonly Model model;
-        private readonly Element embeddedElement;
+        private readonly IFiniteElement embeddedElement;
         private readonly IEmbeddedDOFInHostTransformationVector transformation;
         private readonly Dictionary<SuperElementDOF, int> superElementMap = new Dictionary<SuperElementDOF, int>();
         private readonly Dictionary<EmbeddedNode, Dictionary<DOFType, int>> dofToHostMapping = new Dictionary<EmbeddedNode, Dictionary<DOFType, int>>();
         private Matrix2D<double> transformationMatrix;
         //private bool isElementEmbedded = false;
 
-        public ElementEmbedder(Model model, Element embeddedElement, IEmbeddedDOFInHostTransformationVector transformation)
+        public ElementEmbedder(Model model, IFiniteElement embeddedElement, IEmbeddedDOFInHostTransformationVector transformation)
         {
             this.model = model;
             this.embeddedElement = embeddedElement;
@@ -218,7 +218,7 @@ namespace ISAAR.MSolve.PreProcessor.Embedding
             return (transformationMatrix * new Vector<double>(vector)).Data;
         }
 
-        public IList<IList<DOFType>> GetDOFTypes(Element element)
+        public IList<IList<DOFType>> GetDOFTypes(IFiniteElement element)
         {
             //return element.ElementType.GetElementDOFTypes(element);
 
@@ -245,7 +245,7 @@ namespace ISAAR.MSolve.PreProcessor.Embedding
             return dofs;
         }
 
-        public IList<IList<DOFType>> GetDOFTypesForDOFEnumeration(Element element)
+        public IList<IList<DOFType>> GetDOFTypesForDOFEnumeration(IFiniteElement element)
         {
             //if (embeddedElement != element) throw new ArgumentException();
 
@@ -286,7 +286,7 @@ namespace ISAAR.MSolve.PreProcessor.Embedding
             return dofs;
         }
 
-        public IList<Node> GetNodesForMatrixAssembly(Element element)
+        public IList<Node> GetNodesForMatrixAssembly(IFiniteElement element)
         {
             var nodes = new List<Node>();
             Node currentNode = null;

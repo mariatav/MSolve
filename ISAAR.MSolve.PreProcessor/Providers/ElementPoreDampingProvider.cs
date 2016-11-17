@@ -19,7 +19,7 @@ namespace ISAAR.MSolve.PreProcessor.Providers
             this.dampingCoefficient = dampingCoefficient;
         }
 
-        private IMatrix2D<double> PorousMatrix(Element element)
+        private IMatrix2D<double> PorousMatrix(IFiniteElement element)
         {
             IPorousFiniteElement elementType = (IPorousFiniteElement)element.ElementType;
             int dofs = 0;
@@ -74,7 +74,7 @@ namespace ISAAR.MSolve.PreProcessor.Providers
 
         #region IElementMatrixProvider Members
 
-        public IMatrix2D<double> Matrix(Element element)
+        public IMatrix2D<double> Matrix(IFiniteElement element)
         {
             if (element.ElementType is IPorousFiniteElement)
                 return PorousMatrix(element);

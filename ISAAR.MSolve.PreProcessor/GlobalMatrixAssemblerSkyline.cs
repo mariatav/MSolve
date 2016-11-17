@@ -14,7 +14,7 @@ namespace ISAAR.MSolve.PreProcessor
         private static int[] CalculateRowIndex(Subdomain subdomain, Dictionary<int, Dictionary<DOFType, int>> nodalDOFsDictionary)
         {
             int[] rowHeights = new int[subdomain.TotalDOFs];
-            foreach (Element element in subdomain.ElementsDictionary.Values)
+            foreach (IFiniteElement element in subdomain.ElementsDictionary.Values)
             {
                 int minDOF = Int32.MaxValue;
                 //foreach (Node node in element.NodesDictionary.Values.Where(e => e.EmbeddedInElement == null))
@@ -57,7 +57,7 @@ namespace ISAAR.MSolve.PreProcessor
             times.Add("rowIndexCalculation", DateTime.Now - totalStart);
             times.Add("element", TimeSpan.Zero);
             times.Add("addition", TimeSpan.Zero);
-            foreach (Element element in subdomain.ElementsDictionary.Values)
+            foreach (IFiniteElement element in subdomain.ElementsDictionary.Values)
             {
                 var isEmbeddedElement = element.ElementType is IEmbeddedElement;
                 var elStart = DateTime.Now;

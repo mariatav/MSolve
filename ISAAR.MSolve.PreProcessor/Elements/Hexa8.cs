@@ -99,7 +99,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
         public double RayleighAlpha { get; set; }
         public double RayleighBeta { get; set; }
 
-        protected double[,] GetCoordinates(Element element)
+        protected double[,] GetCoordinates(IFiniteElement element)
         {
             double[,] faXYZ = new double[dofTypes.Length, 3];
             for (int i = 0; i < dofTypes.Length; i++)
@@ -111,7 +111,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             return faXYZ;
         }
 
-        protected double[,] GetCoordinatesTranspose(Element element)
+        protected double[,] GetCoordinatesTranspose(IFiniteElement element)
         {
             double[,] faXYZ = new double[3, dofTypes.Length];
             for (int i = 0; i < dofTypes.Length; i++)
@@ -135,12 +135,12 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             get { return ElementDimensions.ThreeD; }
         }
 
-        public virtual IList<IList<DOFType>> GetElementDOFTypes(Element element)
+        public virtual IList<IList<DOFType>> GetElementDOFTypes(IFiniteElement element)
         {
             return dofTypes;
         }
 
-        public IList<Node> GetNodesForMatrixAssembly(Element element)
+        public IList<Node> GetNodesForMatrixAssembly(IFiniteElement element)
         {
             return element.Nodes;
         }
@@ -376,7 +376,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             return integrationPoints;
         }
 
-        public virtual IMatrix2D<double> StiffnessMatrix(Element element)
+        public virtual IMatrix2D<double> StiffnessMatrix(IFiniteElement element)
         {
             double[,] coordinates = this.GetCoordinates(element);
             GaussLegendrePoint3D[] integrationPoints = this.CalculateGaussMatrices(coordinates);
@@ -411,7 +411,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             return stiffnessMatrix;
         }
 
-        public IMatrix2D<double> CalculateConsistentMass(Element element)
+        public IMatrix2D<double> CalculateConsistentMass(IFiniteElement element)
         {
             double[,] coordinates = this.GetCoordinates(element);
             GaussLegendrePoint3D[] integrationPoints = this.CalculateGaussMatrices(coordinates);
@@ -447,12 +447,12 @@ namespace ISAAR.MSolve.PreProcessor.Elements
 
         #endregion
 
-        public virtual IMatrix2D<double> MassMatrix(Element element)
+        public virtual IMatrix2D<double> MassMatrix(IFiniteElement element)
         {
             return CalculateConsistentMass(element);
         }
 
-        public virtual IMatrix2D<double> DampingMatrix(Element element)
+        public virtual IMatrix2D<double> DampingMatrix(IFiniteElement element)
         {
             var m = MassMatrix(element);
             m.LinearCombination(new double[] { RayleighAlpha, RayleighBeta }, new IMatrix2D<double>[] { MassMatrix(element), StiffnessMatrix(element) });
@@ -461,7 +461,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             //return new SymmetricMatrix2D<double>(faD);
         }
 
-        public Tuple<double[], double[]> CalculateStresses(Element element, double[] localDisplacements, double[] localdDisplacements)
+        public Tuple<double[], double[]> CalculateStresses(IFiniteElement element, double[] localDisplacements, double[] localdDisplacements)
         {
             double[,] faXYZ = GetCoordinates(element);
             double[,] faDS = new double[iInt3, 24];
@@ -488,12 +488,12 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             return new Tuple<double[], double[]>(strains, materialStatesAtGaussPoints[materialStatesAtGaussPoints.Length - 1].Stresses.Data);
         }
 
-        public double[] CalculateForcesForLogging(Element element, double[] localDisplacements)
+        public double[] CalculateForcesForLogging(IFiniteElement element, double[] localDisplacements)
         {
             return CalculateForces(element, localDisplacements, new double[localDisplacements.Length]);
         }
 
-        public double[] CalculateForces(Element element, double[] localTotalDisplacements, double[] localdDisplacements)
+        public double[] CalculateForces(IFiniteElement element, double[] localTotalDisplacements, double[] localdDisplacements)
         {
             //Vector<double> d = new Vector<double>(localdDisplacements.Length);
             //for (int i = 0; i < localdDisplacements.Length; i++) 
@@ -520,7 +520,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             return faForces;
         }
 
-        public double[] CalculateAccelerationForces(Element element, IList<MassAccelerationLoad> loads)
+        public double[] CalculateAccelerationForces(IFiniteElement element, IList<MassAccelerationLoad> loads)
         {
             Vector<double> accelerations = new Vector<double>(24);
             IMatrix2D<double> massMatrix = MassMatrix(element);
@@ -578,7 +578,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
 
         #region IEmbeddedHostElement Members
 
-        public EmbeddedNode BuildHostElementEmbeddedNode(Element element, Node node, IEmbeddedDOFInHostTransformationVector transformationVector)
+        public EmbeddedNode BuildHostElementEmbeddedNode(IFiniteElement element, Node node, IEmbeddedDOFInHostTransformationVector transformationVector)
         {
             var points = GetNaturalCoordinates(element, node);
             if (points.Length == 0) return null;
@@ -590,7 +590,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             return embeddedNode;
         }
 
-        public double[] GetShapeFunctionsForNode(Element element, EmbeddedNode node)
+        public double[] GetShapeFunctionsForNode(IFiniteElement element, EmbeddedNode node)
         {
             double[,] elementCoordinates = GetCoordinatesTranspose(element);
             var shapeFunctions = CalcH8Shape(node.Coordinates[0], node.Coordinates[1], node.Coordinates[2]);
@@ -627,7 +627,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             //    fXiM * fEtaP * fZetaP };
         }
 
-        private double[] GetNaturalCoordinates(Element element, Node node)
+        private double[] GetNaturalCoordinates(IFiniteElement element, Node node)
         {
             double[] mins = new double[] { element.Nodes[0].X, element.Nodes[0].Y, element.Nodes[0].Z };
             double[] maxes = new double[] { element.Nodes[0].X, element.Nodes[0].Y, element.Nodes[0].Z };

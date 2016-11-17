@@ -12,7 +12,7 @@ namespace ISAAR.MSolve.PreProcessor.Providers
     {
         #region IElementMatrixProvider Members
 
-        public IMatrix2D<double> Matrix(Element element)
+        public IMatrix2D<double> Matrix(IFiniteElement element)
         {
             ////return element.K;
             //foreach (var node in element.EmbeddedNodes)

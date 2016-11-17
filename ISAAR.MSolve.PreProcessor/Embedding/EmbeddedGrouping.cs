@@ -9,14 +9,14 @@ namespace ISAAR.MSolve.PreProcessor.Embedding
     public class EmbeddedGrouping
     {
         private readonly Model model;
-        private readonly IEnumerable<Element> hostGroup;
-        private readonly IEnumerable<Element> embeddedGroup;
+        private readonly IEnumerable<IFiniteElement> hostGroup;
+        private readonly IEnumerable<IFiniteElement> embeddedGroup;
         private readonly bool hasEmbeddedRotations = false;
 
-        public IEnumerable<Element> HostGroup { get { return hostGroup; } }
-        public IEnumerable<Element> EmbeddedGroup { get { return embeddedGroup; } }
+        public IEnumerable<IFiniteElement> HostGroup { get { return hostGroup; } }
+        public IEnumerable<IFiniteElement> EmbeddedGroup { get { return embeddedGroup; } }
 
-        public EmbeddedGrouping(Model model, IEnumerable<Element> hostGroup, IEnumerable<Element> embeddedGroup, bool hasEmbeddedRotations)
+        public EmbeddedGrouping(Model model, IEnumerable<IFiniteElement> hostGroup, IEnumerable<IFiniteElement> embeddedGroup, bool hasEmbeddedRotations)
         {
             this.model = model;
             this.hostGroup = hostGroup;
@@ -35,7 +35,7 @@ namespace ISAAR.MSolve.PreProcessor.Embedding
             UpdateNodesBelongingToEmbeddedElements();
         }
 
-        public EmbeddedGrouping(Model model, IEnumerable<Element> hostGroup, IEnumerable<Element> embeddedGroup)
+        public EmbeddedGrouping(Model model, IEnumerable<IFiniteElement> hostGroup, IEnumerable<IFiniteElement> embeddedGroup)
             : this(model, hostGroup, embeddedGroup, false)
         {
         }

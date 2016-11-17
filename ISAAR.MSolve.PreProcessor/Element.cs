@@ -13,7 +13,7 @@ namespace ISAAR.MSolve.PreProcessor
         Compressional = 1,
         Shear = 2
     }
-
+    /*
     public class Element
     {
         private readonly Dictionary<int, Node> nodesDictionary = new Dictionary<int, Node>();
@@ -66,4 +66,5 @@ namespace ISAAR.MSolve.PreProcessor
         //    get { return ElementType.MassMatrix(this); }
         //}
     }
+    */
 }

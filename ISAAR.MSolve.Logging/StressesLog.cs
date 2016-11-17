@@ -7,16 +7,17 @@ using ISAAR.MSolve.Matrices.Interfaces;
 using System.Diagnostics;
 using ISAAR.MSolve.PreProcessor;
 using ISAAR.MSolve.Matrices;
+using ISAAR.MSolve.PreProcessor.Interfaces;
 
 namespace ISAAR.MSolve.Logging
 {
     public class StressesLog : IAnalyzerLog
     {
-        private readonly Element[] elements;
+        private readonly IFiniteElement[] elements;
         private readonly Dictionary<int, double[]> strains = new Dictionary<int, double[]>();
         private readonly Dictionary<int, double[]> stresses = new Dictionary<int, double[]>();
 
-        public StressesLog(Element[] elements)
+        public StressesLog(IFiniteElement[] elements)
         {
             this.elements = elements;
         }
@@ -48,7 +49,7 @@ namespace ISAAR.MSolve.Logging
             StartTime = startTime;
             EndTime = endTime;
             double[] solution = ((Vector<double>)solutionVector).Data;
-            foreach (Element e in elements)
+            foreach (IFiniteElement e in elements)
             {
                 var localVector = e.Subdomain.GetLocalVectorFromGlobal(e, solution);
                 var strainStresses = e.ElementType.CalculateStresses(e, localVector, new double[e.ElementType.GetElementDOFTypes(e).SelectMany(x => x).Count()]);

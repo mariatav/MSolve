@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ISAAR.MSolve.PreProcessor.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,7 +21,7 @@ namespace ISAAR.MSolve.PreProcessor
     public class Node
     {
         private readonly List<DOFType> constraints = new List<DOFType>();
-        private readonly Dictionary<int, Element> elementsDictionary = new Dictionary<int, Element>();
+        private readonly Dictionary<int, IFiniteElement> elementsDictionary = new Dictionary<int, IFiniteElement>();
         private readonly Dictionary<int, Subdomain> subdomainsDictionary = new Dictionary<int, Subdomain>();
         private readonly Dictionary<int, Subdomain> nonMatchingSubdomainsDictionary = new Dictionary<int, Subdomain>();
 
@@ -70,7 +71,7 @@ namespace ISAAR.MSolve.PreProcessor
             get { return constraints; }
         }
 
-        public Dictionary<int, Element> ElementsDictionary
+        public Dictionary<int, IFiniteElement> ElementsDictionary
         {
             get { return elementsDictionary; }
         }
@@ -93,7 +94,7 @@ namespace ISAAR.MSolve.PreProcessor
 
         public void BuildSubdomainDictionary()
         {
-            foreach (Element element in elementsDictionary.Values)
+            foreach (IFiniteElement element in elementsDictionary.Values)
                 if (!subdomainsDictionary.ContainsKey(element.Subdomain.ID))
                     subdomainsDictionary.Add(element.Subdomain.ID, element.Subdomain);
         }

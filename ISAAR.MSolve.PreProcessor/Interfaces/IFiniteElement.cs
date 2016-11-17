@@ -20,16 +20,16 @@ namespace ISAAR.MSolve.PreProcessor.Interfaces
         int ID { get; }
         ElementDimensions ElementDimensions { get; }
         IFiniteElementDOFEnumerator DOFEnumerator { get; set; }
-        IList<IList<DOFType>> GetElementDOFTypes(Element element);
+        IList<IList<DOFType>> GetElementDOFTypes(IFiniteElement element);
         bool MaterialModified { get; }
-        IMatrix2D<double> StiffnessMatrix(Element element);
-        IMatrix2D<double> MassMatrix(Element element);
-        IMatrix2D<double> DampingMatrix(Element element);
+        IMatrix2D<double> StiffnessMatrix(IFiniteElement element);
+        IMatrix2D<double> MassMatrix(IFiniteElement element);
+        IMatrix2D<double> DampingMatrix(IFiniteElement element);
         void ResetMaterialModified();
-        Tuple<double[], double[]> CalculateStresses(Element element, double[] localDisplacements, double[] localdDisplacements);
-        double[] CalculateForces(Element element, double[] localDisplacements, double[] localdDisplacements);
-        double[] CalculateForcesForLogging(Element element, double[] localDisplacements);
-        double[] CalculateAccelerationForces(Element element, IList<MassAccelerationLoad> loads);
+        Tuple<double[], double[]> CalculateStresses(IFiniteElement element, double[] localDisplacements, double[] localdDisplacements);
+        double[] CalculateForces(IFiniteElement element, double[] localDisplacements, double[] localdDisplacements);
+        double[] CalculateForcesForLogging(IFiniteElement element, double[] localDisplacements);
+        double[] CalculateAccelerationForces(IFiniteElement element, IList<MassAccelerationLoad> loads);
         void SaveMaterialState();
         void ClearMaterialState();
 

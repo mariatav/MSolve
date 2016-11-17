@@ -8,6 +8,6 @@ namespace ISAAR.MSolve.PreProcessor.Interfaces
 {
     public interface IElementMatrixProvider
     {
-        IMatrix2D<double> Matrix(Element element);
+        IMatrix2D<double> Matrix(IFiniteElement element);
     }
 }

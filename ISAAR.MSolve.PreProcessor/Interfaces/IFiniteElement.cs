@@ -18,6 +18,10 @@ namespace ISAAR.MSolve.PreProcessor.Interfaces
     public interface IFiniteElement
     {
         int ID { get; }
+        Dictionary<int, Node> NodesDictionary { get; }
+        IList<Node> Nodes { get; }
+        IList<Node> EmbeddedNodes { get; }//QUESTION: do we need to implement this in the general finite element interface?? only Hexa8 seems to need it
+        Subdomain Subdomain { get; set; }
         ElementDimensions ElementDimensions { get; }
         IFiniteElementDOFEnumerator DOFEnumerator { get; set; }
         IList<IList<DOFType>> GetElementDOFTypes(IFiniteElement element);

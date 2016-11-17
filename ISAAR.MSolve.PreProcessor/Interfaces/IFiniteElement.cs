@@ -23,7 +23,7 @@ namespace ISAAR.MSolve.PreProcessor.Interfaces
         Subdomain Subdomain { get; set; }
         ElementDimensions ElementDimensions { get; }
         IFiniteElementDOFEnumerator DOFEnumerator { get; set; }
-        IList<IList<DOFType>> GetElementDOFTypes(IFiniteElement element);
+        IList<IList<DOFType>> GetElementDOFTypes();
         bool MaterialModified { get; }
         IMatrix2D<double> StiffnessMatrix(IFiniteElement element);
         IMatrix2D<double> MassMatrix(IFiniteElement element);

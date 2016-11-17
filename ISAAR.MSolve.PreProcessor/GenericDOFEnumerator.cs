@@ -11,12 +11,12 @@ namespace ISAAR.MSolve.PreProcessor
     {
         public IList<IList<DOFType>> GetDOFTypes(IFiniteElement element)
         {
-            return element.GetElementDOFTypes(element);
+            return element.GetElementDOFTypes();
         }
 
         public IList<IList<DOFType>> GetDOFTypesForDOFEnumeration(IFiniteElement element)
         {
-            return element.GetElementDOFTypes(element);
+            return element.GetElementDOFTypes();
         }
 
         public IMatrix2D<double> GetTransformedMatrix(IMatrix2D<double> matrix)

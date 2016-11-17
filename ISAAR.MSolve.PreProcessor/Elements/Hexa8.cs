@@ -129,7 +129,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             get { return ElementDimensions.ThreeD; }
         }
 
-        public virtual IList<IList<DOFType>> GetElementDOFTypes(IFiniteElement element)
+        public virtual IList<IList<DOFType>> GetElementDOFTypes()
         {
             return dofTypes;
         }

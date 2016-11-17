@@ -44,7 +44,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             get { return ElementDimensions.TwoD; }
         }
 
-        public IList<IList<DOFType>> GetElementDOFTypes(IFiniteElement element)
+        public IList<IList<DOFType>> GetElementDOFTypes()
         {
             return dofs;
         }

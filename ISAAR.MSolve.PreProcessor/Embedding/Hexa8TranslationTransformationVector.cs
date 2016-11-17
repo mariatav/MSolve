@@ -15,7 +15,7 @@ namespace ISAAR.MSolve.PreProcessor.Embedding
 
         public IList<IList<DOFType>> GetDOFTypesOfHost(EmbeddedNode node)
         {
-            return node.EmbeddedInElement.GetElementDOFTypes(node.EmbeddedInElement);
+            return node.EmbeddedInElement.GetElementDOFTypes();
         }
 
         public double[][] GetTransformationVector(EmbeddedNode node)

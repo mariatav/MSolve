@@ -144,7 +144,7 @@ namespace ISAAR.MSolve.Logging
 
                 index = 0;
                 var elementVector = e.GetLocalDOFValues(element, superElementVector);
-                var elementDOFs = element.GetElementDOFTypes(element);
+                var elementDOFs = element.GetElementDOFTypes();
                 for (int i = 0; i < elementDOFs.Count; i++)
                     for (int j = 0; j < elementDOFs[i].Count; j++)
                     {

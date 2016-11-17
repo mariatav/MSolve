@@ -164,7 +164,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             get { return ElementDimensions.ThreeD; }
         }
 
-        public IList<IList<DOFType>> GetElementDOFTypes(IFiniteElement element)
+        public IList<IList<DOFType>> GetElementDOFTypes()
         {
             return dofTypes;
         }

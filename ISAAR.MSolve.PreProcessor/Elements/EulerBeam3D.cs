@@ -356,7 +356,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
         //    return d;
         //}
 
-        public IList<IList<DOFType>> GetElementDOFTypes(IFiniteElement element)
+        public IList<IList<DOFType>> GetElementDOFTypes()
         {
             if (dofsWhenNoRotations == null) return dofs;
             return dofsWhenNoRotations;

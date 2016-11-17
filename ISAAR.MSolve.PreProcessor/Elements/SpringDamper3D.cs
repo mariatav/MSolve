@@ -38,12 +38,13 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             set { dofEnumerator = value; }
         }
 
-        public IList<IList<DOFType>> GetElementDOFTypes(IFiniteElement element)
+        public IList<IList<DOFType>> GetElementDOFTypes()
         {
-            if (element == null) return dofs;
+            //QUESTION: Is it right to comment out the code below??
+            //if (element == null) return dofs;
 
             var d = new List<IList<DOFType>>();
-            foreach (var node in element.Nodes)
+            foreach (var node in this.Nodes)
             {
                 var nodeDofs = new List<DOFType>();
                 nodeDofs.AddRange(nodalDOFTypes);

@@ -54,7 +54,7 @@ namespace ISAAR.MSolve.PreProcessor.Embedding
                 foreach (var node in embeddedElement.Nodes)
                 {
                     var embeddedNodes = hostGroup
-                        .Select(e => ((IEmbeddedHostElement)e).BuildHostElementEmbeddedNode(e, node, transformer))
+                        .Select(e => ((IEmbeddedHostElement)e).BuildHostElementEmbeddedNode(node, transformer))
                         .Where(e => e != null);
                     foreach (var embeddedNode in embeddedNodes)
                     {

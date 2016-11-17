@@ -572,13 +572,13 @@ namespace ISAAR.MSolve.PreProcessor.Elements
 
         #region IEmbeddedHostElement Members
 
-        public EmbeddedNode BuildHostElementEmbeddedNode(IFiniteElement element, Node node, IEmbeddedDOFInHostTransformationVector transformationVector)
+        public EmbeddedNode BuildHostElementEmbeddedNode(Node node, IEmbeddedDOFInHostTransformationVector transformationVector)
         {
-            var points = GetNaturalCoordinates(element, node);
+            var points = GetNaturalCoordinates(this, node);
             if (points.Length == 0) return null;
 
-            element.EmbeddedNodes.Add(node);
-            var embeddedNode = new EmbeddedNode(node, element, transformationVector.GetDependentDOFTypes);
+            this.embeddedNodes.Add(node);
+            var embeddedNode = new EmbeddedNode(node, this, transformationVector.GetDependentDOFTypes);
             for (int i = 0; i < points.Length; i++)
                 embeddedNode.Coordinates.Add(points[i]);
             return embeddedNode;
@@ -703,7 +703,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
 
         #region Possibly useless code
         private readonly Dictionary<DOFType, AbsorptionType> absorptions = new Dictionary<DOFType, AbsorptionType>();
-        //private readonly IList<Node> embeddedNodes = new List<Node>();
+        private readonly IList<Node> embeddedNodes = new List<Node>();
 
         public Dictionary<DOFType, AbsorptionType> Absorptions
         {

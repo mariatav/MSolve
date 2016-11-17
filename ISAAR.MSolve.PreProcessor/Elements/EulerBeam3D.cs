@@ -705,17 +705,17 @@ namespace ISAAR.MSolve.PreProcessor.Elements
 
         #region IEmbeddedElement Members
 
-        public Dictionary<DOFType, int> GetInternalNodalDOFs(IFiniteElement element, Node node)
+        public Dictionary<DOFType, int> GetInternalNodalDOFs(Node node)
         {
             int index = 0;
-            foreach (var elementNode in element.Nodes)
+            foreach (var elementNode in this.Nodes)
             {
                 if (node.ID == elementNode.ID)
                     break;
                 index++;
             }
             if (index >= 2)
-                throw new ArgumentException(String.Format("GetInternalNodalDOFs: Node {0} not found in element {1}.", node.ID, element.ID));
+                throw new ArgumentException(String.Format("GetInternalNodalDOFs: Node {0} not found in element {1}.", node.ID, this.ID));
 
             return index == 0 ? new Dictionary<DOFType, int>() {
                 { DOFType.X, 0 }, { DOFType.Y, 1 }, { DOFType.Z, 2 }, { DOFType.RotX, 3 }, { DOFType.RotY, 4 }, { DOFType.RotZ, 5 } } :

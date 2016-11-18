@@ -49,9 +49,9 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             return dofs;
         }
 
-        public IList<Node> GetNodesForMatrixAssembly(IFiniteElement element)
+        public IList<Node> GetNodesForMatrixAssembly()//QUESTION: is this useless???
         {
-            return element.Nodes;
+            return this.Nodes;
         }
 
         //[  c^2*E*A/L+12*s^2*E*I/L^3,  s*E*A/L*c-12*c*E*I/L^3*s,              -6*E*I/L^2*s, -c^2*E*A/L-12*s^2*E*I/L^3, -s*E*A/L*c+12*c*E*I/L^3*s,              -6*E*I/L^2*s]

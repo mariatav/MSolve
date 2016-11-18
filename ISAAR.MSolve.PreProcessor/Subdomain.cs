@@ -253,7 +253,7 @@ namespace ISAAR.MSolve.PreProcessor
                 element.CalculateStresses(localSolution, localdSolution);
                 if (element.MaterialModified)
                     element.Subdomain.MaterialsModified = true;
-                double[] f = element.CalculateForces(element, localSolution, localdSolution);
+                double[] f = element.CalculateForces(localSolution, localdSolution);
                 AddLocalVectorToGlobal(element, f, forces.Data);
             }
             return forces;

@@ -86,10 +86,10 @@ namespace ISAAR.MSolve.PreProcessor.Elements
 
         public double[] CalculateForcesForLogging(IFiniteElement element, double[] localDisplacements)
         {
-            return CalculateForces(element, localDisplacements, new double[localDisplacements.Length]);
+            return CalculateForces(localDisplacements, new double[localDisplacements.Length]);
         }
 
-        public double[] CalculateForces(IFiniteElement element, double[] localDisplacements, double[] localdDisplacements)
+        public double[] CalculateForces(double[] localDisplacements, double[] localdDisplacements)
         {
             return new double[6];
         }

@@ -634,7 +634,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             return forces;
         }
 
-        public double[] CalculateForces(IFiniteElement element, double[] localDisplacements, double[] localdDisplacements)
+        public double[] CalculateForces(double[] localDisplacements, double[] localdDisplacements)
         {
             IMatrix2D<double> stiffnessMatrix = StiffnessMatrix();
             Vector<double> disps = new Vector<double>(localDisplacements.Length);

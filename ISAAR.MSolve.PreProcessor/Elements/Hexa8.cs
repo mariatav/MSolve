@@ -484,10 +484,10 @@ namespace ISAAR.MSolve.PreProcessor.Elements
 
         public double[] CalculateForcesForLogging(IFiniteElement element, double[] localDisplacements)
         {
-            return CalculateForces(element, localDisplacements, new double[localDisplacements.Length]);
+            return CalculateForces(localDisplacements, new double[localDisplacements.Length]);
         }
 
-        public double[] CalculateForces(IFiniteElement element, double[] localTotalDisplacements, double[] localdDisplacements)
+        public double[] CalculateForces(double[] localTotalDisplacements, double[] localdDisplacements)
         {
             //Vector<double> d = new Vector<double>(localdDisplacements.Length);
             //for (int i = 0; i < localdDisplacements.Length; i++) 
@@ -500,7 +500,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             for (int i = 0; i < materialStatesAtGaussPoints.Length; i++)
                 for (int j = 0; j < 6; j++) faStresses[i, j] = materialStatesAtGaussPoints[i].Stresses[j];
 
-            double[,] faXYZ = GetCoordinates(element);
+            double[,] faXYZ = GetCoordinates(this);
             double[,] faDS = new double[iInt3, 24];
             double[,] faS = new double[iInt3, 8];
             double[,,] faB = new double[iInt3, 24, 6];

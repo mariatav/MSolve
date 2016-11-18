@@ -10,6 +10,6 @@ namespace ISAAR.MSolve.PreProcessor.Interfaces
     {
         IMatrix2D<double> PermeabilityMatrix();
         IMatrix2D<double> CouplingMatrix();
-        IMatrix2D<double> SaturationMatrix(IFiniteElement element);
+        IMatrix2D<double> SaturationMatrix();
     }
 }

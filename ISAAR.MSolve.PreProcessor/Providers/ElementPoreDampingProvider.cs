@@ -28,7 +28,7 @@ namespace ISAAR.MSolve.PreProcessor.Providers
             SymmetricMatrix2D<double> poreDamping = new SymmetricMatrix2D<double>(dofs);
 
             IMatrix2D<double> damping = solidDampingProvider.Matrix(element);
-            IMatrix2D<double> saturation = elementType.SaturationMatrix(element);
+            IMatrix2D<double> saturation = elementType.SaturationMatrix();
             IMatrix2D<double> coupling = elementType.CouplingMatrix();
 
             int matrixRow = 0;

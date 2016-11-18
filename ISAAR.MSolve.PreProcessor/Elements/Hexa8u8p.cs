@@ -556,9 +556,9 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             return new Matrix2D<double>(faQ);
         }
 
-        public IMatrix2D<double> SaturationMatrix(IFiniteElement element)
+        public IMatrix2D<double> SaturationMatrix()
         {
-            double[,] faXYZ = GetCoordinates(element);
+            double[,] faXYZ = GetCoordinates(this);
             double[,] faDS = new double[iInt3, 24];
             double[,] faS = new double[iInt3, 8];
             double[,,] faB = new double[iInt3, 24, 6];

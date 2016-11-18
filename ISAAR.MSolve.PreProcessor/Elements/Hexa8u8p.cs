@@ -520,9 +520,9 @@ namespace ISAAR.MSolve.PreProcessor.Elements
 
         #region IPorousFiniteElement Members
 
-        public IMatrix2D<double> PermeabilityMatrix(IFiniteElement element)
+        public IMatrix2D<double> PermeabilityMatrix()
         {
-            double[,] faXYZ = GetCoordinates(element);
+            double[,] faXYZ = GetCoordinates(this);
             double[,] faDS = new double[iInt3, 24];
             double[,] faS = new double[iInt3, 8];
             double[,,] faB = new double[iInt3, 24, 6];

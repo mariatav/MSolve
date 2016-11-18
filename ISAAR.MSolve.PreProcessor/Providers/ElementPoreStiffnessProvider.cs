@@ -28,7 +28,7 @@ namespace ISAAR.MSolve.PreProcessor.Providers
             SymmetricMatrix2D<double> poreStiffness = new SymmetricMatrix2D<double>(dofs);
 
             IMatrix2D<double> stiffness = solidStiffnessProvider.Matrix(element);
-            IMatrix2D<double> permeability = elementType.PermeabilityMatrix(element);
+            IMatrix2D<double> permeability = elementType.PermeabilityMatrix();
 
             int matrixRow = 0;
             int solidRow = 0;

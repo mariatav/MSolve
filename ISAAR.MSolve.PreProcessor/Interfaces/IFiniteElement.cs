@@ -27,7 +27,7 @@ namespace ISAAR.MSolve.PreProcessor.Interfaces
         bool MaterialModified { get; }
         IMatrix2D<double> StiffnessMatrix();
         IMatrix2D<double> MassMatrix();
-        IMatrix2D<double> DampingMatrix(IFiniteElement element);
+        IMatrix2D<double> DampingMatrix();
         void ResetMaterialModified();
         Tuple<double[], double[]> CalculateStresses(double[] localDisplacements, double[] localdDisplacements);
         double[] CalculateForces(double[] localDisplacements, double[] localdDisplacements);

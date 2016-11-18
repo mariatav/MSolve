@@ -14,7 +14,7 @@ namespace ISAAR.MSolve.PreProcessor.Providers
         public IMatrix2D<double> Matrix(IFiniteElement element)
         {
             //return element.M;
-            return element.DampingMatrix(element);
+            return element.DampingMatrix();
         }
 
         #endregion

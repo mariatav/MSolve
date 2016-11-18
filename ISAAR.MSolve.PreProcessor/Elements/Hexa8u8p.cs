@@ -222,7 +222,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             return new SymmetricMatrix2D<double>(faM);
         }
 
-        public IMatrix2D<double> DampingMatrix(IFiniteElement element)
+        public IMatrix2D<double> DampingMatrix()
         {
             var m = this.MassMatrix();
             m.LinearCombination(new double[] { RayleighAlpha, RayleighBeta }, new IMatrix2D<double>[] { this.MassMatrix(), StiffnessMatrix() });

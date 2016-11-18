@@ -70,7 +70,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             return new SymmetricMatrix2D<double>(new double[6]);
         }
 
-        public IMatrix2D<double> DampingMatrix(IFiniteElement element)
+        public IMatrix2D<double> DampingMatrix()
         {
             return new SymmetricMatrix2D<double>(new double[6]);
         }

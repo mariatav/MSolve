@@ -137,7 +137,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
                 0 });
         }
 
-        public IMatrix2D<double> DampingMatrix(IFiniteElement element)
+        public IMatrix2D<double> DampingMatrix()
         {
             throw new NotImplementedException();
         }

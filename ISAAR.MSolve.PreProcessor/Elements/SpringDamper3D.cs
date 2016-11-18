@@ -97,7 +97,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             });
         }
 
-        public IMatrix2D<double> DampingMatrix(IFiniteElement element)
+        public IMatrix2D<double> DampingMatrix()
         {
             double x = (dampingDirections == SpringDirections.X || dampingDirections == SpringDirections.XY || dampingDirections == SpringDirections.XZ || dampingDirections == SpringDirections.XYZ) ? dampingCoefficient : 0;
             double y = (dampingDirections == SpringDirections.Y || dampingDirections == SpringDirections.XY || dampingDirections == SpringDirections.YZ || dampingDirections == SpringDirections.XYZ) ? dampingCoefficient : 0;

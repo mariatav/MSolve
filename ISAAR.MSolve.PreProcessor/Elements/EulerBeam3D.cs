@@ -611,7 +611,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             return dofEnumerator.GetTransformedMatrix(new SymmetricMatrix2D<double>(rotTransformation.Transpose() * beamTransformation.Transpose() * massMatrix.ToMatrix2D() * beamTransformation * rotTransformation));
         }
 
-        public IMatrix2D<double> DampingMatrix(IFiniteElement element)
+        public IMatrix2D<double> DampingMatrix()
         {
             var m = this.MassMatrix();
             m.LinearCombination(new double[] { RayleighAlpha, RayleighBeta }, new IMatrix2D<double>[] { this.MassMatrix(), StiffnessMatrix() });

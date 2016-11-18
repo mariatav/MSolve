@@ -128,8 +128,8 @@ namespace ISAAR.MSolve.PreProcessor
                     }
                     dofsDictionary.Add(dofType, dofID);
                 }
-                
-                nodalDOFsDictionary.Add(node.ID, dofsDictionary); 
+
+                nodalDOFsDictionary.Add(node.ID, dofsDictionary);
             }
             forces = new double[TotalDOFs];
         }
@@ -139,8 +139,8 @@ namespace ISAAR.MSolve.PreProcessor
             foreach (int nodeID in nodalDOFsDictionary.Keys)
             {
                 Dictionary<DOFType, int> dofTypes = nodalDOFsDictionary[nodeID];
-                Dictionary<DOFType, int> globalDOFTypes = new Dictionary<DOFType,int>(dofTypes.Count);
-                foreach (DOFType dofType in dofTypes.Keys) 
+                Dictionary<DOFType, int> globalDOFTypes = new Dictionary<DOFType, int>(dofTypes.Count);
+                foreach (DOFType dofType in dofTypes.Keys)
                     globalDOFTypes.Add(dofType, glodalDOFsDictionary[nodeID][dofType]);
                 globalNodalDOFsDictionary.Add(nodeID, globalDOFTypes);
             }
@@ -250,8 +250,8 @@ namespace ISAAR.MSolve.PreProcessor
             {
                 double[] localSolution = GetLocalVectorFromGlobal(element, ((Vector<double>)solution).Data);
                 double[] localdSolution = GetLocalVectorFromGlobal(element, ((Vector<double>)dSolution).Data);
-                element.CalculateStresses(element, localSolution, localdSolution);
-                if (element.MaterialModified) 
+                element.CalculateStresses(localSolution, localdSolution);
+                if (element.MaterialModified)
                     element.Subdomain.MaterialsModified = true;
                 double[] f = element.CalculateForces(element, localSolution, localdSolution);
                 AddLocalVectorToGlobal(element, f, forces.Data);

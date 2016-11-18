@@ -29,7 +29,7 @@ namespace ISAAR.MSolve.PreProcessor.Interfaces
         IMatrix2D<double> MassMatrix(IFiniteElement element);
         IMatrix2D<double> DampingMatrix(IFiniteElement element);
         void ResetMaterialModified();
-        Tuple<double[], double[]> CalculateStresses(IFiniteElement element, double[] localDisplacements, double[] localdDisplacements);
+        Tuple<double[], double[]> CalculateStresses(double[] localDisplacements, double[] localdDisplacements);
         double[] CalculateForces(IFiniteElement element, double[] localDisplacements, double[] localdDisplacements);
         double[] CalculateForcesForLogging(IFiniteElement element, double[] localDisplacements);
         double[] CalculateAccelerationForces(IFiniteElement element, IList<MassAccelerationLoad> loads);

@@ -618,7 +618,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             return m;
         }
 
-        public Tuple<double[], double[]> CalculateStresses(IFiniteElement element, double[] localDisplacements, double[] localdDisplacements)
+        public Tuple<double[], double[]> CalculateStresses(double[] localDisplacements, double[] localdDisplacements)
         {
             return new Tuple<double[], double[]>(new double[6], new double[6]);
             //throw new NotImplementedException();

@@ -100,7 +100,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             }
         }
 
-        private void CalculateRotTranformation(IFiniteElement element)
+        private void CalculateRotTranformation()
         {
             if (rotNodes[0] == null && rotNodes[1] == null)
             {
@@ -174,24 +174,24 @@ namespace ISAAR.MSolve.PreProcessor.Elements
 
                 rotDifsX[i] = new double[]
                 {
-                    rotNodes[i][0].X - element.Nodes[i].X,
-                    rotNodes[i][1].X - element.Nodes[i].X,
-                    rotNodes[i][2].X - element.Nodes[i].X,
-                    rotNodes[i][3].X - element.Nodes[i].X
+                    rotNodes[i][0].X - this.Nodes[i].X,
+                    rotNodes[i][1].X - this.Nodes[i].X,
+                    rotNodes[i][2].X - this.Nodes[i].X,
+                    rotNodes[i][3].X - this.Nodes[i].X
                 };
                 rotDifsY[i] = new double[]
                 {
-                    rotNodes[i][0].Y - element.Nodes[i].Y,
-                    rotNodes[i][1].Y - element.Nodes[i].Y,
-                    rotNodes[i][2].Y - element.Nodes[i].Y,
-                    rotNodes[i][3].Y - element.Nodes[i].Y
+                    rotNodes[i][0].Y - this.Nodes[i].Y,
+                    rotNodes[i][1].Y - this.Nodes[i].Y,
+                    rotNodes[i][2].Y - this.Nodes[i].Y,
+                    rotNodes[i][3].Y - this.Nodes[i].Y
                 };
                 rotDifsZ[i] = new double[]
                 {
-                    rotNodes[i][0].Z - element.Nodes[i].Z,
-                    rotNodes[i][1].Z - element.Nodes[i].Z,
-                    rotNodes[i][2].Z - element.Nodes[i].Z,
-                    rotNodes[i][3].Z - element.Nodes[i].Z
+                    rotNodes[i][0].Z - this.Nodes[i].Z,
+                    rotNodes[i][1].Z - this.Nodes[i].Z,
+                    rotNodes[i][2].Z - this.Nodes[i].Z,
+                    rotNodes[i][3].Z - this.Nodes[i].Z
                 };
 
                 lengthsSquared[i] = new double[]
@@ -285,12 +285,13 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             get { return ElementDimensions.ThreeD; }
         }
 
-        private IList<Tuple<Node, IList<DOFType>>> GetDOFTypesInternal(IFiniteElement element)
+        private IList<Tuple<Node, IList<DOFType>>> GetDOFTypesInternal()
         {
-            if (element == null) throw new ArgumentException();
+            //QUESTION: Is it right to comment out the code below??
+            //if (element == null) throw new ArgumentException();
 
             var hostDOFTypes = new List<DOFType>();
-            foreach (var node in element.Nodes)
+            foreach (var node in this.Nodes)
             {
                 var embeddedNode = embeddedNodes.Where(x => x.Node == node).FirstOrDefault();
                 if (embeddedNode != null)
@@ -300,7 +301,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
 
             var d = new Dictionary<Node, IList<DOFType>>();
             var l = new List<Tuple<Node, IList<DOFType>>>();
-            foreach (var node in element.Nodes)
+            foreach (var node in this.Nodes)
             {
                 var embeddedNode = embeddedNodes.Where(x => x.Node == node).FirstOrDefault();
                 //if (node.EmbeddedInElement == null)
@@ -327,7 +328,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             //var hostDOFTypes = d.SelectMany(x => x.Value).Distinct();
             var uniqueDOFTypes = nodalDOFTypes.Except(hostDOFTypes).Union(hostDOFTypes.Except(nodalDOFTypes)).ToArray();
             if (uniqueDOFTypes.Length > 0)
-                foreach (var node in element.Nodes)
+                foreach (var node in this.Nodes)
                 {
                     //if (embeddedNodes.Where(x => x.Node == node).FirstOrDefault() != null)
                     //{
@@ -373,10 +374,10 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             //return d;
         }
 
-        public IList<Node> GetNodesForMatrixAssembly(IFiniteElement element)
+        public IList<Node> GetNodesForMatrixAssembly()//QUESTION: is this useless??
         {
             var nodes = new List<Node>();
-            var dofTypeDictionary = GetDOFTypesInternal(element);
+            var dofTypeDictionary = this.GetDOFTypesInternal();
             foreach (var dofType in dofTypeDictionary)
                 nodes.Add(dofType.Item1);
             //foreach (var dofType in dofTypeDictionary)
@@ -396,11 +397,11 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             return nodes;
         }
 
-        private IMatrix2D<double> StiffnessMatrixPure(IFiniteElement element)
+        private IMatrix2D<double> StiffnessMatrixPure()
         {
-            double x2 = Math.Pow(element.Nodes[1].X - element.Nodes[0].X, 2);
-            double y2 = Math.Pow(element.Nodes[1].Y - element.Nodes[0].Y, 2);
-            double z2 = Math.Pow(element.Nodes[1].Z - element.Nodes[0].Z, 2);
+            double x2 = Math.Pow(this.Nodes[1].X - this.Nodes[0].X, 2);
+            double y2 = Math.Pow(this.Nodes[1].Y - this.Nodes[0].Y, 2);
+            double z2 = Math.Pow(this.Nodes[1].Z - this.Nodes[0].Z, 2);
             double L = 1 / Math.Sqrt(x2 + y2 + z2);
             double L2 = L * L;
             double L3 = L2 * L;
@@ -427,9 +428,9 @@ namespace ISAAR.MSolve.PreProcessor.Elements
 
             var refx = new double[] { 1, 1, 1 };
             var beamTransformation = new Matrix2D<double>(12, 12);
-            beamTransformation[0, 0] = (element.Nodes[1].X - element.Nodes[0].X) * L;
-            beamTransformation[0, 1] = (element.Nodes[1].Y - element.Nodes[0].Y) * L;
-            beamTransformation[0, 2] = (element.Nodes[1].Z - element.Nodes[0].Z) * L;
+            beamTransformation[0, 0] = (this.Nodes[1].X - this.Nodes[0].X) * L;
+            beamTransformation[0, 1] = (this.Nodes[1].Y - this.Nodes[0].Y) * L;
+            beamTransformation[0, 2] = (this.Nodes[1].Z - this.Nodes[0].Z) * L;
 
             //beamTransformation[2, 0] = refx[0];
             //beamTransformation[2, 1] = refx[1];
@@ -542,8 +543,8 @@ namespace ISAAR.MSolve.PreProcessor.Elements
 
         public IMatrix2D<double> StiffnessMatrix()
         {
-            CalculateRotTranformation(this);
-            return dofEnumerator.GetTransformedMatrix(new SymmetricMatrix2D<double>(rotTransformation.Transpose() * ((SymmetricMatrix2D<double>)StiffnessMatrixPure(this)).ToMatrix2D() * rotTransformation));
+            this.CalculateRotTranformation();
+            return dofEnumerator.GetTransformedMatrix(new SymmetricMatrix2D<double>(rotTransformation.Transpose() * ((SymmetricMatrix2D<double>)StiffnessMatrixPure()).ToMatrix2D() * rotTransformation));
         }
 
         public IMatrix2D<double> MassMatrix()
@@ -606,7 +607,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
                     beamTransformation[i + 6, j + 6] = beamTransformation[i, j];
                     beamTransformation[i + 9, j + 9] = beamTransformation[i, j];
                 }
-            CalculateRotTranformation(this);
+            this.CalculateRotTranformation();
 
             return dofEnumerator.GetTransformedMatrix(new SymmetricMatrix2D<double>(rotTransformation.Transpose() * beamTransformation.Transpose() * massMatrix.ToMatrix2D() * beamTransformation * rotTransformation));
         }
@@ -626,8 +627,8 @@ namespace ISAAR.MSolve.PreProcessor.Elements
 
         public double[] CalculateForcesForLogging(double[] localDisplacements)
         {
-            CalculateRotTranformation(this);
-            IMatrix2D<double> stiffnessMatrix = StiffnessMatrixPure(this);
+            this.CalculateRotTranformation();
+            IMatrix2D<double> stiffnessMatrix = StiffnessMatrixPure();
             var disps = rotTransformation * new Vector<double>(localDisplacements);
             double[] forces = new double[disps.Length];
             stiffnessMatrix.Multiply(disps, forces);

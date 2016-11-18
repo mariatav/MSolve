@@ -117,8 +117,7 @@ namespace ISAAR.MSolve.Problems
             {
                 if (!(element is IPorousFiniteElement)) continue;
 
-                IPorousFiniteElement e = (IPorousFiniteElement)element;
-                IMatrix2D<double> q = e.CouplingMatrix(element);
+                IMatrix2D<double> q = ((IPorousFiniteElement)element).CouplingMatrix();
 
                 int iElementMatrixRow = 0;
                 for (int i = 0; i < element.DOFEnumerator.GetDOFTypes(element).Count; i++)

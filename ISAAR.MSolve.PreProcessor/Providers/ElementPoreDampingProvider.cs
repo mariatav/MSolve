@@ -29,7 +29,7 @@ namespace ISAAR.MSolve.PreProcessor.Providers
 
             IMatrix2D<double> damping = solidDampingProvider.Matrix(element);
             IMatrix2D<double> saturation = elementType.SaturationMatrix(element);
-            IMatrix2D<double> coupling = elementType.CouplingMatrix(element);
+            IMatrix2D<double> coupling = elementType.CouplingMatrix();
 
             int matrixRow = 0;
             int solidRow = 0;

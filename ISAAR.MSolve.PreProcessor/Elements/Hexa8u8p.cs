@@ -476,7 +476,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
         public double[] CalculateSolidForcesFromPorePressures(IFiniteElement element, double[] porePressures)
         {
             double[] solidForces = new double[24];
-            Matrix2D<double> Q = ((Matrix2D<double>)CouplingMatrix(element)).Transpose();
+            Matrix2D<double> Q = ((Matrix2D<double>)CouplingMatrix()).Transpose();
             Q.Multiply(new Vector<double>(porePressures), solidForces);
             return solidForces;
         }
@@ -538,9 +538,9 @@ namespace ISAAR.MSolve.PreProcessor.Elements
         }
 
         // Rows are fluid DOFs and columns are solid DOFs
-        public IMatrix2D<double> CouplingMatrix(IFiniteElement element)
+        public IMatrix2D<double> CouplingMatrix()
         {
-            double[,] faXYZ = GetCoordinates(element);
+            double[,] faXYZ = GetCoordinates(this);
             double[,] faDS = new double[iInt3, 24];
             double[,] faS = new double[iInt3, 8];
             double[,,] faB = new double[iInt3, 24, 6];

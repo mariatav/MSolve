@@ -206,9 +206,9 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             return dofEnumerator.GetTransformedMatrix(new SymmetricMatrix2D<double>(faK));
         }
 
-        public IMatrix2D<double> MassMatrix(IFiniteElement element)
+        public IMatrix2D<double> MassMatrix()
         {
-            double[,] faXYZ = GetCoordinates(element);
+            double[,] faXYZ = GetCoordinates(this);
             double[,] faDS = new double[iInt3, 24];
             double[,] faS = new double[iInt3, 8];
             double[,,] faB = new double[iInt3, 24, 6];
@@ -224,8 +224,8 @@ namespace ISAAR.MSolve.PreProcessor.Elements
 
         public IMatrix2D<double> DampingMatrix(IFiniteElement element)
         {
-            var m = MassMatrix(element);
-            m.LinearCombination(new double[] { RayleighAlpha, RayleighBeta }, new IMatrix2D<double>[] { MassMatrix(element), StiffnessMatrix() });
+            var m = this.MassMatrix();
+            m.LinearCombination(new double[] { RayleighAlpha, RayleighBeta }, new IMatrix2D<double>[] { this.MassMatrix(), StiffnessMatrix() });
             return m;
         }
 
@@ -416,7 +416,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
                         throw new InvalidOperationException("Cannot handle global acceleration for water pore when NOT translational.");
                 }
             double[] solidForces = new double[24];
-            MassMatrix(element).Multiply(accelerations, solidForces);
+            this.MassMatrix().Multiply(accelerations, solidForces);
 
             double[,] faXYZ = GetCoordinates(element);
             double[,] faDS = new double[iInt3, 24];

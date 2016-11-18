@@ -546,11 +546,11 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             return dofEnumerator.GetTransformedMatrix(new SymmetricMatrix2D<double>(rotTransformation.Transpose() * ((SymmetricMatrix2D<double>)StiffnessMatrixPure(this)).ToMatrix2D() * rotTransformation));
         }
 
-        public IMatrix2D<double> MassMatrix(IFiniteElement element)
+        public IMatrix2D<double> MassMatrix()
         {
-            double x2 = Math.Pow(element.Nodes[1].X - element.Nodes[0].X, 2);
-            double y2 = Math.Pow(element.Nodes[1].Y - element.Nodes[0].Y, 2);
-            double z2 = Math.Pow(element.Nodes[1].Z - element.Nodes[0].Z, 2);
+            double x2 = Math.Pow(this.Nodes[1].X - this.Nodes[0].X, 2);
+            double y2 = Math.Pow(this.Nodes[1].Y - this.Nodes[0].Y, 2);
+            double z2 = Math.Pow(this.Nodes[1].Z - this.Nodes[0].Z, 2);
             double L = 1d / Math.Sqrt(x2 + y2 + z2);
             //double halfMass = 0.5 * Density * SectionArea * L;
 
@@ -584,9 +584,9 @@ namespace ISAAR.MSolve.PreProcessor.Elements
 
             var refx = new double[] { 1, 1, 1 };
             var beamTransformation = new Matrix2D<double>(12, 12);
-            beamTransformation[0, 0] = (element.Nodes[1].X - element.Nodes[0].X) * L;
-            beamTransformation[0, 1] = (element.Nodes[1].Y - element.Nodes[0].Y) * L;
-            beamTransformation[0, 2] = (element.Nodes[1].Z - element.Nodes[0].Z) * L;
+            beamTransformation[0, 0] = (this.Nodes[1].X - this.Nodes[0].X) * L;
+            beamTransformation[0, 1] = (this.Nodes[1].Y - this.Nodes[0].Y) * L;
+            beamTransformation[0, 2] = (this.Nodes[1].Z - this.Nodes[0].Z) * L;
 
             beamTransformation[1, 0] = refx[1] * beamTransformation[0, 2] - refx[2] * beamTransformation[0, 1];
             beamTransformation[1, 1] = refx[2] * beamTransformation[0, 0] - refx[0] * beamTransformation[0, 2];
@@ -606,15 +606,15 @@ namespace ISAAR.MSolve.PreProcessor.Elements
                     beamTransformation[i + 6, j + 6] = beamTransformation[i, j];
                     beamTransformation[i + 9, j + 9] = beamTransformation[i, j];
                 }
-            CalculateRotTranformation(element);
+            CalculateRotTranformation(this);
 
             return dofEnumerator.GetTransformedMatrix(new SymmetricMatrix2D<double>(rotTransformation.Transpose() * beamTransformation.Transpose() * massMatrix.ToMatrix2D() * beamTransformation * rotTransformation));
         }
 
         public IMatrix2D<double> DampingMatrix(IFiniteElement element)
         {
-            var m = MassMatrix(element);
-            m.LinearCombination(new double[] { RayleighAlpha, RayleighBeta }, new IMatrix2D<double>[] { MassMatrix(element), StiffnessMatrix() });
+            var m = this.MassMatrix();
+            m.LinearCombination(new double[] { RayleighAlpha, RayleighBeta }, new IMatrix2D<double>[] { this.MassMatrix(), StiffnessMatrix() });
             return m;
         }
 
@@ -649,7 +649,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
         public double[] CalculateAccelerationForces(IFiniteElement element, IList<MassAccelerationLoad> loads)
         {
             Vector<double> accelerations = new Vector<double>(noOfDOFs);
-            IMatrix2D<double> massMatrix = MassMatrix(element);
+            IMatrix2D<double> massMatrix = this.MassMatrix();
 
             foreach (MassAccelerationLoad load in loads)
             {

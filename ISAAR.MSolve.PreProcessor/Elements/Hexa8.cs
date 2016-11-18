@@ -441,15 +441,15 @@ namespace ISAAR.MSolve.PreProcessor.Elements
 
         #endregion
 
-        public virtual IMatrix2D<double> MassMatrix(IFiniteElement element)
+        public virtual IMatrix2D<double> MassMatrix()
         {
-            return CalculateConsistentMass(element);
+            return CalculateConsistentMass(this);
         }
 
         public virtual IMatrix2D<double> DampingMatrix(IFiniteElement element)
         {
-            var m = MassMatrix(element);
-            m.LinearCombination(new double[] { RayleighAlpha, RayleighBeta }, new IMatrix2D<double>[] { MassMatrix(element), StiffnessMatrix() });
+            var m = this.MassMatrix();
+            m.LinearCombination(new double[] { RayleighAlpha, RayleighBeta }, new IMatrix2D<double>[] { this.MassMatrix(), StiffnessMatrix() });
             return m;
             //double[] faD = new double[300];
             //return new SymmetricMatrix2D<double>(faD);
@@ -517,7 +517,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
         public double[] CalculateAccelerationForces(IFiniteElement element, IList<MassAccelerationLoad> loads)
         {
             Vector<double> accelerations = new Vector<double>(24);
-            IMatrix2D<double> massMatrix = MassMatrix(element);
+            IMatrix2D<double> massMatrix = this.MassMatrix();
 
             foreach (MassAccelerationLoad load in loads)
             {

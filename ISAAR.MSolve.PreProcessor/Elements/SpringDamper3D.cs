@@ -86,7 +86,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             });
         }
 
-        public IMatrix2D<double> MassMatrix(IFiniteElement element)
+        public IMatrix2D<double> MassMatrix()
         {
             return new SymmetricMatrix2D<double>(new double[] { 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 

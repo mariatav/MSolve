@@ -57,7 +57,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             this.dofEnumerator = dofEnumerator;
         }
 
-        public IMatrix2D<double> MassMatrix(IFiniteElement element)
+        public IMatrix2D<double> MassMatrix()
         {
             return new SymmetricMatrix2D<double>(new double[] { massCoefficient, 0, 0,
                 massCoefficient, 0,
@@ -97,7 +97,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
         public double[] CalculateAccelerationForces(IFiniteElement element, IList<MassAccelerationLoad> loads)
         {
             Vector<double> accelerations = new Vector<double>(3);
-            IMatrix2D<double> massMatrix = MassMatrix(element);
+            IMatrix2D<double> massMatrix = this.MassMatrix();
 
             foreach (MassAccelerationLoad load in loads)
             {

@@ -113,15 +113,15 @@ namespace ISAAR.MSolve.PreProcessor.Elements
         //[   70*c^2+54*s^2,          16*c*s,         -13*s*L, 140*c^2+156*s^2,         -16*c*s,          22*s*L]
         //[          16*c*s,   70*s^2+54*c^2,          13*c*L,         -16*c*s, 140*s^2+156*c^2,         -22*c*L]
         //[          13*s*L,         -13*c*L,          -3*L^2,          22*s*L,         -22*c*L,           4*L^2]
-        public IMatrix2D<double> MassMatrix(IFiniteElement element)
+        public IMatrix2D<double> MassMatrix()
         {
-            double x2 = Math.Pow(element.Nodes[1].X - element.Nodes[0].X, 2);
-            double y2 = Math.Pow(element.Nodes[1].Y - element.Nodes[0].Y, 2);
+            double x2 = Math.Pow(this.Nodes[1].X - this.Nodes[0].X, 2);
+            double y2 = Math.Pow(this.Nodes[1].Y - this.Nodes[0].Y, 2);
             double L = Math.Sqrt(x2 + y2);
             double L2 = L * L;
-            double c = (element.Nodes[1].X - element.Nodes[0].X) / L;
+            double c = (this.Nodes[1].X - this.Nodes[0].X) / L;
             double c2 = c * c;
-            double s = (element.Nodes[1].Y - element.Nodes[0].Y) / L;
+            double s = (this.Nodes[1].Y - this.Nodes[0].Y) / L;
             double s2 = s * s;
             double dAL420 = Density * SectionArea * L / 420;
 
@@ -160,7 +160,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
         public double[] CalculateAccelerationForces(IFiniteElement element, IList<MassAccelerationLoad> loads)
         {
             Vector<double> accelerations = new Vector<double>(6);
-            IMatrix2D<double> massMatrix = MassMatrix(element);
+            IMatrix2D<double> massMatrix = this.MassMatrix();
 
             int index = 0;
             foreach (MassAccelerationLoad load in loads)

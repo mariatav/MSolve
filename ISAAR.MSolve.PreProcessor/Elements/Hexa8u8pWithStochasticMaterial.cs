@@ -66,7 +66,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             {
                 faB = new double[iInt3, 24, 6];
                 faWeight = new double[iInt3];
-                double[,] faXYZ = GetCoordinates(this);
+                double[,] faXYZ = this.GetCoordinates();
                 double[,] faDS = new double[iInt3, 24];
                 double[,] faS = new double[iInt3, 8];
                 double[] faDetJ = new double[iInt3];

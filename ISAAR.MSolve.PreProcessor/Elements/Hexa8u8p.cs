@@ -157,14 +157,14 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             }
         }
 
-        protected double[,] GetCoordinates(IFiniteElement element)
+        protected double[,] GetCoordinates()
         {
             double[,] faXYZ = new double[dofTypes.Length, 3];
             for (int i = 0; i < dofTypes.Length; i++)
             {
-                faXYZ[i, 0] = element.Nodes[i].X;
-                faXYZ[i, 1] = element.Nodes[i].Y;
-                faXYZ[i, 2] = element.Nodes[i].Z;
+                faXYZ[i, 0] = this.Nodes[i].X;
+                faXYZ[i, 1] = this.Nodes[i].Y;
+                faXYZ[i, 2] = this.Nodes[i].Z;
             }
             return faXYZ;
         }
@@ -181,9 +181,9 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             return dofTypes;
         }
 
-        public IList<Node> GetNodesForMatrixAssembly(IFiniteElement element)
+        public IList<Node> GetNodesForMatrixAssembly()//QUESTION: is this useless??
         {
-            return element.Nodes;
+            return this.Nodes;
         }
 
         public virtual IMatrix2D<double> StiffnessMatrix()
@@ -193,7 +193,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
                 for (int j = 0; j < 6; j++)
                     for (int k = 0; k < 6; k++)
                         afE[i, j, k] = ((Matrix2D<double>)materialStatesAtGaussPoints[i].ConstitutiveMatrix)[j, k];
-            double[,] faXYZ = GetCoordinates(this);
+            double[,] faXYZ = GetCoordinates();
             double[,] faDS = new double[iInt3, 24];
             double[,] faS = new double[iInt3, 8];
             double[,,] faB = new double[iInt3, 24, 6];
@@ -208,7 +208,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
 
         public IMatrix2D<double> MassMatrix()
         {
-            double[,] faXYZ = GetCoordinates(this);
+            double[,] faXYZ = this.GetCoordinates();
             double[,] faDS = new double[iInt3, 24];
             double[,] faS = new double[iInt3, 8];
             double[,,] faB = new double[iInt3, 24, 6];
@@ -319,7 +319,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
 
         public Tuple<double[], double[]> CalculateStresses(double[] localDisplacements, double[] localdDisplacements)
         {
-            double[,] faXYZ = GetCoordinates(this);
+            double[,] faXYZ = this.GetCoordinates();
             double[,] faDS = new double[iInt3, 24];
             double[,] faS = new double[iInt3, 8];
             double[,,] faB = new double[iInt3, 24, 6];
@@ -358,7 +358,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             for (int i = 0; i < materialStatesAtGaussPoints.Length; i++)
                 for (int j = 0; j < 6; j++) faStresses[i, j] = materialStatesAtGaussPoints[i].Stresses[j];
 
-            double[,] faXYZ = GetCoordinates(this);
+            double[,] faXYZ = this.GetCoordinates();
             double[,] faDS = new double[iInt3, 24];
             double[,] faS = new double[iInt3, 8];
             double[,,] faB = new double[iInt3, 24, 6];
@@ -418,7 +418,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             double[] solidForces = new double[24];
             this.MassMatrix().Multiply(accelerations, solidForces);
 
-            double[,] faXYZ = GetCoordinates(this);
+            double[,] faXYZ = this.GetCoordinates();
             double[,] faDS = new double[iInt3, 24];
             double[,] faS = new double[iInt3, 8];
             double[,,] faB = new double[iInt3, 24, 6];
@@ -522,7 +522,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
 
         public IMatrix2D<double> PermeabilityMatrix()
         {
-            double[,] faXYZ = GetCoordinates(this);
+            double[,] faXYZ = this.GetCoordinates();
             double[,] faDS = new double[iInt3, 24];
             double[,] faS = new double[iInt3, 8];
             double[,,] faB = new double[iInt3, 24, 6];
@@ -540,7 +540,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
         // Rows are fluid DOFs and columns are solid DOFs
         public IMatrix2D<double> CouplingMatrix()
         {
-            double[,] faXYZ = GetCoordinates(this);
+            double[,] faXYZ = this.GetCoordinates();
             double[,] faDS = new double[iInt3, 24];
             double[,] faS = new double[iInt3, 8];
             double[,,] faB = new double[iInt3, 24, 6];
@@ -558,7 +558,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
 
         public IMatrix2D<double> SaturationMatrix()
         {
-            double[,] faXYZ = GetCoordinates(this);
+            double[,] faXYZ = this.GetCoordinates();
             double[,] faDS = new double[iInt3, 24];
             double[,] faS = new double[iInt3, 8];
             double[,,] faB = new double[iInt3, 24, 6];

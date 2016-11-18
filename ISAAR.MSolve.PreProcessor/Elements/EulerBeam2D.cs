@@ -147,7 +147,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             throw new NotImplementedException();
         }
 
-        public double[] CalculateForcesForLogging(IFiniteElement element, double[] localDisplacements)
+        public double[] CalculateForcesForLogging(double[] localDisplacements)
         {
             return CalculateForces(localDisplacements, new double[localDisplacements.Length]);
         }

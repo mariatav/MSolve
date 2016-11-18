@@ -120,7 +120,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             return new Tuple<double[], double[]>(new double[6], new double[6]);
         }
 
-        public double[] CalculateForcesForLogging(IFiniteElement element, double[] localDisplacements)
+        public double[] CalculateForcesForLogging(double[] localDisplacements)
         {
             return CalculateForces(localDisplacements, new double[localDisplacements.Length]);
         }

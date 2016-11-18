@@ -48,7 +48,7 @@ namespace ISAAR.MSolve.Logging
             foreach (IFiniteElement e in elements)
             {
                 var localVector = e.Subdomain.GetLocalVectorFromGlobal(e, solution);
-                forces[e.ID] = e.CalculateForcesForLogging(e, localVector);
+                forces[e.ID] = e.CalculateForcesForLogging(localVector);
 
                 //for (int i = 0; i < stresses[e.ID].Length; i++)
                 //    Debug.Write(stresses[e.ID][i]);

@@ -624,10 +624,10 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             //throw new NotImplementedException();
         }
 
-        public double[] CalculateForcesForLogging(IFiniteElement element, double[] localDisplacements)
+        public double[] CalculateForcesForLogging(double[] localDisplacements)
         {
-            CalculateRotTranformation(element);
-            IMatrix2D<double> stiffnessMatrix = StiffnessMatrixPure(element);
+            CalculateRotTranformation(this);
+            IMatrix2D<double> stiffnessMatrix = StiffnessMatrixPure(this);
             var disps = rotTransformation * new Vector<double>(localDisplacements);
             double[] forces = new double[disps.Length];
             stiffnessMatrix.Multiply(disps, forces);

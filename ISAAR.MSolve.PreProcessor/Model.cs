@@ -241,7 +241,7 @@ namespace ISAAR.MSolve.PreProcessor
         {
             foreach (ElementMassAccelerationLoad load in elementMassAccelerationLoads)
                 load.Element.Subdomain.AddLocalVectorToGlobal(load.Element,
-                    load.Element.CalculateAccelerationForces(load.Element, massAccelerationLoads),
+                    load.Element.CalculateAccelerationForces(massAccelerationLoads),
                     load.Element.Subdomain.Forces);
         }
 
@@ -252,7 +252,7 @@ namespace ISAAR.MSolve.PreProcessor
             foreach (Subdomain subdomain in subdomainsDictionary.Values)
                 foreach (IFiniteElement element in subdomain.ElementsDictionary.Values)
                     subdomain.AddLocalVectorToGlobal(element,
-                        element.CalculateAccelerationForces(element, massAccelerationLoads),
+                        element.CalculateAccelerationForces(massAccelerationLoads),
                         subdomain.Forces);
         }
 
@@ -274,14 +274,14 @@ namespace ISAAR.MSolve.PreProcessor
                 foreach (Subdomain subdomain in subdomainsDictionary.Values)
                     foreach (IFiniteElement element in subdomain.ElementsDictionary.Values)
                         subdomain.AddLocalVectorToGlobal(element,
-                            element.CalculateAccelerationForces(element, m), subdomain.Forces);
+                            element.CalculateAccelerationForces(m), subdomain.Forces);
             }
 
             foreach (ElementMassAccelerationHistoryLoad load in elementMassAccelerationHistoryLoads)
             {
                 MassAccelerationLoad hl = new MassAccelerationLoad() { Amount = load.HistoryLoad[timeStep] * 564000000, DOF = load.HistoryLoad.DOF };
                 load.Element.Subdomain.AddLocalVectorToGlobal(load.Element,
-                    load.Element.CalculateAccelerationForces(load.Element, (new MassAccelerationLoad[] { hl }).ToList()),
+                    load.Element.CalculateAccelerationForces((new MassAccelerationLoad[] { hl }).ToList()),
                     load.Element.Subdomain.Forces);
             }
         }

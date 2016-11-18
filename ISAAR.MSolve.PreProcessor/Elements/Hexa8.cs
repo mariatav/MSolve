@@ -514,7 +514,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             return faForces;
         }
 
-        public double[] CalculateAccelerationForces(IFiniteElement element, IList<MassAccelerationLoad> loads)
+        public double[] CalculateAccelerationForces(IList<MassAccelerationLoad> loads)
         {
             Vector<double> accelerations = new Vector<double>(24);
             IMatrix2D<double> massMatrix = this.MassMatrix();

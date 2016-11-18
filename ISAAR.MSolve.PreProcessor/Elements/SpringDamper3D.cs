@@ -26,7 +26,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
         private readonly double springCoefficient, dampingCoefficient;
         private readonly SpringDirections springDirections, dampingDirections;
         private IFiniteElementDOFEnumerator dofEnumerator = new GenericDOFEnumerator();
-        
+
         public ElementDimensions ElementDimensions
         {
             get { return ElementDimensions.ThreeD; }
@@ -78,7 +78,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             double y = (springDirections == SpringDirections.Y || springDirections == SpringDirections.XY || springDirections == SpringDirections.YZ || springDirections == SpringDirections.XYZ) ? springCoefficient : 0;
             double z = (springDirections == SpringDirections.Z || springDirections == SpringDirections.XZ || springDirections == SpringDirections.YZ || springDirections == SpringDirections.XYZ) ? springCoefficient : 0;
             return new SymmetricMatrix2D<double>(new double[] { x, 0, 0, -x, 0, 0,
-                y, 0, 0, -y, 0, 
+                y, 0, 0, -y, 0,
                 z, 0, 0, -z,
                 x, 0, 0,
                 y, 0,
@@ -89,7 +89,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
         public IMatrix2D<double> MassMatrix()
         {
             return new SymmetricMatrix2D<double>(new double[] { 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 
+                0, 0, 0, 0, 0,
                 0, 0, 0, 0,
                 0, 0, 0,
                 0, 0,
@@ -103,7 +103,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             double y = (dampingDirections == SpringDirections.Y || dampingDirections == SpringDirections.XY || dampingDirections == SpringDirections.YZ || dampingDirections == SpringDirections.XYZ) ? dampingCoefficient : 0;
             double z = (dampingDirections == SpringDirections.Z || dampingDirections == SpringDirections.XZ || dampingDirections == SpringDirections.YZ || dampingDirections == SpringDirections.XYZ) ? dampingCoefficient : 0;
             return new SymmetricMatrix2D<double>(new double[] { x, 0, 0, -x, 0, 0,
-                y, 0, 0, -y, 0, 
+                y, 0, 0, -y, 0,
                 z, 0, 0, -z,
                 x, 0, 0,
                 y, 0,
@@ -134,7 +134,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             return forces;
         }
 
-        public double[] CalculateAccelerationForces(IFiniteElement element, IList<MassAccelerationLoad> loads)
+        public double[] CalculateAccelerationForces(IList<MassAccelerationLoad> loads)
         {
             return new double[6];
         }

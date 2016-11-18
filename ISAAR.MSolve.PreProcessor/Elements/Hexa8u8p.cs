@@ -396,7 +396,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             return totalForces;
         }
 
-        public double[] CalculateAccelerationForces(IFiniteElement element, IList<MassAccelerationLoad> loads)
+        public double[] CalculateAccelerationForces(IList<MassAccelerationLoad> loads)
         {
             Vector<double> accelerations = new Vector<double>(24);
             int index = 0;
@@ -418,7 +418,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             double[] solidForces = new double[24];
             this.MassMatrix().Multiply(accelerations, solidForces);
 
-            double[,] faXYZ = GetCoordinates(element);
+            double[,] faXYZ = GetCoordinates(this);
             double[,] faDS = new double[iInt3, 24];
             double[,] faS = new double[iInt3, 8];
             double[,,] faB = new double[iInt3, 24, 6];
@@ -446,11 +446,11 @@ namespace ISAAR.MSolve.PreProcessor.Elements
 
             bool[] impermeableDOFs = new bool[8];
             index = 0;
-            foreach (Node node in element.NodesDictionary.Values)
-                foreach (DOFType dofType in element.Subdomain.NodalDOFsDictionary[node.ID].Keys)
+            foreach (Node node in this.NodesDictionary.Values)
+                foreach (DOFType dofType in this.Subdomain.NodalDOFsDictionary[node.ID].Keys)
                 {
                     if (dofType != DOFType.Pore) continue;
-                    if (element.Subdomain.NodalDOFsDictionary[node.ID][dofType] < 0) impermeableDOFs[index] = true;
+                    if (this.Subdomain.NodalDOFsDictionary[node.ID][dofType] < 0) impermeableDOFs[index] = true;
                     index++;
                 }
 

@@ -157,7 +157,7 @@ namespace ISAAR.MSolve.PreProcessor.Elements
             throw new NotImplementedException();
         }
 
-        public double[] CalculateAccelerationForces(IFiniteElement element, IList<MassAccelerationLoad> loads)
+        public double[] CalculateAccelerationForces(IList<MassAccelerationLoad> loads)
         {
             Vector<double> accelerations = new Vector<double>(6);
             IMatrix2D<double> massMatrix = this.MassMatrix();

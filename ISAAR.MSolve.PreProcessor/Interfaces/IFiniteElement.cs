@@ -32,7 +32,7 @@ namespace ISAAR.MSolve.PreProcessor.Interfaces
         Tuple<double[], double[]> CalculateStresses(double[] localDisplacements, double[] localdDisplacements);
         double[] CalculateForces(double[] localDisplacements, double[] localdDisplacements);
         double[] CalculateForcesForLogging(double[] localDisplacements);
-        double[] CalculateAccelerationForces(IFiniteElement element, IList<MassAccelerationLoad> loads);
+        double[] CalculateAccelerationForces(IList<MassAccelerationLoad> loads);
         void SaveMaterialState();
         void ClearMaterialState();
 

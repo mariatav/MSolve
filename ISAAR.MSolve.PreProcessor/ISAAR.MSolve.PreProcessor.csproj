@@ -129,7 +129,7 @@
     <Compile Include="Providers\ElementPoreDampingProvider.cs" />
     <Compile Include="Providers\ElementPoreStiffnessProvider.cs" />
     <Compile Include="Providers\ElementStructuralMassProvider.cs" />
-    <Compile Include="Element.cs" />
+    <Compile Include="AbsorptionType.cs" />
     <Compile Include="Providers\ElementStructuralStiffnessProvider.cs" />
     <Compile Include="Elements\EulerBeam2D.cs" />
     <Compile Include="Elements\EulerBeam3D.cs" />

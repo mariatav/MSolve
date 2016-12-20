@@ -50,7 +50,6 @@ namespace ISAAR.MSolve.PreProcessor.Embedding
 
             foreach (var embeddedElement in embeddedGroup)
             {
-                var elType = (IEmbeddedElement)embeddedElement;
                 foreach (var node in embeddedElement.Nodes)
                 {
                     var embeddedNodes = hostGroup
@@ -58,8 +57,8 @@ namespace ISAAR.MSolve.PreProcessor.Embedding
                         .Where(e => e != null);
                     foreach (var embeddedNode in embeddedNodes)
                     {
-                        if (elType.EmbeddedNodes.Count(x => x.Node == embeddedNode.Node) == 0)
-                            elType.EmbeddedNodes.Add(embeddedNode);
+                        if (((IEmbeddedElement)embeddedElement).EmbeddedNodes.Count(x => x.Node == embeddedNode.Node) == 0)
+                            ((IEmbeddedElement)embeddedElement).EmbeddedNodes.Add(embeddedNode);
 
                         // Update embedded node information for elements that are not inside the embedded group but contain an embedded node.
                         foreach (var element in model.Elements.Except(embeddedGroup))

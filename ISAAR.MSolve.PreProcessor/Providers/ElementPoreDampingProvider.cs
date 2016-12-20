@@ -21,26 +21,25 @@ namespace ISAAR.MSolve.PreProcessor.Providers
 
         private IMatrix2D<double> PorousMatrix(IFiniteElement element)
         {
-            IPorousFiniteElement elementType = (IPorousFiniteElement)element;
             int dofs = 0;
-            foreach (IList<DOFType> dofTypes in elementType.DOFEnumerator.GetDOFTypes(element))
+            foreach (IList<DOFType> dofTypes in ((IPorousFiniteElement)element).DOFEnumerator.GetDOFTypes(element))
                 foreach (DOFType dofType in dofTypes) dofs++;
             SymmetricMatrix2D<double> poreDamping = new SymmetricMatrix2D<double>(dofs);
 
             IMatrix2D<double> damping = solidDampingProvider.Matrix(element);
-            IMatrix2D<double> saturation = elementType.SaturationMatrix();
-            IMatrix2D<double> coupling = elementType.CouplingMatrix();
+            IMatrix2D<double> saturation = ((IPorousFiniteElement)element).SaturationMatrix();
+            IMatrix2D<double> coupling = ((IPorousFiniteElement)element).CouplingMatrix();
 
             int matrixRow = 0;
             int solidRow = 0;
             int fluidRow = 0;
-            foreach (IList<DOFType> dofTypesRow in elementType.DOFEnumerator.GetDOFTypes(element))
+            foreach (IList<DOFType> dofTypesRow in ((IPorousFiniteElement)element).DOFEnumerator.GetDOFTypes(element))
                 foreach (DOFType dofTypeRow in dofTypesRow)
                 {
                     int matrixCol = 0;
                     int solidCol = 0;
                     int fluidCol = 0;
-                    foreach (IList<DOFType> dofTypesCol in elementType.DOFEnumerator.GetDOFTypes(element))
+                    foreach (IList<DOFType> dofTypesCol in ((IPorousFiniteElement)element).DOFEnumerator.GetDOFTypes(element))
                         foreach (DOFType dofTypeCol in dofTypesCol)
                         {
                             if (dofTypeCol == DOFType.Pore)

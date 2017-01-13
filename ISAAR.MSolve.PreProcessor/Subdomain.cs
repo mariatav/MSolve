@@ -237,7 +237,6 @@ namespace ISAAR.MSolve.PreProcessor
         public double[] CalculateElementNodalDisplacements(Element element, double[] globalDisplacementVector)//QUESTION: would it be maybe more clear if we passed the constraintsDictionary as argument??
         {
             double[] elementNodalDisplacements = GetLocalVectorFromGlobal(element, globalDisplacementVector);
-            elementNodalDisplacements = CalculateElementNodalDisplacements(element, globalDisplacementVector);
             elementNodalDisplacements = ApplyConstraintDisplacements(element, elementNodalDisplacements);
             return elementNodalDisplacements;
         }

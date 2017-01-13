@@ -1,5 +1,5 @@
 ﻿using System;
-using ISAAR.MSolve.SamplesConsole.Static.Linear.Applied_Forces;
+using ISAAR.MSolve.SamplesConsole.Static.Linear;
 
 namespace ISAAR.MSolve.SamplesConsole.Static.Linear
 {
@@ -7,10 +7,11 @@ namespace ISAAR.MSolve.SamplesConsole.Static.Linear
     {
         public static void Main(String[] args)
         {
-            new Beam2DSimpleExample().check();
-            new Beam3DSimpleExample().check();
-            new Hexa8SimpleExample().Check();
-            new BuildingInNoSoilSmall().Check();
+            //new Applied_Forces.Beam2DSimpleExample().check();
+            //new Applied_Forces.Beam3DSimpleExample().check();
+            //new Applied_Forces.Hexa8SimpleExample().Check();
+            //new Applied_Forces.BuildingInNoSoilSmall().Check();
+            new Applied_Displacements.Beam2DSimpleExample().check();
         }
         
     }

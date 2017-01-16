@@ -193,7 +193,7 @@ namespace ISAAR.MSolve.PreProcessor
             }
         }
 
-        #endregion
+        #endregion                                                                                 
 
         public int[] GetCornerNodes()
         {

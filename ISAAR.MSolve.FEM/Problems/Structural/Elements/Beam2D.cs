@@ -12,20 +12,20 @@ namespace ISAAR.MSolve.FEM.Problems.Structural.Elements
     {
         private static readonly DOFType[] nodalDOFTypes = new DOFType[3] { DOFType.X, DOFType.Y, DOFType.RotZ };
         private static readonly DOFType[][] dofs = new DOFType[][] { nodalDOFTypes, nodalDOFTypes };
-        private readonly IFiniteElementMaterial material;
+        private readonly double youngModulus;
         private IFiniteElementDOFEnumerator dofEnumerator = new GenericDOFEnumerator();
 
         public double Density { get; set; }
         public double SectionArea { get; set; }
         public double MomentOfInertia { get; set; }
 
-        public Beam2D(IFiniteElementMaterial material)
+        public Beam2D(double youngModulus)
         {
-            this.material = material;
+            this.youngModulus = youngModulus;
         }
 
-        public Beam2D(IFiniteElementMaterial material, IFiniteElementDOFEnumerator dofEnumerator)
-            : this(material)
+        public Beam2D(double youngModulus, IFiniteElementDOFEnumerator dofEnumerator)
+            : this(youngModulus)
         {
             this.dofEnumerator = dofEnumerator;
         }
@@ -73,7 +73,7 @@ namespace ISAAR.MSolve.FEM.Problems.Structural.Elements
             double c2 = c * c;
             double s = (element.Nodes[1].Y - element.Nodes[0].Y) / L;
             double s2 = s * s;
-            double EL = (material as ElasticMaterial).YoungModulus / L;
+            double EL = this.youngModulus / L;
             double EAL = EL * SectionArea;
             double EIL = EL * MomentOfInertia;
             double EIL2 = EIL / L;
@@ -187,26 +187,17 @@ namespace ISAAR.MSolve.FEM.Problems.Structural.Elements
 
         #endregion
 
-        #region IStructuralFiniteElement Members
-
-        public IFiniteElementMaterial Material
-        {
-            get { return material; }
-        }
-
-        #endregion
 
         #region IFiniteElement Members
 
 
         public bool MaterialModified
         {
-            get { return material.Modified; }
+            get { return false; }
         }
 
         public void ResetMaterialModified()
         {
-            material.ResetModified();
         }
 
         #endregion

@@ -36,14 +36,6 @@ namespace ISAAR.MSolve.SamplesConsole.Static.Linear.Applied_Forces
             double youngModulus = 200.0e06;
             double poissonRatio = 0.3;
             double nodalLoad = 25.0;
-
-            // Create a new elastic 3D material
-            ElasticMaterial material = new ElasticMaterial()
-            {
-                YoungModulus = youngModulus,
-                PoissonRatio = poissonRatio,
-            };
-
             // Node creation
             IList<Node> nodes = CreateNodes();
 
@@ -66,7 +58,7 @@ namespace ISAAR.MSolve.SamplesConsole.Static.Linear.Applied_Forces
 
 
             //Create a new Beam2D element
-            var beam = new Beam2D(material)
+            var beam = new Beam2D(youngModulus)
             {
                 SectionArea = 1,
                 MomentOfInertia = .1

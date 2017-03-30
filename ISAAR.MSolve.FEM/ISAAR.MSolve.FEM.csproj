@@ -125,8 +125,8 @@
     <Compile Include="Entities\ElementMassAccelerationHistoryLoad.cs" />
     <Compile Include="Entities\ElementMassAccelerationLoad.cs" />
     <Compile Include="Entities\Element.cs" />
-    <Compile Include="Problems\Structural\Elements\Beam2D.cs" />
-    <Compile Include="Problems\Structural\Elements\Beam3D.cs" />
+    <Compile Include="Problems\Structural\Elements\EulerBeam2D.cs" />
+    <Compile Include="Problems\Structural\Elements\EulerBeam3D.cs" />
     <Compile Include="Problems\Structural\Elements\Hexa8WithStochasticMaterial.cs" />
     <Compile Include="Problems\Porous\Elements\Hexa8u8p.cs" />
     <Compile Include="Problems\Structural\Elements\Hexa8.cs" />

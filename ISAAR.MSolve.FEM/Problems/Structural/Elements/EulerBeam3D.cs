@@ -11,7 +11,7 @@ using ISAAR.MSolve.Numerical.LinearAlgebra.Interfaces;
 
 namespace ISAAR.MSolve.FEM.Problems.Structural.Elements
 {
-    public class Beam3D : IStructuralFiniteElement, IEmbeddedElement
+    public class EulerBeam3D : IStructuralFiniteElement, IEmbeddedElement
     {
         private static readonly DOFType[] nodalDOFTypes = new DOFType[6] { DOFType.X, DOFType.Y, DOFType.Z, DOFType.RotX, DOFType.RotY, DOFType.RotZ };
         private static readonly DOFType[][] dofs = new DOFType[][] { nodalDOFTypes, nodalDOFTypes };
@@ -40,13 +40,13 @@ namespace ISAAR.MSolve.FEM.Problems.Structural.Elements
         public double MomentOfInertiaPolar { get; set; }
         public IList<EmbeddedNode> EmbeddedNodes { get { return embeddedNodes; } }
 
-        public Beam3D(double youngModulus, double poissonRatio)
+        public EulerBeam3D(double youngModulus, double poissonRatio)
         {
             this.youngModulus = youngModulus;
             this.poissonRatio = poissonRatio;
         }
 
-        public Beam3D(double youngModulus, double poissonRatio, Node[] rot1Nodes, Node[] rot2Nodes)
+        public EulerBeam3D(double youngModulus, double poissonRatio, Node[] rot1Nodes, Node[] rot2Nodes)
             : this(youngModulus, poissonRatio)
         {
             if (rot1Nodes != null && rot1Nodes.Length != 4)
@@ -59,12 +59,12 @@ namespace ISAAR.MSolve.FEM.Problems.Structural.Elements
             InitializeDOFsWhenNoRotations();
         }
 
-        public Beam3D(double youngModulus, double poissonRatio, IFiniteElementDOFEnumerator dofEnumerator) : this(youngModulus, poissonRatio)
+        public EulerBeam3D(double youngModulus, double poissonRatio, IFiniteElementDOFEnumerator dofEnumerator) : this(youngModulus, poissonRatio)
         {
             this.dofEnumerator = dofEnumerator;
         }
 
-        public Beam3D(double youngModulus, double poissonRatio, Node[] rot1Nodes, Node[] rot2Nodes, IFiniteElementDOFEnumerator dofEnumerator)
+        public EulerBeam3D(double youngModulus, double poissonRatio, Node[] rot1Nodes, Node[] rot2Nodes, IFiniteElementDOFEnumerator dofEnumerator)
             : this(youngModulus, poissonRatio, rot1Nodes, rot2Nodes)
         {
             this.dofEnumerator = dofEnumerator;

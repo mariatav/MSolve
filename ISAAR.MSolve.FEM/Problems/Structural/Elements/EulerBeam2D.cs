@@ -8,7 +8,7 @@ using ISAAR.MSolve.FEM.Problems.Structural.Constitutive;
 
 namespace ISAAR.MSolve.FEM.Problems.Structural.Elements
 {
-    public class Beam2D : IStructuralFiniteElement
+    public class EulerBeam2D : IStructuralFiniteElement
     {
         private static readonly DOFType[] nodalDOFTypes = new DOFType[3] { DOFType.X, DOFType.Y, DOFType.RotZ };
         private static readonly DOFType[][] dofs = new DOFType[][] { nodalDOFTypes, nodalDOFTypes };
@@ -19,12 +19,12 @@ namespace ISAAR.MSolve.FEM.Problems.Structural.Elements
         public double SectionArea { get; set; }
         public double MomentOfInertia { get; set; }
 
-        public Beam2D(double youngModulus)
+        public EulerBeam2D(double youngModulus)
         {
             this.youngModulus = youngModulus;
         }
 
-        public Beam2D(double youngModulus, IFiniteElementDOFEnumerator dofEnumerator)
+        public EulerBeam2D(double youngModulus, IFiniteElementDOFEnumerator dofEnumerator)
             : this(youngModulus)
         {
             this.dofEnumerator = dofEnumerator;

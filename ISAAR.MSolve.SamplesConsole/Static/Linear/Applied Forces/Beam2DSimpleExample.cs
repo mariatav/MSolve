@@ -58,7 +58,7 @@ namespace ISAAR.MSolve.SamplesConsole.Static.Linear.Applied_Forces
 
 
             //Create a new Beam2D element
-            var beam = new Beam2D(youngModulus)
+            var beam = new EulerBeam2D(youngModulus)
             {
                 SectionArea = 1,
                 MomentOfInertia = .1
